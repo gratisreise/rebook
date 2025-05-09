@@ -1,0 +1,13 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://{aws_privateip}/{port}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    instance-id: ${spring.application.name}:origin
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info

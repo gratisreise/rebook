@@ -1,0 +1,14 @@
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    instance-id: ${spring.application.name}:origin
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
