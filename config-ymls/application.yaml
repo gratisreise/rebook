@@ -1,1 +1,19 @@
-test
+
+sentry:
+  dsn: "https://your_sentry_dsn" # Sentry DSN 입력
+  environment: "dev"
+  traces-sample-rate: 1.0
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
