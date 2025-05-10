@@ -1,4 +1,3 @@
-
 eureka:
   client:
     service-url:
@@ -7,8 +6,14 @@ eureka:
     register-with-eureka: true
   instance:
     instance-id: ${spring.application.name}:origin
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+sentry:
+  dsn: ${SENTRY_DSN} # Sentry DSN 입력
+  environment: "dev"
+  traces-sample-rate: 1.0

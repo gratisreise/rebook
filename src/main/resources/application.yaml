@@ -6,9 +6,11 @@ spring:
   application:
     name: config-server
 
+  #
   profiles:
     active: dev
 
+  #유레카 등록
   cloud:
     config:
       server:
@@ -18,6 +20,7 @@ spring:
           password: ${GIT_PASSWORD}
           default-label: main
 
+#프로메테우스 접근허용
 management:
   prometheus:
     metrics:
