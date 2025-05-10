@@ -1,11 +1,8 @@
 eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    service-url:
-      defaultZone: http://eureka-server:8761/eureka/
   server:
     enable-self-preservation: false
+
+#모니터링 정보
 management:
   endpoints:
     web:
