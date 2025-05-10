@@ -6,6 +6,9 @@ spring:
   application:
     name: config-server
 
+  profiles:
+    active: dev
+
   cloud:
     config:
       server:
@@ -14,11 +17,9 @@ spring:
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
           default-label: main
+
 management:
   prometheus:
     metrics:
       export:
         enabled: true
-
-  profiles:
-    active: dev
