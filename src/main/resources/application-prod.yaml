@@ -1,3 +1,11 @@
+# actuator 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+
+# 유레카 설정
 eureka:
   client:
     service-url:
@@ -6,13 +14,3 @@ eureka:
     register-with-eureka: true
   instance:
     instance-id: ${spring.application.name}:origin
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus,health,info
-
-sentry:
-  dsn: ${SENTRY_DSN} # Sentry DSN 입력
-  send-default-pii: true

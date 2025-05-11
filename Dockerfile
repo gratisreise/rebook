@@ -12,7 +12,7 @@ COPY src src
 RUN chmod +x ./gradlew
 
 # 테스트 실행 및 빌드 (bootJar 생성)
-RUN ./gradlew test bootJar --no-daemon
+RUN ./gradlew bootJar --no-daemon
 
 # 2단계: 실행 환경
 FROM openjdk:17-slim

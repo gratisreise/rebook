@@ -1,6 +1,9 @@
 server:
   port: 8888
 
+encrypt:
+  key: ${SECRET_KEY}
+
 spring:
   application:
     name: rebook-config
@@ -18,13 +21,6 @@ spring:
           password: ${GIT_PASSWORD}
           default-label: main
 
-
-#프로메테우스 접근허용
-management:
-  prometheus:
-    metrics:
-      export:
-        enabled: true
 #센트리 로깅
 sentry:
   dsn: ${SENTRY_DSN}
