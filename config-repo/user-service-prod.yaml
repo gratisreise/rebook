@@ -7,6 +7,6 @@ spring:
       driverClassName: org.postgresql.Driver
 # 2. Redis 설정
   redis:
-    host: localhost
+    host: redis
     port: 6379
     password: {cipher}374945401425966b655c0cf4e8a9d086a1cb38e55ca90e785c46d207b2abee4e92a9017bfe46ad54d730030e4d1a3efd

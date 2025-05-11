@@ -1,8 +1,8 @@
 spring:
 # 1. RDS: postgresql
   datasource:
-      url: jdbc:postgresql://postgresql:5432/rebookuserdb
-      username: rebook-user-service-db
+      url: jdbc:postgresql://postgresql:5432/rebookbookdb
+      username: rebook-book-service-db
       password: {cipher}10ce8d7223a5d9d531509ce1abc461dcc3fd5f4a199dc256e462bc89c0a8fdb048375b21d763adb92b4a7dbe6f23262e
       driverClassName: org.postgresql.Driver
 # 2. Redis 설정
