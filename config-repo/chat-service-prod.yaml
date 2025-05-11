@@ -18,6 +18,6 @@ spring:
       port: 27017
       database: mydb
       username: rebook-chat-user
-      password: {cipher}fc79fbe26a8e62592e8c26a27c336ec026e5dc4e7ae69aeb4d634df03d6955da15c9b6b571df584c260004edb0533164
+      password: {cipher}552e3cdfebf43dc228073f9b571770ad0383a57f53e0c278ec3a628f1b54ff83121d0fa251ec4a32778e691c52d4413f
 
   
