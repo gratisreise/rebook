@@ -15,5 +15,4 @@ management:
 
 sentry:
   dsn: ${SENTRY_DSN} # Sentry DSN 입력
-  environment: "prod"
-  traces-sample-rate: 1.0
+  send-default-pii: true

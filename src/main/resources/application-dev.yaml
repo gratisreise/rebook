@@ -1,19 +1,21 @@
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka-server:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
-  instance:
-    instance-id: ${spring.application.name}:origin
-
 management:
   endpoints:
     web:
       exposure:
         include: "*"
 
-sentry:
-  dsn: ${SENTRY_DSN} # Sentry DSN 입력
-  environment: "dev"
-  traces-sample-rate: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    instance-id: ${spring.application.name}:origin
+
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework: DEBUG
+#    org.springframework.web: DEBUG
+

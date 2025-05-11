@@ -2,23 +2,22 @@ server:
   port: 8888
 
 spring:
-
   application:
-    name: config-server
+    name: rebook-config
 
-  #
   profiles:
     active: dev
 
-  #유레카 등록
+  #파일등록
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/rebook/config-repo
+          uri: https://github.com/gratisreise/rebook-yamls.git
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
           default-label: main
+
 
 #프로메테우스 접근허용
 management:
@@ -26,3 +25,7 @@ management:
     metrics:
       export:
         enabled: true
+#센트리 로깅
+sentry:
+  dsn: ${SENTRY_DSN}
+  send-default-pii: true
