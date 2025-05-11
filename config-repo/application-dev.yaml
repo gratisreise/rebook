@@ -1,7 +1,7 @@
 spring:
   # 0. 데이터베이스
   datasource:
-      url: jdbc:postgresql://postgresql:5432/rebookdb
+      url: jdbc:postgresql://rebook-database:5432/rebookdb
       username: foo
       password: bar
       driverClassName: org.postgresql.Driver

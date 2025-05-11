@@ -1,0 +1,16 @@
+# aws s3 설정
+aws:
+  s3:
+    bucket: your-bucket-name
+    region: ap-northeast-2
+    access-key: {cipher}8bc6bde5821552dd06b0c3100eb886ca071467b6eb7cc669500fd5669ee81a3f4a37ac6d7ba2e35a1a599b16e28215ba
+    secret-key: {cipher}1db69cfa189cdb4970ad2e3b621013f3105c06c780add3d1ba89c3cbca4845d0dcba7592a789e9cf107e20d4316e4de499903baf7f82a848e0d6b91a7cf87935
+
+#gemini 설정
+gemini:
+  apikey: {cipher}5f685b14fc8b4140b5ca7d34a364878a18ebec85d59b9fb8de07f3d2c6ac81061b935ec522a988f3c9f63242637b3dfc1ae3d7c5430124da7cb2a414c9c387b7
+
+#naver 도서 api 설정
+naver:
+  client-id: {cipher}8a7de5e23acbbcaf9c16d65d4d25af14693c148f01378c8ad481042b50260aeb9cc0eba387285111d2e5a0e807b27abc
+  client-secret: {cipher}32404d33398ee0328ab1f06750e44b88ce92f63b0404949fa30bd4cbf14c0f33
