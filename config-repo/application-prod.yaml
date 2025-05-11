@@ -1,38 +1,25 @@
+# 포트설정(다중 서버)
 server:
-  port: 8080 # 서버내부 독립환경 포트상관없음
+  port: 8080
 
 spring:
-  # =========================
-  # 1. jpa 설정
-  # =========================
+  # jpa 설정
   jpa:
     hibernate:
-      ddl-auto: validate # (개발: update, 운영: validate 또는 none 권장)
+      ddl-auto: validate 
     show-sql: true
     properties:
       hibernate:
         format_sql: true
 
-  # =========================
-  # 2. Redis 설정
-  # =========================
-  redis:
-    host: localhost
-    port: 6379
-    password: ${redis-password}
-
-  # =========================
-  # 3. RabbitMQ 설정
-  # =========================
+  # RabbitMQ 설정
   rabbitmq:
     host: ${rabbitmq-uri}
     port: 5672
     username: rebook-admin
-    password: ${랜덤20자}
+    password: {cipher}45f14f29e5335a6fd7fd0ba53a999972027c800cb0051576ec79982a864d1ae2351f0cb575ac7e64cb1c45c3968a4d93
 
-# =========================
-# 4. Eureka 클라이언트 설정
-# =========================
+# Eureka 클라이언트 설정
 eureka:
   client:
     service-url:
@@ -42,18 +29,14 @@ eureka:
   instance:
     prefer-ip-address: ${spring.application.name}:main
 
-# =========================
-# 6. Actuator 및 모니터링
-# =========================
+# Actuator 및 모니터링
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus # prometheus, health, info 엔드포인트 노출
   
-# =========================
-# 7. 로깅 설정 (예시)
-# =========================
+# 로깅 설정 (예시)
 logging:
   level:
     root: INFO
