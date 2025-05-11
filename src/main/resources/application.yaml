@@ -12,5 +12,7 @@ spring:
   application:
     name: rebook-eureka
 
+
+
   profiles:
     active: dev
