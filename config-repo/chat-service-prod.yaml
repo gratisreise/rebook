@@ -1,0 +1,23 @@
+spring:
+# RDS: postgresql
+  datasource:
+      url: jdbc:postgresql://postgresql:5432/rebookchatdb
+      username: rebook-chat-service-db
+      password: {cipher}8114ce0df7c5477ca2af2d5245eac848c0c3f45e92fb22be087728eb438b7eaf7ccccc49e1fd737538af51e58bb77e12
+      driverClassName: org.postgresql.Driver
+# Redis 설정
+  redis:
+    host: redis
+    port: 6379
+    password: {cipher}3b3cd0ae2be22f2674dd6b7b2abddffb604b1b581256960f2a6d757d208f30391a02b8f5b35a356f7b9a114c1d1b520b
+
+#mongodb 설정
+  data:
+    mongodb:
+      host: cluster0.xxxxx.mongodb.net
+      port: 27017
+      database: mydb
+      username: rebook-chat-user
+      password: {cipher}fc79fbe26a8e62592e8c26a27c336ec026e5dc4e7ae69aeb4d634df03d6955da15c9b6b571df584c260004edb0533164
+
+  

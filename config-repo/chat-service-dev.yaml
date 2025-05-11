@@ -1,0 +1,13 @@
+# 포트설정(단일 서버)
+server:
+  port: 9003
+
+#mongodb 설정
+spring:
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: mydb
+      username: rebook-chat
+      password: 1234

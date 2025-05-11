@@ -1,11 +1,11 @@
 spring:
-# 1. RDS: postgresql
+# RDS: postgresql
   datasource:
       url: jdbc:postgresql://postgresql:5432/rebooktradingdb
       username: rebook-trading-service-db
       password: {cipher}e1a44d106a2ff47319ce13541eb48cba406d6cc7d2a95f310a4655a5802723e5aa3fc6c4c97a8bd0fb2d826fe40e45be
       driverClassName: org.postgresql.Driver
-# 2. Redis 설정
+# Redis 설정
   redis:
     host: redis
     port: 6379
