@@ -16,7 +16,7 @@ feign:
         loggerLevel: basic
 
 sentry:
-  dsn: https://yourPublicKey@o0.ingest.sentry.io/0
+  dsn: ${SENTRY_DSN}
   send-default-pii: true
 
 spring:

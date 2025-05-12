@@ -32,9 +32,11 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://rebook-eureka:8761/eureka/
+      defaultZone: http://{private-ip}:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:origin
 
 logging:
   level:

@@ -35,6 +35,8 @@ eureka:
       defaultZone: http://rebook-eureka:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:origin
 
 logging:
   level:
