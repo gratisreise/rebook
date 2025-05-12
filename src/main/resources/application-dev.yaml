@@ -9,7 +9,3 @@ management:
       exposure:
         include: "*"
 
-#센트리 로깅
-sentry:
-  dsn: ${SENTRY_DSN}
-  send-default-pii: true

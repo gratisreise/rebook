@@ -8,11 +8,13 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+#센트리 로깅
+sentry:
+  dsn: ${SENTRY_DSN}
+  send-default-pii: true
+
 spring:
   application:
     name: rebook-eureka
-
-
-
   profiles:
     active: dev

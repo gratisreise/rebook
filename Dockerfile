@@ -24,6 +24,6 @@ RUN apt-get update && apt-get install -y curl
 # 빌드 단계에서 생성된 jar 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-EXPOSE 8080
+EXPOSE 8761
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-jar", "app.jar"]
