@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: rebook-user
+          uri: http://{rebook-user}:8080
+          predicates:
+            - Path=/api/users/**
+        - id: rebook-book
+          uri: http://{rebook-book}:8080
+          predicates:
+            - Path=/api/books/**
+        - id: rebook-trading
+          uri: http://{rebook-trading}:8080
+          predicates:
+            - Path=/api/tradings/**
+        - id: rebook-notification
+          uri: http://{rebook-notification}:8080
+          predicates:
+            - Path=/api/notifications/**
+        - id: rebook-chat
+          uri: http://{rebook-chat}:8080
+          predicates:
+            - Path=/api/chats/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rebook-eureka:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.security: INFO
+    feign: WARN
+    com.example: INFO

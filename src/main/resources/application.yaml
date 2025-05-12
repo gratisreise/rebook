@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+jwt:
+  access-secret: "access?_???"
+  access-expiration: 1_800_000 (30?)
+  refresh-secret: "refresh?_???"
+  refresh-expiration: 604_800_000
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: basic
+
+sentry:
+  dsn: https://yourPublicKey@o0.ingest.sentry.io/0
+  send-default-pii: true
+
+spring:
+  application:
+    name: rebook-gateway
+
+  cloud:
+    discovery:
+      enabled: true # ????? ????? ??
+
+  profiles:
+    active: dev
+
+
+
+
