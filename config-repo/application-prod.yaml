@@ -1,7 +1,9 @@
 # 포트설정(다중 서버)
 server:
   port: 8080
-
+springfox:
+  documentation:
+    enabled: false
 spring:
   # jpa 설정
   jpa:
