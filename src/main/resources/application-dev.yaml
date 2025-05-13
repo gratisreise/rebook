@@ -37,10 +37,3 @@ eureka:
     fetch-registry: true
   instance:
     instance-id: ${spring.application.name}:origin
-
-logging:
-  level:
-    root: INFO
-    org.springframework.security: DEBUG
-    com.example: DEBUG
-    feign: DEBUG

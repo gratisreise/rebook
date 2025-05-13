@@ -2,9 +2,9 @@ server:
   port: 8080
 
 jwt:
-  access-secret: "access?_???"
+  access-secret: "access_secret"
   access-expiration: 1_800_000 (30?)
-  refresh-secret: "refresh?_???"
+  refresh-secret: "refresh_secret"
   refresh-expiration: 604_800_000
 
 feign:
@@ -23,9 +23,15 @@ spring:
   application:
     name: rebook-gateway
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+
   cloud:
     discovery:
-      enabled: true # ????? ????? ??
+      enabled: true
 
   profiles:
     active: dev

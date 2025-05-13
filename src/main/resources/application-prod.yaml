@@ -38,10 +38,3 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:origin
 
-logging:
-  level:
-    root: INFO
-    org.springframework: INFO
-    org.springframework.security: INFO
-    feign: WARN
-    com.example: INFO
