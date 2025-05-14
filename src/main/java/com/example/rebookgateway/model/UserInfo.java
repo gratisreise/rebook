@@ -13,5 +13,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Builder
 public class UserInfo {
-
+    private String userId;
+    private String username;
+    private String email;
+    private String role;
 }
