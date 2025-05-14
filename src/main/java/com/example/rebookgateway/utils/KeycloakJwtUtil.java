@@ -19,17 +19,11 @@ public class KeycloakJwtUtil {
     public UserInfo getUserInfo(String code)
         throws UnsupportedEncodingException, JsonProcessingException {
         String token = getKeycloakToken(code);
-        
-        // 1. JWT 분리
-        String payloadPart = getPayloadPart(token);
 
-        // 2. 페이로드(Base64 URL) 디코딩
-        String payloadJson = getPayloadJson(payloadPart);
+        //payload 생성
+        Map<String, Object> payload = getPayload(token);
 
-        // 3. JSON 파싱
-        Map<String, Object> payload = getPayload(payloadJson);
-
-        // 4. 정보 추출
+        // 정보 추출
         String sub = (String) payload.get("sub");
         String email = (String) payload.get("email");
         String username = (String) payload.get("preferred_username");
@@ -43,6 +37,18 @@ public class KeycloakJwtUtil {
             .email(email)
             .role(role)
             .build();
+    }
+
+    private Map<String, Object> getPayload(String token)
+        throws UnsupportedEncodingException, JsonProcessingException {
+        // 1. JWT 분리
+        String payloadPart = getPayloadPart(token);
+
+        // 2. 페이로드(Base64 URL) 디코딩
+        String payloadJson = getPayloadJson(payloadPart);
+
+        // 3. JSON 파싱
+        return getStringObjectMap(payloadJson);
     }
 
     private  String getRole(Map<String, Object> payload) {
@@ -64,7 +70,7 @@ public class KeycloakJwtUtil {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    private Map<String, Object> getPayload(String payloadJson)
+    private Map<String, Object> getStringObjectMap(String payloadJson)
         throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(payloadJson, Map.class);
