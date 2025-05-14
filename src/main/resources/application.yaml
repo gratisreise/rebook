@@ -2,9 +2,9 @@ server:
   port: 8080
 
 jwt:
-  access-secret: "access_secret"
+  access-secret: ${ACCESS_KEY}
   access-expiration: 1_800_000 (30?)
-  refresh-secret: "refresh_secret"
+  refresh-secret: ${REFRESH_KEY}
   refresh-expiration: 604_800_000
 
 feign:

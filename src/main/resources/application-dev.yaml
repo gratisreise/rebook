@@ -23,6 +23,13 @@ spring:
           predicates:
             - Path=/api/chats/**
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8081/realms/master
+          jwk-set-uri: http://keycloak:8081/realms/master/protocol/openid-connect/certs
+
 management:
   endpoints:
     web:
