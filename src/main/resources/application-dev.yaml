@@ -22,6 +22,11 @@ spring:
           uri: http://rebook-chat:9003
           predicates:
             - Path=/api/chats/**
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: ${RADIS_PASSWORD}
 
   security:
     oauth2:
