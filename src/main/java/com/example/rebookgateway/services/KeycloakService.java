@@ -1,4 +1,4 @@
-package com.example.rebookgateway.utils;
+package com.example.rebookgateway.services;
 
 import com.example.rebookgateway.exceptions.CMissingDataException;
 import com.example.rebookgateway.feigns.KeycloakClient;
@@ -7,13 +7,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class KeycloakService {
     private final KeycloakClient keycloakClient;
@@ -22,7 +21,6 @@ public class KeycloakService {
         String token = getKeycloakToken(code);
 
         //payload 생성
-
         Map<String, Object> payload = getPayload(token);
 
         // 정보 추출

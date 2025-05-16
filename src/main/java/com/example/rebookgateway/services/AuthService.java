@@ -5,7 +5,6 @@ import com.example.rebookgateway.exceptions.CUnAuthorizedException;
 import com.example.rebookgateway.model.RefreshRequest;
 import com.example.rebookgateway.model.UserInfo;
 import com.example.rebookgateway.utils.JwtUtil;
-import com.example.rebookgateway.utils.KeycloakService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
@@ -74,7 +73,6 @@ public class AuthService {
 
     //리프레쉬
     private RefreshRequest getRefreshRequest(String refreshToken) {
-        String token = refreshToken.substring(7);
         //캐싱확인
         redisService.get(refreshPrefix + refreshToken)
             .orElseThrow(CUnAuthorizedException::new);
