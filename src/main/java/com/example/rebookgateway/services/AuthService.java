@@ -87,8 +87,6 @@ public class AuthService {
         return new RefreshRequest(accessToken, refreshedToken);
     }
 
-
-
     private String objectToJsonString(Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
