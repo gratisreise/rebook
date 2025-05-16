@@ -28,13 +28,6 @@ spring:
       port: 6379
       password: ${RADIS_PASSWORD}
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8081/realms/master
-          jwk-set-uri: http://localhost:8081/realms/master/protocol/openid-connect/certs
-
 management:
   endpoints:
     web:

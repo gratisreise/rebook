@@ -1,4 +1,4 @@
-package com.example.rebookgateway.config;
+package com.example.rebookgateway;
 
 
 import org.springframework.context.annotation.Bean;
@@ -17,6 +17,7 @@ public class SecurityConfig {
         "/swagger-ui/**",
         "/swagger-resources/**",
         "/v3/api-docs/**",
+        "api/auths/**"
     };
 
     @Bean

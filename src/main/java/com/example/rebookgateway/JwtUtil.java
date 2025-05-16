@@ -1,10 +1,7 @@
-package com.example.rebookgateway.utils;
+package com.example.rebookgateway;
 
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -14,18 +11,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
-    private final SecretKey key;
-    private final long accessValidity;
-    private final long refreshValidity;
 
-    public JwtUtil(
-        @Value("${jwt.secret}") String key,
-        @Value("${jwt.access-expiration}") long accessTokenExpiration,
-        @Value("${jwt.refresh-expiration}") long refreshTokenExpiration
-    ) {
+    private final SecretKey key;
+
+    @Value("${jwt.access-expiration}")
+    private long accessValidity;
+
+    @Value("${jwt.refresh-expiration}")
+    private long refreshValidity;
+
+    public JwtUtil(@Value("${jwt.secret}") String key) {
         this.key = Keys.hmacShaKeyFor(key.getBytes());
-        this.accessValidity = accessTokenExpiration;
-        this.refreshValidity = refreshTokenExpiration;
     }
 
     public String createAccessToken(String userId) {

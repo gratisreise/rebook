@@ -36,7 +36,6 @@ dependencies {
 
     //보안
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
@@ -45,7 +44,7 @@ dependencies {
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta'
 
     // 캐싱
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 
     //클라우드서비스
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'

@@ -22,12 +22,6 @@ spring:
           uri: http://{rebook-chat}:8080
           predicates:
             - Path=/api/chats/**
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://keycloak:8080/realms/master
-          jwk-set-uri: http://keycloak:8080/realms/master/protocol/openid-connect/certs
 
   data:
     redis:
