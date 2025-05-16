@@ -74,6 +74,7 @@ public class AuthService {
 
     //리프레쉬
     private RefreshRequest getRefreshRequest(String refreshToken) {
+        String token = refreshToken.substring(7);
         //캐싱확인
         redisService.get(refreshPrefix + refreshToken)
             .orElseThrow(CUnAuthorizedException::new);

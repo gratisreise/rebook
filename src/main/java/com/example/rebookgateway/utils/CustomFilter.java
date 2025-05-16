@@ -1,5 +1,6 @@
 package com.example.rebookgateway.utils;
 
+import com.example.rebookgateway.exceptions.CUnAuthorizedException;
 import com.example.rebookgateway.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -20,14 +21,22 @@ public class CustomFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        String authInfo = exchange.getRequest().getHeaders().getFirst("Authorization");
+        String info = path.equals("/api/auths/login") ? getToken(exchange) : getCode(exchange);
         ServerHttpRequest mutatedRequest = exchange.getRequest();
+
+        if(info.isEmpty()){
+            throw new CUnAuthorizedException("토큰이 비어있습니다.");
+        }
+
         //auth
-        if (path.equals("/api/auths/**")) {
-            byte[] newBodyBytes = authService.getBytes(authInfo, path);
+        if (path.equals("/api/auths/login") || path.equals("/api/auths/refresh")) {
+            byte[] newBodyBytes = authService.getBytes(info, path);
             mutatedRequest = authService.createAuthRequest(exchange, newBodyBytes);
         } else { // 일반
-            String userId = jwtUtil.getUserId(authInfo);
+            if(jwtUtil.validateToken(info)){
+                throw new CUnAuthorizedException("유효하지 않은 리프레쉬 토큰");
+            }
+            String userId = jwtUtil.getUserId(info);
             mutatedRequest.mutate().header("X-User-Id", userId)
                 .build();
         }
@@ -35,6 +44,15 @@ public class CustomFilter implements GlobalFilter, Ordered {
             .request(mutatedRequest)
             .build();
         return chain.filter(mutatedExchange);
+    }
+
+    private static String getCode(ServerWebExchange exchange) {
+        return exchange.getRequest().getQueryParams().getFirst("code");
+    }
+
+    private static String getToken(ServerWebExchange exchange) {
+        return exchange.getRequest().getHeaders()
+            .getFirst("Authorization").substring(7);
     }
 
     @Override
