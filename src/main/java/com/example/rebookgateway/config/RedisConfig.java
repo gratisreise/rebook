@@ -29,11 +29,12 @@ public class RedisConfig{
         return new LettuceConnectionFactory(configuration);
     }
 
-    //코드 간견성
+    //template 편의성 증가
     @Bean
     public ValueOperations<String, String> valueOperations(RedisTemplate<String, String> redisTemplate) {
         return redisTemplate.opsForValue();
     }
+
     @Bean
     public RedisTemplate<String, String> redisTemplate(){
         RedisTemplate<String, String> template = new RedisTemplate<>();
@@ -42,5 +43,6 @@ public class RedisConfig{
         // key:value= String:String
         template.setKeySerializer(template.getStringSerializer());
         template.setValueSerializer(template.getStringSerializer());
+        return template;
     }
 }

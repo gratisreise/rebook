@@ -44,7 +44,7 @@ dependencies {
     //로깅알람
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta'
 
-    // 토큰캐싱
+    // 캐싱
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     //클라우드서비스
@@ -52,7 +52,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-    //편의성
+    // 편의성
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

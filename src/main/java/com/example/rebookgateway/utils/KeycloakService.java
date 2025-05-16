@@ -1,11 +1,13 @@
 package com.example.rebookgateway.utils;
 
+import com.example.rebookgateway.exceptions.CMissingDataException;
 import com.example.rebookgateway.feigns.KeycloakClient;
 import com.example.rebookgateway.model.UserInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +15,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KeycloakJwtUtil {
+public class KeycloakService {
     private final KeycloakClient keycloakClient;
     
-    public UserInfo getUserInfo(String code)
-        throws UnsupportedEncodingException, JsonProcessingException {
+    public UserInfo getUserInfo(String code) {
         String token = getKeycloakToken(code);
 
         //payload 생성
+
         Map<String, Object> payload = getPayload(token);
 
         // 정보 추출
@@ -39,16 +41,19 @@ public class KeycloakJwtUtil {
             .build();
     }
 
-    private Map<String, Object> getPayload(String token)
-        throws UnsupportedEncodingException, JsonProcessingException {
+    private Map<String, Object> getPayload(String token) {
         // 1. JWT 분리
         String payloadPart = getPayloadPart(token);
 
-        // 2. 페이로드(Base64 URL) 디코딩
-        String payloadJson = getPayloadJson(payloadPart);
+        try {
+            // 2. 페이로드(Base64 URL) 디코딩
+            String payloadJson = getPayloadJson(payloadPart);
 
-        // 3. JSON 파싱
-        return getStringObjectMap(payloadJson);
+            // 3. JSON 파싱
+            return getStringObjectMap(payloadJson);
+        } catch (UnsupportedEncodingException| JsonProcessingException e){
+            throw new CMissingDataException(e.getMessage());
+        }
     }
 
     private  String getRole(Map<String, Object> payload) {
