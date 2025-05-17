@@ -4,6 +4,8 @@ package com.example.rebookgateway;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +14,14 @@ public class JwtUtil {
 
     private final SecretKey key;
 
-    public JwtUtil(@Value("${jwt.secret}") String key) {
-        this.key = Keys.hmacShaKeyFor(key.getBytes());
+    public JwtUtil(@Value("${jwt.secret}") String key) throws DecoderException {
+        byte[] keyBytes = Hex.decodeHex(key.toCharArray());
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String getUserId(String token){
         return Jwts.parser()
-            .verifyWith(key)   // 0.12.x 버전의 새로운 검증 방식, 유요한지?, 만료되었는지
+            .verifyWith(key)
             .build()
             .parseSignedClaims(token)
             .getPayload()
