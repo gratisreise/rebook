@@ -1,10 +1,10 @@
 package com.example.rebookuserservice.repository;
 
+import com.example.rebookuserservice.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-//@Repository
-//public interface UserRepository extends JpaRepository<User, String> {
-//
-//}
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+
+}
