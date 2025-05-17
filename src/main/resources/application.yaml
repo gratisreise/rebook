@@ -3,16 +3,6 @@ server:
 
 jwt:
   secret: ${JWT_SECRET}
-  access-expiration: 1_800_000 # 30분
-  refresh-expiration: 604_800_000 # 7일
-
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 3000
-        readTimeout: 3000
-        loggerLevel: basic
 
 sentry:
   dsn: ${SENTRY_DSN}
@@ -21,12 +11,6 @@ sentry:
 spring:
   application:
     name: rebook-gateway
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
-
 
   cloud:
     discovery:

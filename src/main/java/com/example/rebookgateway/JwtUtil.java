@@ -3,7 +3,6 @@ package com.example.rebookgateway;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,41 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
-
     private final SecretKey key;
-
-    @Value("${jwt.access-expiration}")
-    private long accessValidity;
-
-    @Value("${jwt.refresh-expiration}")
-    private long refreshValidity;
 
     public JwtUtil(@Value("${jwt.secret}") String key) {
         this.key = Keys.hmacShaKeyFor(key.getBytes());
-    }
-
-    public String createAccessToken(String userId) {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + accessValidity);
-
-        return Jwts.builder()
-            .subject(userId)
-            .issuedAt(now)
-            .expiration(validity)
-            .signWith(key, Jwts.SIG.HS512) // 0.12.x 버전의 새로운 서명 방식
-            .compact();
-    }
-
-    public String createRefreshToken(String userId) {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + refreshValidity);
-
-        return Jwts.builder()
-            .subject(userId)
-            .issuedAt(now)
-            .expiration(validity)
-            .signWith(key, Jwts.SIG.HS512) // 0.12.x 버전의 새로운 서명 방식
-            .compact();
     }
 
     public String getUserId(String token){

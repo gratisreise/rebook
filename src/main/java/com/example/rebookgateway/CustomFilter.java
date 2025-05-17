@@ -1,7 +1,5 @@
 package com.example.rebookgateway;
 
-import com.example.rebookgateway.exceptions.CUnAuthorizedException;
-import com.example.rebookgateway.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
