@@ -1,13 +1,10 @@
 package com.example.rebookuserservice.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class TokenResponse {
+public class KeycloakResponse {
     private String accessToken;
-    private String refreshToken;
 }

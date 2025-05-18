@@ -24,14 +24,19 @@ public class User {
     @Id
     private String id;
 
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
     private String profileImage;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -41,4 +46,11 @@ public class User {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public User(UserInfo userInfo) {
+        this.id = userInfo.getUserId();
+        this.username = userInfo.getUsername();
+        this.email = userInfo.getEmail();
+        this.role = userInfo.getRole().equals("admin") ? Role.ADMIN : Role.USER;
+    }
 }
