@@ -20,6 +20,7 @@ spring:
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
           default-label: main
+          search-paths: config-repo/**
 
 #센트리 로깅
 sentry:

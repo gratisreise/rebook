@@ -29,7 +29,9 @@ dependencies {
 
     //모니터링
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
 
     //로깅
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta'
