@@ -3,10 +3,10 @@ spring:
   datasource:
       url: jdbc:postgresql://postgresql:5432/rebooknotidb
       username: rebook-noti-user
-      password: {cipher}96be085eba17331de2d0aa80f95a097fcd50ef0ff9593a378ba46f5b93143d0b0b11e49141f2341d0bd3ebb51dd5e79e
+      password: "{cipher}96be085eba17331de2d0aa80f95a097fcd50ef0ff9593a378ba46f5b93143d0b0b11e49141f2341d0bd3ebb51dd5e79e"
       driverClassName: org.postgresql.Driver
 # Redis 설정
   redis:
     host: redis
     port: 6379
-    password: {cipher}b3e680e7d6952f84791800a8d402f95aff2bf236a805d0f11a249b7abd1f41890143c7fc9724cb5aeac6c67e247a6729
+    password: "{cipher}b3e680e7d6952f84791800a8d402f95aff2bf236a805d0f11a249b7abd1f41890143c7fc9724cb5aeac6c67e247a6729"
