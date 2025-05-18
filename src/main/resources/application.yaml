@@ -3,15 +3,15 @@ server:
 
 encrypt:
   key: ${SECRET_KEY}
+#센트리 로깅
+sentry:
+  dsn: ${SENTRY_DSN}
+  send-default-pii: true
 
 spring:
   application:
     name: rebook-config
 
-  profiles:
-    active: dev
-
-  #파일등록
   cloud:
     config:
       server:
@@ -20,9 +20,12 @@ spring:
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
           default-label: main
-          search-paths: config-repo/**
+          search-paths: config-repo
 
-#센트리 로깅
-sentry:
-  dsn: ${SENTRY_DSN}
-  send-default-pii: true
+  profiles:
+    active: dev
+
+  #파일등록
+
+
+
