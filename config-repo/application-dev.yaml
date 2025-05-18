@@ -5,6 +5,7 @@ spring:
       username: junghokim
       password: 
       driverClassName: org.postgresql.Driver
+  
   # 1. jpa 설정
   jpa:
     hibernate:
