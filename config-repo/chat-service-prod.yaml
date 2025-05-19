@@ -6,10 +6,11 @@ spring:
       password: "{cipher}8114ce0df7c5477ca2af2d5245eac848c0c3f45e92fb22be087728eb438b7eaf7ccccc49e1fd737538af51e58bb77e12"
       driverClassName: org.postgresql.Driver
 # Redis 설정
-  redis:
-    host: redis
-    port: 6379
-    password: "{cipher}3b3cd0ae2be22f2674dd6b7b2abddffb604b1b581256960f2a6d757d208f30391a02b8f5b35a356f7b9a114c1d1b520b"
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: "{cipher}3b3cd0ae2be22f2674dd6b7b2abddffb604b1b581256960f2a6d757d208f30391a02b8f5b35a356f7b9a114c1d1b520b"
 
 #mongodb 설정
   data:
