@@ -4,7 +4,12 @@ import com.example.rebookuserservice.exception.CMissingDataException;
 import com.example.rebookuserservice.model.UserInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +18,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class KeycloakJwtUtil {
 
-    @Value("jwt.keyclaok")
-    private PublicKey key;
+
+    private final PublicKey key;
+
+    public KeycloakJwtUtil(@Value("jwt.keyclaok") String key)
+        throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] decodedKey = Base64.getDecoder().decode(key);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedKey);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        this.key = keyFactory.generatePublic(spec);
+    }
 
     public UserInfo getUserInfo(String token){
         //sub 가져오기
@@ -31,11 +44,18 @@ public class KeycloakJwtUtil {
     }
 
     private String getRole(Claims claims) {
-        Map<String, Object> resourceAccess = (Map<String, Object>) claims.get("resource_access");
-        Map<String, Object> account = (Map<String, Object>) resourceAccess.get("account");
-        List<String> roles = (List<String>) account.get("roles");
-        return roles.stream().findFirst()
-            .orElseThrow(CMissingDataException::new);
+        try{
+            @SuppressWarnings("unchecked")
+            Map<String, Object> resourceAccess = (Map<String, Object>) claims.get("resource_access");
+            @SuppressWarnings("unchecked")
+            Map<String, Object> account = (Map<String, Object>) resourceAccess.get("account");
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>) account.get("roles");
+            return roles.stream().findFirst()
+                .orElseThrow(CMissingDataException::new);
+        } catch(ClassCastException e){
+            throw new ClassCastException("형식에 맞지 않는 타입변환입니다.");
+        }
     }
 
     private Claims getClaims(String token) {

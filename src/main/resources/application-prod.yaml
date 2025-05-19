@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    config:
-      uri: http://{configprivateip}:8888
-      name: user-service
-      profile: prod

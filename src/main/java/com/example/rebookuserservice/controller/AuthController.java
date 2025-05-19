@@ -22,8 +22,7 @@ public class AuthController {
 
     @PostMapping("/api/auths/login")
     public SingleResult<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
-        String code = loginRequest.getCode();
-        return ResponseService.getSingleResult(authService.login(code));
+        return ResponseService.getSingleResult(authService.login(loginRequest));
     }
 
     @PostMapping("/api/auths/refresh")
