@@ -2,8 +2,8 @@ spring:
   # 0. 데이터베이스
   datasource:
       url: jdbc:postgresql://localhost:5432/rebookdb
-      username: junghokim
-      password: 
+      username: postgres
+      password: postgres
       driverClassName: org.postgresql.Driver
   
   # 1. jpa 설정
