@@ -1,9 +1,11 @@
 package com.example.rebookuserservice.service;
 
+import com.example.rebookuserservice.exception.CMissingDataException;
 import com.example.rebookuserservice.feigns.KeycloakClient;
 import com.example.rebookuserservice.model.LoginRequest;
+import com.example.rebookuserservice.model.RefreshResponse;
 import com.example.rebookuserservice.model.TokenResponse;
-import com.example.rebookuserservice.model.Users;
+import com.example.rebookuserservice.model.entity.Users;
 import com.example.rebookuserservice.model.UserInfo;
 import com.example.rebookuserservice.repository.UserRepository;
 import com.example.rebookuserservice.utils.JwtUtil;
@@ -23,6 +25,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     private String basicName = "닉네임";
+    private String refreshPrefix = "refresh:";
 
     @Value("${aws.basic}")
     private String baseImageUrl;
@@ -51,8 +54,17 @@ public class AuthService {
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    public TokenResponse refresh(String refreshToken) {
-        return new TokenResponse();
+    public RefreshResponse refresh(String refreshToken) {
+        int prefixLength = "Bearer ".length();
+        refreshToken = refreshPrefix + refreshToken.substring(prefixLength);
+        if(redisService.get(refreshToken).isEmpty()){
+            throw new CMissingDataException("Invalid refresh token");
+        }
+
+        String userId = jwtUtil.getUserId(refreshToken);
+        String accessToken = jwtUtil.createAccessToken(userId);
+
+        return new RefreshResponse(accessToken);
     }
 
     private String getKeycloakToken(String code) {

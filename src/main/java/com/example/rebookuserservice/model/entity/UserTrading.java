@@ -1,6 +1,6 @@
-package com.example.rebookuserservice.model;
+package com.example.rebookuserservice.model.entity;
 
-import com.example.rebookuserservice.model.compositekey.UserTradingId;
+import com.example.rebookuserservice.model.entity.compositekey.UserTradingId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.Getter;

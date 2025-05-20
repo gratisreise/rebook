@@ -4,6 +4,7 @@ import com.example.rebookuserservice.common.CommonResult;
 import com.example.rebookuserservice.common.ResponseService;
 import com.example.rebookuserservice.common.SingleResult;
 import com.example.rebookuserservice.model.LoginRequest;
+import com.example.rebookuserservice.model.RefreshResponse;
 import com.example.rebookuserservice.model.TokenResponse;
 import com.example.rebookuserservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/auths/refresh")
-    public SingleResult<TokenResponse> refresh(@RequestHeader String refreshToken){
+    public SingleResult<RefreshResponse> refresh(@RequestHeader String refreshToken){
 
         return ResponseService.getSingleResult(authService.refresh(refreshToken));
     }

@@ -1,6 +1,7 @@
-package com.example.rebookuserservice.model;
+package com.example.rebookuserservice.model.entity;
 
 import com.example.rebookuserservice.enums.Role;
+import com.example.rebookuserservice.model.UserInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -22,21 +23,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Users {
     @Id
+    @Column(length = 50)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 300)
     private String profileImage;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private Role role;
 

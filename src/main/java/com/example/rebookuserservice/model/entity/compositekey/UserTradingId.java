@@ -1,4 +1,4 @@
-package com.example.rebookuserservice.model.compositekey;
+package com.example.rebookuserservice.model.entity.compositekey;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Email;
