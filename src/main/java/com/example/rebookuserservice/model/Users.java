@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class Users {
     @Id
     private String id;
 
@@ -47,7 +47,7 @@ public class User {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public User(UserInfo userInfo) {
+    public Users(UserInfo userInfo) {
         this.id = userInfo.getUserId();
         this.username = userInfo.getUsername();
         this.email = userInfo.getEmail();

@@ -3,7 +3,7 @@ package com.example.rebookuserservice.service;
 import com.example.rebookuserservice.feigns.KeycloakClient;
 import com.example.rebookuserservice.model.LoginRequest;
 import com.example.rebookuserservice.model.TokenResponse;
-import com.example.rebookuserservice.model.User;
+import com.example.rebookuserservice.model.Users;
 import com.example.rebookuserservice.model.UserInfo;
 import com.example.rebookuserservice.repository.UserRepository;
 import com.example.rebookuserservice.utils.JwtUtil;
@@ -23,7 +23,8 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     private String basicName = "닉네임";
-    @Value("${aws.base-image}")
+
+    @Value("${aws.basic}")
     private String baseImageUrl;
 
     @Transactional
@@ -36,10 +37,10 @@ public class AuthService {
         String userId = userInfo.getUserId();
 
         if(!userRepository.existsById(userId)){
-            User user = new User(userInfo);
-            user.setNickname(basicName + userId);
-            user.setProfileImage(baseImageUrl);
-            userRepository.save(user);
+            Users users = new Users(userInfo);
+            users.setNickname(basicName + userId);
+            users.setProfileImage(baseImageUrl);
+            userRepository.save(users);
         }
 
         String accessToken = jwtUtil.createAccessToken(userId);

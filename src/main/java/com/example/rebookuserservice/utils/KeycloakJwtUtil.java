@@ -21,8 +21,11 @@ public class KeycloakJwtUtil {
 
     private final PublicKey key;
 
-    public KeycloakJwtUtil(@Value("jwt.keyclaok") String key)
+    public KeycloakJwtUtil(@Value("${jwt.keycloak}") String key)
         throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if(key == null ||  !key.matches("^[A-Za-z0-9+/=]+$")){
+            throw new CMissingDataException(key + " is not a valid keycloak key");
+        }
         byte[] decodedKey = Base64.getDecoder().decode(key);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedKey);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
