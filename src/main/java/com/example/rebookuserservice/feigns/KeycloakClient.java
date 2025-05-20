@@ -1,18 +1,17 @@
 package com.example.rebookuserservice.feigns;
 
 
+import com.example.rebookuserservice.model.KeycloakRequest;
 import com.example.rebookuserservice.model.KeycloakResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "keycloak", url = "http://keycloak:8081/realms/master/protocol/openid-connect")
+@FeignClient(name = "keycloak", url = "http://localhost:8081/realms/master/protocol/openid-connect")
 public interface KeycloakClient{
-    @PostMapping(value="/token", consumes = "application/x-www-form-urlencoded")
-    KeycloakResponse getKeycloakToken(
-        @RequestParam("grant_type") String grantType,
-        @RequestParam("code") String code,
-        @RequestParam("client_id") String clientId,
-        @RequestParam("redirect_uri") String redirectUri
-    );
+    @PostMapping(value="/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    KeycloakResponse getKeycloakToken(@ModelAttribute KeycloakRequest keycloakRequest);
 }
