@@ -59,10 +59,9 @@ public class Users {
         this.role = userInfo.getRole().equals("admin") ? Role.ADMIN : Role.USER;
     }
 
-    public Users update(UsersUpdateRequest request, String imageUrl) {
+    public Users update(UsersUpdateRequest request) {
         this.nickname = request.getNickname();
         this.email = request.getEmail();
-        this.profileImage = imageUrl;
         return this;
     }
 }

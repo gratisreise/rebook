@@ -1,5 +1,6 @@
 package com.example.rebookuserservice.service;
 
+import com.example.rebookuserservice.exception.CDuplicatedDataException;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
 import com.example.rebookuserservice.model.entity.Users;
@@ -7,7 +8,6 @@ import com.example.rebookuserservice.repository.UserRepository;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +30,17 @@ public class UsersService {
     public void updateUser(String userId, UsersUpdateRequest request) throws IOException {
         Users user = userReader.getUser(userId);
 
-        String imageUrl = s3Service.upload(request.getMultipartFile());
-        log.info("Image url: {}", imageUrl);
+        if(request.getProfileImage() != null) {
+            String imageUrl = s3Service.upload(request.getProfileImage());
+            user.setProfileImage(imageUrl);
+            log.info("Image url: {}", imageUrl);
+        }
 
-        Users updatedUser = user.update(request, imageUrl);
+        if(userRepository.existsByEmail(request.getEmail()) || userRepository.existsByNickname(request.getNickname())){
+            throw new CDuplicatedDataException("이메일이나 닉네임이 중복됩니다.");
+        }
+
+        Users updatedUser = user.update(request);
         log.info("User updated: {}", updatedUser);
     }
 }

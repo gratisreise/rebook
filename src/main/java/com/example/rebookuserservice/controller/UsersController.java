@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Path;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UsersController {
     private final UsersService usersService;
 
@@ -36,6 +39,7 @@ public class UsersController {
         @RequestParam("id") String id,
         @Valid @ModelAttribute UsersUpdateRequest request
     ) throws IOException {
+        log.info("update user {}", request.toString());
         usersService.updateUser(id, request);
         return ResponseService.getSuccessResult();
     }

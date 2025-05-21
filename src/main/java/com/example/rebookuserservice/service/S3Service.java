@@ -29,6 +29,8 @@ public class S3Service {
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         String contentType = file.getContentType();
         String region = "ap-northeast-2";
+        log.info("Uploading file " + fileName);
+        log.info("Bucket Name: " + bucketName);
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
             .bucket(bucketName)
@@ -42,6 +44,7 @@ public class S3Service {
             ));
             log.info("image upload success");
         } catch (RuntimeException e) {
+            log.error(e.getMessage());
             throw new CMissingDataException("s3 이미지 업로드에 실패했습니다.");
         }
 
