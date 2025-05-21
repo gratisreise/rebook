@@ -2,6 +2,7 @@ package com.example.rebookuserservice.model.entity;
 
 import com.example.rebookuserservice.enums.Role;
 import com.example.rebookuserservice.model.UserInfo;
+import com.example.rebookuserservice.model.UsersUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,6 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Users {
     @Id
@@ -54,5 +57,12 @@ public class Users {
         this.username = userInfo.getUsername();
         this.email = userInfo.getEmail();
         this.role = userInfo.getRole().equals("admin") ? Role.ADMIN : Role.USER;
+    }
+
+    public Users update(UsersUpdateRequest request, String imageUrl) {
+        this.nickname = request.getNickname();
+        this.email = request.getEmail();
+        this.profileImage = imageUrl;
+        return this;
     }
 }

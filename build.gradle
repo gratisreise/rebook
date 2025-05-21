@@ -54,6 +54,10 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client' // Eureka 서비스 디스커버리 클라이언트
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign' // OpenFeign (HTTP 클라이언트)
 
+    // ====== 인증/인가 연동 ======
+    implementation 'org.keycloak:keycloak-admin-client:26.0.5'
+
+
     // ===== 캐싱 ====
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 

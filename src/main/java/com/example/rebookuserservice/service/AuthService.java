@@ -53,7 +53,6 @@ public class AuthService {
             log.info("Save UserInfo: {}", userInfo);
         }
 
-
         String accessToken = jwtUtil.createAccessToken(userId);
         String refreshToken = jwtUtil.createRefreshToken(userId);
 
