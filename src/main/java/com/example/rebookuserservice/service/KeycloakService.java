@@ -29,4 +29,8 @@ public class KeycloakService {
         userResource.resetPassword(credential);
     }
 
+    public void deleteUser(String userId) {
+        keycloak.realm(realm).users().delete(userId);
+    }
+
 }

@@ -43,4 +43,10 @@ public class UsersService {
         Users updatedUser = user.update(request);
         log.info("User updated: {}", updatedUser);
     }
+
+
+    public void deleteUser(String id) {
+        keycloakService.deleteUser(id);
+        userRepository.deleteById(id);
+    }
 }
