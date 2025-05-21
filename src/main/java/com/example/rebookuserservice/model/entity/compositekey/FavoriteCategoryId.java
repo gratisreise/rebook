@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserBookId {
+public class FavoriteCategoryId {
     private String userId;
-    private Long bookId;
+    private String category;
 }

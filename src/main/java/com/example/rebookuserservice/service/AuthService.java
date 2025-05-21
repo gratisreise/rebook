@@ -88,6 +88,4 @@ public class AuthService {
         redisService.set(refreshPrefix + refreshToken, "true");
         log.info("Cache refresh token: {}", refreshPrefix + refreshToken);
     }
-
-
 }
