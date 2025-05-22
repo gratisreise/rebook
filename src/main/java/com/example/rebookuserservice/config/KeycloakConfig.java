@@ -14,7 +14,7 @@ public class KeycloakConfig {
         return KeycloakBuilder.builder()
             .serverUrl("http://localhost:8081") // Keycloak 서버 주소
             .realm("master") // 관리할 Realm 이름
-            .clientId("account") // 관리 권한이 있는 clientId
+            .clientId("admin-cli") // 관리 권한이 있는 clientId
             .grantType(OAuth2Constants.PASSWORD)
             .username("admin") // Keycloak 관리자 계정
             .password("admin")

@@ -1,6 +1,7 @@
 package com.example.rebookuserservice.service;
 
 import com.example.rebookuserservice.exception.CDuplicatedDataException;
+import com.example.rebookuserservice.exception.CInvalidDataException;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
 import com.example.rebookuserservice.model.entity.Users;
@@ -21,6 +22,7 @@ public class UsersService {
     private final KeycloakService keycloakService;
 
     //유저 정보 조회
+    @Transactional(readOnly = true)
     public UsersResponse getUser(String userId) {
         Users user = userReader.getUser(userId);
         return new UsersResponse(user);
@@ -28,6 +30,9 @@ public class UsersService {
 
     @Transactional
     public void updateUser(String userId, UsersUpdateRequest request) throws IOException {
+        if(!userRepository.existsById(userId)) {
+            throw new CInvalidDataException("존재하지 않는 유저입니다.");
+        }
         Users user = userReader.getUser(userId);
 
         if(request.getProfileImage() != null) {
@@ -45,8 +50,19 @@ public class UsersService {
     }
 
 
-    public void deleteUser(String id) {
-        keycloakService.deleteUser(id);
-        userRepository.deleteById(id);
+    @Transactional
+    public void deleteUser(String userId) {
+        if(!userRepository.existsById(userId)) {
+            throw new CInvalidDataException("존재하지 않는 유저입니다.");
+        }
+        keycloakService.deleteUser(userId);
+        userRepository.deleteById(userId);
+    }
+
+    public void updatePassword(String userId, String password) {
+        if(!userRepository.existsById(userId)) {
+            throw new CInvalidDataException("존재하지 않는 유저입니다.");
+        }
+        keycloakService.updatePassword(userId, password);
     }
 }
