@@ -1,8 +1,10 @@
 package com.example.rebookuserservice.controller;
 
 import com.example.rebookuserservice.common.CommonResult;
+import com.example.rebookuserservice.common.ListResult;
 import com.example.rebookuserservice.common.ResponseService;
 import com.example.rebookuserservice.common.SingleResult;
+import com.example.rebookuserservice.model.CategoryResponse;
 import com.example.rebookuserservice.model.PasswordUpdateRequest;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
@@ -64,4 +66,8 @@ public class UsersController {
         return ResponseService.getSuccessResult();
     }
 
+    @GetMapping("/categories")
+    public SingleResult<CategoryResponse> getCategories(@RequestParam("id") String id) {
+        return ResponseService.getSingleResult(usersService.getCategories(id));
+    }
 }
