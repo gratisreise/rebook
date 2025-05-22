@@ -97,4 +97,14 @@ public class UsersService {
         //도서 목록을 page에 넣고 보내기
     }
 
+    public Page<UserTrading> getMarkTradings(String userId, Pageable pageable) {
+        //id로 거래 id 목록 페이지네이션
+        return userTradingRepository.findAllUserTradingIdUserId(userId, pageable);
+
+
+        //거래 서비스에서 거래목록조회
+
+        //거래 목록을 page에 넣고 보내기
+
+    }
 }

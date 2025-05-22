@@ -77,4 +77,11 @@ public class UsersController {
     public SingleResult<Page<UserBook>> getMarkBooks(@RequestParam("id") String id,  Pageable pageable){
         return ResponseService.getSingleResult(usersService.getMarkBooks(id, pageable));
     }
+
+    //찜한 거래목록 조회
+    @GetMapping("/tradings")
+    public SingleResult<Page<UserTrading>> getTradings(
+        @RequestParam("id") String id,  Pageable pageable){
+        return ResponseService.getSingleResult(usersService.getMarkTradings(id, pageable))
+    }
 }
