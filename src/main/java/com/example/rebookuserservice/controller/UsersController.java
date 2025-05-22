@@ -1,20 +1,21 @@
 package com.example.rebookuserservice.controller;
 
 import com.example.rebookuserservice.common.CommonResult;
-import com.example.rebookuserservice.common.ListResult;
 import com.example.rebookuserservice.common.ResponseService;
 import com.example.rebookuserservice.common.SingleResult;
 import com.example.rebookuserservice.model.CategoryResponse;
 import com.example.rebookuserservice.model.PasswordUpdateRequest;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
+import com.example.rebookuserservice.model.entity.UserBook;
+import com.example.rebookuserservice.model.entity.UserTrading;
 import com.example.rebookuserservice.service.UsersService;
 import jakarta.validation.Valid;
 import java.io.IOException;
-import java.nio.file.Path;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -69,5 +70,11 @@ public class UsersController {
     @GetMapping("/categories")
     public SingleResult<CategoryResponse> getCategories(@RequestParam("id") String id) {
         return ResponseService.getSingleResult(usersService.getCategories(id));
+    }
+
+    //짬한 도서목록 조회
+    @GetMapping("/books")
+    public SingleResult<Page<UserBook>> getMarkBooks(@RequestParam("id") String id,  Pageable pageable){
+        return ResponseService.getSingleResult(usersService.getMarkBooks(id, pageable));
     }
 }
