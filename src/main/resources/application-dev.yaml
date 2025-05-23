@@ -2,36 +2,42 @@ spring:
   cloud:
     gateway:
       globalcors:
-        cors-configurations:
-          '[/**]': # 모든 경로에 대해 CORS 적용
-            allowedOrigins: # 허용할 Origin(여러 개 가능)
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
               - "http://localhost:3001"
-              - "https://your-frontend.com"
-            allowedMethods: # 허용할 HTTP 메서드
-              - "*"
-            allowedHeaders: # 허용할 헤더
-              - "*"
-            allowCredentials: true # 인증 정보(쿠키 등) 허용
-
+              - "http://host.docker.internal:3001"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: '*'
+            allowCredentials: true
+        add-to-simple-url-handler-mapping: true
+#카멜케이스
       routes:
         - id: rebook-user
-          uri: http://rebook-user:9000
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/users/**
+            - Path=/api/auths/**
         - id: rebook-book
-          uri: http://rebook-book:9001
+          uri: http://book-service:9001
           predicates:
             - Path=/api/books/**
         - id: rebook-trading
-          uri: http://rebook-trading:9002
+          uri: http://trading-service:9002
           predicates:
             - Path=/api/tradings/**
         - id: rebook-notification
-          uri: http://rebook-notification:9004
+          uri: http://notification-service:9004
           predicates:
             - Path=/api/notifications/**
         - id: rebook-chat
-          uri: http://rebook-chat:9003
+          uri: http://chat-service:9003
           predicates:
             - Path=/api/chats/**
 

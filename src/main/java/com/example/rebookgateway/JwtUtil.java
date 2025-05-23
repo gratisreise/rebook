@@ -4,12 +4,14 @@ package com.example.rebookgateway;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
     private final SecretKey key;
@@ -31,6 +33,7 @@ public class JwtUtil {
     //토큰검증
     public boolean validateToken(String token) {
         try {
+            log.info("Validating token: {}", token);
             // 파싱 및 서명 검증 (만료, 변조 여부 확인)
             Jwts.parser()
                 .verifyWith(key)

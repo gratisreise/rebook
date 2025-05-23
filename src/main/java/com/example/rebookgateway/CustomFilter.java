@@ -1,6 +1,8 @@
 package com.example.rebookgateway;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -13,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CustomFilter implements GlobalFilter, Ordered {
 
     private final JwtUtil jwtUtil;
@@ -22,10 +25,12 @@ public class CustomFilter implements GlobalFilter, Ordered {
 
         String token = getToken(exchange);
         if(token.isBlank() || !jwtUtil.validateToken(token)) {
+            log.error("토큰이 없거나 유효하지 않음");
             return onError(exchange, "Token Not Found", HttpStatus.UNAUTHORIZED);
         }
 
         String userId = jwtUtil.getUserId(token);
+        log.info("User Id: {}", userId);
 
         ServerHttpRequest mutatedRequest = exchange.getRequest()
             .mutate().header("X-User-Id", userId)
@@ -34,12 +39,17 @@ public class CustomFilter implements GlobalFilter, Ordered {
         ServerWebExchange mutatedExchange = exchange.mutate()
             .request(mutatedRequest)
             .build();
+        log.info("Mutated Exchange: {}", mutatedExchange);
         return chain.filter(mutatedExchange);
     }
 
     private String getToken(ServerWebExchange exchange) {
-        return exchange.getRequest().getHeaders()
-            .getFirst("Authorization").substring(7);
+        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+        if(authHeader == null || authHeader.startsWith("Bearer ")) {
+            return "";
+        }
+        int prefixLength = "Bearer ".length();
+        return authHeader.substring(prefixLength);
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String e, HttpStatus httpStatus) {
