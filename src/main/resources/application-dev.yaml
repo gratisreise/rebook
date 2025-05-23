@@ -1,6 +1,18 @@
 spring:
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 모든 경로에 대해 CORS 적용
+            allowedOrigins: # 허용할 Origin(여러 개 가능)
+              - "http://localhost:3001"
+              - "https://your-frontend.com"
+            allowedMethods: # 허용할 HTTP 메서드
+              - "*"
+            allowedHeaders: # 허용할 헤더
+              - "*"
+            allowCredentials: true # 인증 정보(쿠키 등) 허용
+
       routes:
         - id: rebook-user
           uri: http://rebook-user:9000
