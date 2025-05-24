@@ -12,13 +12,5 @@ spring:
   application:
     name: rebook-gateway
 
-  cloud:
-    discovery:
-      enabled: true
-
   profiles:
     active: dev
-
-
-
-

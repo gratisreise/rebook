@@ -1,29 +1,11 @@
 spring:
   cloud:
     gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins:
-              - "http://localhost:3001"
-              - "http://host.docker.internal:3001"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-              - PATCH
-            allowedHeaders: '*'
-            allowCredentials: true
-        add-to-simple-url-handler-mapping: true
-#카멜케이스
       routes:
-        - id: rebook-user
+        - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/users/**
-            - Path=/api/auths/**
+            - Path=/api/users/**, /api/auths/**
         - id: rebook-book
           uri: http://book-service:9001
           predicates:
@@ -40,12 +22,25 @@ spring:
           uri: http://chat-service:9003
           predicates:
             - Path=/api/chats/**
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3001"
+              - "http://host.docker.internal:3001"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: '*'
+            allowCredentials: true
+        add-to-simple-url-handler-mapping: true
 
 eureka:
   client:
@@ -55,3 +50,9 @@ eureka:
     fetch-registry: true
   instance:
     instance-id: ${spring.application.name}:origin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

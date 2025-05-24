@@ -22,8 +22,13 @@ public class CustomFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
+        String uri = exchange.getRequest().getURI().toString();
+        log.info("uri: {}", uri);
+        if(uri.contains("/api/auths")){
+            return chain.filter(exchange);
+        }
         String token = getToken(exchange);
+        log.info("token: {}", token);
         if(token.isBlank() || !jwtUtil.validateToken(token)) {
             log.error("토큰이 없거나 유효하지 않음");
             return onError(exchange, "Token Not Found", HttpStatus.UNAUTHORIZED);
@@ -45,7 +50,8 @@ public class CustomFilter implements GlobalFilter, Ordered {
 
     private String getToken(ServerWebExchange exchange) {
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
-        if(authHeader == null || authHeader.startsWith("Bearer ")) {
+        log.info("authHeader: {}", authHeader);
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
             return "";
         }
         int prefixLength = "Bearer ".length();

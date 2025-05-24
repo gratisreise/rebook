@@ -39,7 +39,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
-//    //로깅알람
+    //로깅알람
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta'
 
     //클라우드서비스
@@ -49,16 +49,11 @@ dependencies {
     // 편의성
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation 'io.github.cdimascio:dotenv-java:2.3.2'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'commons-codec:commons-codec:1.16.0'
-
 
     //테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'io.projectreactor:reactor-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 dependencyManagement {

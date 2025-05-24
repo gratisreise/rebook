@@ -17,8 +17,9 @@ public class JwtUtil {
     private final SecretKey key;
 
     public JwtUtil(@Value("${jwt.secret}") String key) throws DecoderException {
-        byte[] keyBytes = Hex.decodeHex(key.toCharArray());
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+//        byte[] keyBytes = Hex.decodeHex(key.toCharArray());
+        log.info("jwt.secret: {}", key);
+        this.key = Keys.hmacShaKeyFor(key.getBytes());
     }
 
     public String getUserId(String token){
