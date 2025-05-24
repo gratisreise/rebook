@@ -2,7 +2,6 @@ package com.example.rebookuserservice.service;
 
 import com.example.rebookuserservice.exception.CDuplicatedDataException;
 import com.example.rebookuserservice.exception.CInvalidDataException;
-import com.example.rebookuserservice.model.BookInfo;
 import com.example.rebookuserservice.model.CategoryResponse;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
@@ -90,7 +89,7 @@ public class UsersService {
 
     public Page<UserBook> getMarkBooks(String userId, Pageable pageable) {
         //id로 도서 id 조회 페이지 네이션
-        return userBookRepository.findAllUserBookIdUserId(userId, pageable);
+        return userBookRepository.findByUserBookIdUserId(userId, pageable);
 
         //도서 서비스에서 도서목록조회
 
@@ -99,7 +98,7 @@ public class UsersService {
 
     public Page<UserTrading> getMarkTradings(String userId, Pageable pageable) {
         //id로 거래 id 목록 페이지네이션
-        return userTradingRepository.findAllUserTradingIdUserId(userId, pageable);
+        return userTradingRepository.findByUserTradingIdUserId(userId, pageable);
 
 
         //거래 서비스에서 거래목록조회

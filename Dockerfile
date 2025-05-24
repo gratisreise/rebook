@@ -1,3 +1,6 @@
+# 푸쉬: docker buildx build --platform=linux/amd64,linux/arm64 -t nooaahh/rebook-user-service --push .
+# 생성: docker build -t nooaahh/rebook-user-service:latest .
+
 # 1. 빌드 환경
 FROM gradle:8.14.2-jdk17 AS builder
 WORKDIR /app

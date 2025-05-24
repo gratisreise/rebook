@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "keycloak", url = "http://localhost:8081/realms/master/protocol/openid-connect")
+@FeignClient(name = "keycloak", url = "http://keycloak:8080/realms/master/protocol/openid-connect")
 public interface KeycloakClient{
     @PostMapping(value="/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     KeycloakResponse getKeycloakToken(@ModelAttribute KeycloakRequest keycloakRequest);

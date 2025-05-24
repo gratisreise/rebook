@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserTradingRepository extends JpaRepository<UserTrading, UserTradingId> {
 
-    Page<UserTrading> findAllUserTradingIdUserId(String userId, Pageable pageable);
+    Page<UserTrading> findByUserTradingIdUserId(String userId, Pageable pageable);
 }

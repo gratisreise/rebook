@@ -12,7 +12,7 @@ public class KeycloakConfig {
     @Bean
     public Keycloak keycloak(){
         return KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8081") // Keycloak 서버 주소
+            .serverUrl("http://keycloak:8080") // Keycloak 서버 주소
             .realm("master") // 관리할 Realm 이름
             .clientId("admin-cli") // 관리 권한이 있는 clientId
             .grantType(OAuth2Constants.PASSWORD)

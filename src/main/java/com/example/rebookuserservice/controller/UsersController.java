@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,8 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
     private final UsersService usersService;
 
-    //@RequestParam("id") String id
-
     @GetMapping
     public SingleResult<UsersResponse> getUser(@RequestHeader("X-User-Id")String userId) {
         return ResponseService.getSingleResult(usersService.getUser(userId));
@@ -43,45 +40,45 @@ public class UsersController {
 
     @PutMapping
     public CommonResult updateUser(
-        @RequestParam("id") String id,
+        @RequestHeader("X-User-Id")String userId,
         @Valid @ModelAttribute UsersUpdateRequest request
     ) throws IOException {
         log.info("update user {}", request.toString());
-        usersService.updateUser(id, request);
+        usersService.updateUser(userId, request);
         return ResponseService.getSuccessResult();
     }
 
     @DeleteMapping
-    public CommonResult deleteUser(@RequestParam("id") String id){
-        usersService.deleteUser(id);
+    public CommonResult deleteUser(@RequestHeader("X-User-Id")String userId){
+        usersService.deleteUser(userId);
         return ResponseService.getSuccessResult();
     }
 
     @PatchMapping("/me")
     public CommonResult updatePassword(
-        @RequestParam("id") String id,
+        @RequestHeader("X-User-Id")String userId,
         @Valid @RequestBody PasswordUpdateRequest request
     ){
         log.info("update password {}", request.getPassword());
-        usersService.updatePassword(id, request.getPassword());
+        usersService.updatePassword(userId, request.getPassword());
         return ResponseService.getSuccessResult();
     }
 
     @GetMapping("/categories")
-    public SingleResult<CategoryResponse> getCategories(@RequestParam("id") String id) {
-        return ResponseService.getSingleResult(usersService.getCategories(id));
+    public SingleResult<CategoryResponse> getCategories(@RequestHeader("X-User-Id")String userId) {
+        return ResponseService.getSingleResult(usersService.getCategories(userId));
     }
 
     //짬한 도서목록 조회
     @GetMapping("/books")
-    public SingleResult<Page<UserBook>> getMarkBooks(@RequestParam("id") String id,  Pageable pageable){
-        return ResponseService.getSingleResult(usersService.getMarkBooks(id, pageable));
+    public SingleResult<Page<UserBook>> getMarkBooks(@RequestHeader("X-User-Id")String userId,  Pageable pageable){
+        return ResponseService.getSingleResult(usersService.getMarkBooks(userId, pageable));
     }
 
     //찜한 거래목록 조회
     @GetMapping("/tradings")
     public SingleResult<Page<UserTrading>> getTradings(
-        @RequestParam("id") String id,  Pageable pageable){
-        return ResponseService.getSingleResult(usersService.getMarkTradings(id, pageable))
+        @RequestHeader("X-User-Id")String userId,  Pageable pageable){
+        return ResponseService.getSingleResult(usersService.getMarkTradings(userId, pageable));
     }
 }
