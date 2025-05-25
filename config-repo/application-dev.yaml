@@ -1,4 +1,9 @@
 spring:
+# 덮어쓰기 설정
+  cloud:
+    config:
+      allowOverride: true
+      overrideNone: true
   # 0. 데이터베이스
   datasource:
       url: jdbc:postgresql://postgresql:5432/rebookdb
