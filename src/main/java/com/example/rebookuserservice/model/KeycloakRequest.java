@@ -1,10 +1,8 @@
 package com.example.rebookuserservice.model;
 
-import com.ctc.wstx.shaded.msv_core.util.Uri;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Getter
 @Setter

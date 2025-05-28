@@ -1,7 +1,6 @@
 package com.example.rebookuserservice.model.entity.compositekey;
 
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
