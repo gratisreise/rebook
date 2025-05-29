@@ -1,4 +1,9 @@
 # aws s3
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
 aws:
   s3:
     bucket: rebook-bucket
