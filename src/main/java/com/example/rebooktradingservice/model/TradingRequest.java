@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class TradingRequest {
     private Long bookId;
     private String title;
+    private String content;
     private String rating;
     private Integer price;
     private State state;

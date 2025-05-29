@@ -4,6 +4,7 @@ import com.example.rebooktradingservice.common.CommonResult;
 import com.example.rebooktradingservice.common.ResponseService;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.service.TradingService;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +23,12 @@ public class TradingController {
 
 
     @PostMapping
-    public CommonResult postTrading(@RequestParam String userId, @ModelAttribute TradingRequest request){
+    public CommonResult postTrading(@RequestParam String userId, @ModelAttribute TradingRequest request)
+        throws IOException {
         tradingService.postTrading(request, userId);
         return ResponseService.getSuccessResult();
     }
+
+
 
 }
