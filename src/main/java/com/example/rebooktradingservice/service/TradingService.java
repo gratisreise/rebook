@@ -1,5 +1,6 @@
 package com.example.rebooktradingservice.service;
 
+import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
@@ -19,7 +20,6 @@ public class TradingService {
     private final TradingReader tradingReader;
     private final S3Service s3Service;
 
-
     @Transactional
     public void postTrading(TradingRequest request, String userId) throws IOException {
         String imageUrl =  s3Service.upload(request.getImage());
@@ -30,5 +30,11 @@ public class TradingService {
     public TradingResponse getTrading(Long tradingId) {
         Trading trading = tradingReader.readTrading(tradingId);
         return new TradingResponse(trading);
+    }
+
+    @Transactional
+    public void updateState(Long tradingId, State state) {
+        Trading trading = tradingReader.readTrading(tradingId);
+        trading.setState(state);
     }
 }
