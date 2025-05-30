@@ -1,6 +1,7 @@
 package com.example.rebooktradingservice.service;
 
 import com.example.rebooktradingservice.enums.State;
+import com.example.rebooktradingservice.exception.CUnauthorizedException;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
@@ -33,8 +34,24 @@ public class TradingService {
     }
 
     @Transactional
-    public void updateState(Long tradingId, State state) {
+    public void updateState(Long tradingId, State state, String userId) {
         Trading trading = tradingReader.readTrading(tradingId);
+        if(!trading.getUserId().equals(userId)) {
+            log.error("Unauthorized updateTrading Access");
+            throw new CUnauthorizedException("Unauthorized user Access");
+        }
         trading.setState(state);
+    }
+
+    @Transactional
+    public void updateTrading(TradingRequest request, String userId, Long tradingId)
+        throws IOException {
+        Trading trading = tradingReader.readTrading(tradingId);
+        if(!trading.getUserId().equals(userId)) {
+            log.error("Unauthorized updateState Access");
+            throw new CUnauthorizedException("Unauthorized user Access");
+        }
+        String imageUrl = s3Service.upload(request.getImage());
+        trading.update(request, imageUrl, userId);
     }
 }

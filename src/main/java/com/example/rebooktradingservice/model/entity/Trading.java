@@ -70,4 +70,15 @@ public class Trading {
         this.price = request.getPrice();
         this.state = request.getState();
     }
+
+    public void update(TradingRequest request, String imageUrl, String userId) {
+        this.bookId = request.getBookId();
+        this.userId = userId;
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.imageUrl = imageUrl;
+        this.rating = request.getRating();
+        this.price = request.getPrice();
+        this.state = request.getState();
+    }
 }

@@ -6,6 +6,7 @@ import com.example.rebooktradingservice.common.SingleResult;
 import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
+import com.example.rebooktradingservice.service.TradingReader;
 import com.example.rebooktradingservice.service.TradingService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +27,7 @@ public class TradingController {
     // @RequestHeader("X-User-Id") String userId
     // @RequestParam String userId
     private final TradingService tradingService;
+    private final TradingReader tradingReader;
 
 
     @PostMapping
@@ -40,11 +43,24 @@ public class TradingController {
     }
 
     @PatchMapping("/{tradingId}")
-    public CommonResult updateState(@PathVariable Long tradingId, @RequestParam State state){
-        tradingService.updateState(tradingId, state);
+    public CommonResult updateState(
+        @PathVariable Long tradingId,
+        @RequestParam State state,
+        @RequestParam String userId
+    ){
+        tradingService.updateState(tradingId, state, userId);
         return ResponseService.getSuccessResult();
     }
 
+    @PutMapping("/{tradingId}")
+    public CommonResult updateTrading(
+        @PathVariable Long tradingId,
+        @ModelAttribute TradingRequest request,
+        @RequestParam String userId
+    ) throws IOException {
+        tradingService.updateTrading(request, userId, tradingId);
+        return ResponseService.getSuccessResult();
+    }
 
 
 }
