@@ -2,11 +2,15 @@ package com.example.rebooktradingservice.controller;
 
 import com.example.rebooktradingservice.common.CommonResult;
 import com.example.rebooktradingservice.common.ResponseService;
+import com.example.rebooktradingservice.common.SingleResult;
 import com.example.rebooktradingservice.model.TradingRequest;
+import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.service.TradingService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +31,11 @@ public class TradingController {
         throws IOException {
         tradingService.postTrading(request, userId);
         return ResponseService.getSuccessResult();
+    }
+
+    @GetMapping("/{tradingId}")
+    public SingleResult<TradingResponse> getTrading(@PathVariable Long tradingId){
+        return ResponseService.getSingleResult(tradingService.getTrading(tradingId));
     }
 
 
