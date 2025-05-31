@@ -2,6 +2,7 @@ package com.example.rebooktradingservice.service;
 
 import com.example.rebooktradingservice.common.PageResponse;
 import com.example.rebooktradingservice.enums.State;
+import com.example.rebooktradingservice.exception.CMissingDataException;
 import com.example.rebooktradingservice.exception.CUnauthorizedException;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
@@ -63,4 +64,19 @@ public class TradingService {
         Page<TradingResponse> responses = tradings.map(TradingResponse::new);
         return new PageResponse<>(responses);
     }
+
+    @Transactional
+    public void deleteTrading(Long tradingId, String userId) {
+        if(!tradingRepository.existsById(tradingId)) {
+            log.error("Data is not found");
+            throw new CMissingDataException("Data is not found");
+        }
+        Trading trading = tradingReader.readTrading(tradingId);
+        if(!trading.getUserId().equals(userId)) {
+            log.error("Unauthorized deleteTrading Access");
+            throw new CUnauthorizedException("Unauthorized user Access");
+        }
+        tradingRepository.deleteById(tradingId);
+    }
+
 }

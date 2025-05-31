@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -72,5 +73,10 @@ public class TradingController {
         return ResponseService.getSingleResult(tradingService.getTradings(userId, pageable));
     }
 
+    @DeleteMapping("/{tradingId}")
+    public CommonResult deleteTrading(@PathVariable Long tradingId, @RequestParam String userId){
+        tradingService.deleteTrading(tradingId, userId);
+        return ResponseService.getSuccessResult();
+    }
 
 }
