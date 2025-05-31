@@ -1,5 +1,6 @@
 package com.example.rebooktradingservice.service;
 
+import com.example.rebooktradingservice.common.PageResponse;
 import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.exception.CUnauthorizedException;
 import com.example.rebooktradingservice.model.TradingRequest;
@@ -9,6 +10,8 @@ import com.example.rebooktradingservice.repository.TradingRepository;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,5 +56,11 @@ public class TradingService {
         }
         String imageUrl = s3Service.upload(request.getImage());
         trading.update(request, imageUrl, userId);
+    }
+
+    public PageResponse<TradingResponse> getTradings(String userId, Pageable pageable) {
+        Page<Trading> tradings = tradingReader.readTradings(userId, pageable);
+        Page<TradingResponse> responses = tradings.map(TradingResponse::new);
+        return new PageResponse<>(responses);
     }
 }

@@ -25,7 +25,7 @@ public class S3Service {
 
     //이미지 업로드
     public String upload(MultipartFile file) throws IOException {
-        String fileName = "trading/"+UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String fileName = "trading/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
         String contentType = file.getContentType();
         String region = "ap-northeast-2";
         log.info("Uploading file {}", fileName);

@@ -5,6 +5,8 @@ import com.example.rebooktradingservice.model.entity.Trading;
 import com.example.rebooktradingservice.repository.TradingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,10 @@ public class TradingReader {
     public Trading readTrading(Long tradingId) {
         return tradingRepository.findById(tradingId)
             .orElseThrow(CMissingDataException::new);
+    }
+
+    public Page<Trading> readTradings(String userId, Pageable pageable) {
+        return tradingRepository.findByUserId(userId, pageable);
     }
 
 }

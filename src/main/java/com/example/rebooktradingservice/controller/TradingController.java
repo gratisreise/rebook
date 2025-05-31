@@ -1,6 +1,7 @@
 package com.example.rebooktradingservice.controller;
 
 import com.example.rebooktradingservice.common.CommonResult;
+import com.example.rebooktradingservice.common.PageResponse;
 import com.example.rebooktradingservice.common.ResponseService;
 import com.example.rebooktradingservice.common.SingleResult;
 import com.example.rebooktradingservice.enums.State;
@@ -10,6 +11,9 @@ import com.example.rebooktradingservice.service.TradingReader;
 import com.example.rebooktradingservice.service.TradingService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -54,12 +58,18 @@ public class TradingController {
 
     @PutMapping("/{tradingId}")
     public CommonResult updateTrading(
-        @PathVariable Long tradingId,
-        @ModelAttribute TradingRequest request,
-        @RequestParam String userId
+        @PathVariable Long tradingId, @RequestParam String userId,
+        @ModelAttribute TradingRequest request
     ) throws IOException {
         tradingService.updateTrading(request, userId, tradingId);
         return ResponseService.getSuccessResult();
+    }
+
+    @GetMapping("/me")
+    public SingleResult<PageResponse<TradingResponse>> getTradings(
+        @RequestParam String userId, @PageableDefault Pageable pageable
+    ){
+        return ResponseService.getSingleResult(tradingService.getTradings(userId, pageable));
     }
 
 
