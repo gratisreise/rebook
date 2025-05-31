@@ -71,12 +71,20 @@ public class TradingService {
             log.error("Data is not found");
             throw new CMissingDataException("Data is not found");
         }
+
         Trading trading = tradingReader.readTrading(tradingId);
+
         if(!trading.getUserId().equals(userId)) {
             log.error("Unauthorized deleteTrading Access");
             throw new CUnauthorizedException("Unauthorized user Access");
         }
+
         tradingRepository.deleteById(tradingId);
     }
 
+    public PageResponse<TradingResponse> getAllTradings(Long bookId, Pageable pageable) {
+        Page<Trading> tradings = tradingReader.getAllTradings(bookId, pageable);
+        Page<TradingResponse> responses = tradings.map(TradingResponse::new);
+        return new PageResponse<>(responses);
+    }
 }

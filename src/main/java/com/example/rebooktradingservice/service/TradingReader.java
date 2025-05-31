@@ -1,6 +1,7 @@
 package com.example.rebooktradingservice.service;
 
 import com.example.rebooktradingservice.exception.CMissingDataException;
+import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
 import com.example.rebooktradingservice.repository.TradingRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,4 +27,7 @@ public class TradingReader {
         return tradingRepository.findByUserId(userId, pageable);
     }
 
+    public Page<Trading> getAllTradings(Long bookId, Pageable pageable) {
+        return tradingRepository.findByBookId(bookId, pageable);
+    }
 }

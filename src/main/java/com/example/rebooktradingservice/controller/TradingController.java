@@ -79,4 +79,9 @@ public class TradingController {
         return ResponseService.getSuccessResult();
     }
 
+    @GetMapping("/books/{bookId}")
+    public SingleResult<PageResponse<TradingResponse>> getAllTradings(
+        @PathVariable Long bookId, @PageableDefault Pageable pageable){
+        return ResponseService.getSingleResult(tradingService.getAllTradings(bookId, pageable));
+    }
 }

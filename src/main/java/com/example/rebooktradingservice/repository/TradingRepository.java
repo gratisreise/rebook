@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface TradingRepository extends JpaRepository<Trading, Long> {
 
     Page<Trading> findByUserId(String userId, Pageable pageable);
+
+    Page<Trading> findByBookId(Long bookId, Pageable pageable);
 }
