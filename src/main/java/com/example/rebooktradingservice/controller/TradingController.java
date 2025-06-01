@@ -84,4 +84,11 @@ public class TradingController {
         @PathVariable Long bookId, @PageableDefault Pageable pageable){
         return ResponseService.getSingleResult(tradingService.getAllTradings(bookId, pageable));
     }
+
+    @GetMapping("/recommendations")
+    public SingleResult<PageResponse<TradingResponse>> getRecommendations(
+        @RequestParam String userId, @PageableDefault Pageable pageable
+    ){
+        return ResponseService.getSingleResult(tradingService.getRecommendations(userId, pageable));
+    }
 }

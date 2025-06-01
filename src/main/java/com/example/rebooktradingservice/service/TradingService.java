@@ -4,11 +4,13 @@ import com.example.rebooktradingservice.common.PageResponse;
 import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.exception.CMissingDataException;
 import com.example.rebooktradingservice.exception.CUnauthorizedException;
+import com.example.rebooktradingservice.feigns.BookClient;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
 import com.example.rebooktradingservice.repository.TradingRepository;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ public class TradingService {
 
     private final TradingRepository tradingRepository;
     private final TradingReader tradingReader;
+    private final BookClient bookClient;
     private final S3Service s3Service;
 
     @Transactional
@@ -84,6 +87,19 @@ public class TradingService {
 
     public PageResponse<TradingResponse> getAllTradings(Long bookId, Pageable pageable) {
         Page<Trading> tradings = tradingReader.getAllTradings(bookId, pageable);
+        Page<TradingResponse> responses = tradings.map(TradingResponse::new);
+        return new PageResponse<>(responses);
+    }
+
+    public PageResponse<TradingResponse> getRecommendations(String userId, Pageable pageable) {
+        List<Long> bookIds = bookClient.getRecommendedBooks(userId);
+        log.info("Recommendations: {}", bookIds.toString());
+
+        if(bookIds.isEmpty())
+            return new PageResponse<>(Page.empty());
+
+
+        Page<Trading> tradings = tradingReader.getRecommendations(bookIds, pageable);
         Page<TradingResponse> responses = tradings.map(TradingResponse::new);
         return new PageResponse<>(responses);
     }

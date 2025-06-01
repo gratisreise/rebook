@@ -4,6 +4,7 @@ import com.example.rebooktradingservice.exception.CMissingDataException;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
 import com.example.rebooktradingservice.repository.TradingRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,4 +31,9 @@ public class TradingReader {
     public Page<Trading> getAllTradings(Long bookId, Pageable pageable) {
         return tradingRepository.findByBookId(bookId, pageable);
     }
+
+    public Page<Trading> getRecommendations(List<Long> bookIds, Pageable pageable) {
+        return tradingRepository.findByBookIdIn(bookIds, pageable);
+    }
+
 }
