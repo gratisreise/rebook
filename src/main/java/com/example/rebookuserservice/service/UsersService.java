@@ -13,6 +13,8 @@ import com.example.rebookuserservice.repository.UserBookRepository;
 import com.example.rebookuserservice.repository.UserRepository;
 import com.example.rebookuserservice.repository.UserTradingRepository;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,11 +81,7 @@ public class UsersService {
     }
 
     public CategoryResponse getCategories(String userId) {
-        List<String> categories = favoriteCategoryRepository
-            .findByFavoriteCategoryIdUserId(userId)
-            .stream()
-            .map(f -> f.getFavoriteCategoryId().getCategory())
-            .toList();
+        List<String> categories = getFavoriteCategories(userId);
         return new CategoryResponse(categories);
     }
 
@@ -106,4 +104,20 @@ public class UsersService {
         //거래 목록을 page에 넣고 보내기
 
     }
+
+    public List<String> getRecommendedCategories(String userId) {
+        return getFavoriteCategories(userId);
+    }
+
+    private List<String> getFavoriteCategories(String userId) {
+        List<String> categories = favoriteCategoryRepository
+            .findByFavoriteCategoryIdUserId(userId)
+            .stream()
+            .map(f -> f.getFavoriteCategoryId().getCategory())
+            .toList();
+        log.info("Favorite categories: {}", categories);
+        return categories;
+    }
+
+
 }
