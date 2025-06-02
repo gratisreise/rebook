@@ -7,11 +7,11 @@ spring:
           predicates:
             - Path=/api/users/**, /api/auths/**
         - id: rebook-book
-          uri: http://book-service:9001
+          uri: lb://BOOK-SERVICE
           predicates:
             - Path=/api/books/**
         - id: rebook-trading
-          uri: http://trading-service:9002
+          uri: lb://TRADING-SERVICE
           predicates:
             - Path=/api/tradings/**
         - id: rebook-notification
