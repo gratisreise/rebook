@@ -1,6 +1,5 @@
 package com.example.rebooktradingservice.feigns;
 
-import com.example.rebooktradingservice.model.feigns.RecommendatedBook;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

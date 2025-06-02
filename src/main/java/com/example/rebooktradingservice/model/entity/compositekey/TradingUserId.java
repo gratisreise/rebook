@@ -16,6 +16,4 @@ public class TradingUserId implements Serializable {
 
     private Long tradingId;
     private String userId;
-
-
 }
