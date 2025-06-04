@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -30,6 +31,12 @@ public class ChatRoom {
     private String user2Id;
 
     @Column(updatable = false)
+    @CreatedDate
     private LocalDateTime createdAt;
+
+    public ChatRoom(String user1Id, String user2Id) {
+        this.user1Id = user1Id;
+        this.user2Id = user2Id;
+    }
 
 }
