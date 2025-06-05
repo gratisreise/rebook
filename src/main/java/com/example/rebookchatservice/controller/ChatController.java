@@ -14,9 +14,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ChatController {
 
 
-    private final ChatService chatService;
-    @MessageMapping("/enter")
-    public void enterChat(ChatMessage chatMessage) {
-        chatService.enterEvent(chatMessage);
-    }
+
 }

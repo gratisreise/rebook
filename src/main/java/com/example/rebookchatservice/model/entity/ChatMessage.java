@@ -1,11 +1,13 @@
 package com.example.rebookchatservice.model.entity;
 
 
+import com.example.rebookchatservice.model.ChatMessageRequest;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "chatting")
@@ -20,5 +22,14 @@ public class ChatMessage {
     private String roomId;
     private String sender;
     private String message;
+    @CreatedDate
     private LocalDateTime sendAt;
+
+    public ChatMessage(ChatMessageRequest request) {
+        this.id = request.getId();
+        this.type = request.getType();
+        this.roomId = request.getRoomId();
+        this.sender = request.getSender();
+        this.message = request.getMessage();
+    }
 }
