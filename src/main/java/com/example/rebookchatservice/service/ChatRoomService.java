@@ -1,6 +1,7 @@
 package com.example.rebookchatservice.service;
 
 import com.example.rebookchatservice.common.PageResponse;
+import com.example.rebookchatservice.exception.CDuplicatedDataException;
 import com.example.rebookchatservice.model.ChatRoomResponse;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
@@ -19,8 +20,20 @@ public class ChatRoomService {
     private final ChatRoomReader chatRoomReader;
 
     @Transactional
-    public void createChatRoom(String myId, String yourId) {
-        chatRoomRepository.save(new ChatRoom(myId, yourId));
+    public Long createChatRoom(String myId, String yourId) {
+        if(isRoomExists(myId, yourId)){
+           throw new CDuplicatedDataException("이미 채팅방이 존재합니다.");
+        }
+        ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId));
+        return chatRoom.getId();
+    }
+
+    private boolean isRoomExists(String myId, String yourId) {
+        if(myId.compareTo(yourId) < 0){
+            return chatRoomRepository.existsByUser1IdAndUser2Id(myId, yourId);
+        } else {
+            return  chatRoomRepository.existsByUser1IdAndUser2Id(yourId, myId);
+        }
     }
 
 

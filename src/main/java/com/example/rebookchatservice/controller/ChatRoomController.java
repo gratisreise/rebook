@@ -30,9 +30,9 @@ public class ChatRoomController {
 
     //채팅방 생성
     @PostMapping("/{yourId}")
-    public CommonResult createChatRoom(@RequestParam String myId, @PathVariable String yourId) {
-        chatRoomService.createChatRoom(myId, yourId);
-        return ResponseService.getSuccessResult();
+    public SingleResult<Long> createChatRoom(@RequestParam String myId, @PathVariable String yourId) {
+        return ResponseService.getSingleResult(chatRoomService.createChatRoom(myId, yourId));
+
     }
 
     //채팅방 목록조회
@@ -43,6 +43,9 @@ public class ChatRoomController {
     ){
         return ResponseService.getSingleResult(chatRoomService.getMyChatRooms(myId, pageable));
     }
+
+
+
 
 
 }

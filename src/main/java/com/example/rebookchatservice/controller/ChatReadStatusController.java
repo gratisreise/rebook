@@ -8,5 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/chats")
 @RequiredArgsConstructor
 public class ChatReadStatusController {
-
+    // @RquestParam
+    // @RequestHeader("X-User-Id) String myId
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +19,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Getter
 @Setter
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user1Id", "user2Id"})
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -35,8 +40,13 @@ public class ChatRoom {
     private LocalDateTime createdAt;
 
     public ChatRoom(String user1Id, String user2Id) {
-        this.user1Id = user1Id;
-        this.user2Id = user2Id;
+        if (user1Id.compareTo(user2Id) < 0) {
+            this.user1Id = user1Id;
+            this.user2Id = user2Id;
+        } else {
+            this.user1Id = user2Id;
+            this.user2Id = user1Id;
+        }
     }
 
 }
