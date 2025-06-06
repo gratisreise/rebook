@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 public class ChatReadStatusReader {
     private final ChatReadStatusRepository chatReadStatusRepository;
 
-    public ChatReadStatus findById(Long chatId) {
-        return chatReadStatusRepository.findById(chatId).orElseThrow(CMissingDataException::new);
+    public ChatReadStatus findById(Long roomId) {
+        return chatReadStatusRepository.findById(roomId)
+            .orElseThrow(CMissingDataException::new);
     }
 }

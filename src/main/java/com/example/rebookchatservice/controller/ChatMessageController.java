@@ -27,7 +27,7 @@ public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
 
-    //채팅방 입장메세지
+    //채팅방 입장
     @MessageMapping("/enter")
     public void enterChat(ChatMessageRequest chatMessage) {
         chatMessageService.enterEvent(chatMessage);

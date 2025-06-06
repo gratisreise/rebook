@@ -18,11 +18,14 @@ public class ChatMessageService {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatReadStatusService chatReadStatusService;
 
     public void enterEvent(ChatMessageRequest request) {
         // 인원수 증가, 참여자 등록 등 부가 로직
         request.setMessage(request.getSender() + "님이 입장하셨습니다.");
         request.setType("ENTER");
+
+        chatReadStatusService.patchLastRead(request.getRoomId(), request.getSenderId());
 
         // 해당 채팅방을 구독 중인 모든 클라이언트에게 입장 알림 브로드캐스트
         String destination = "/topic/room/" + request.getRoomId();
@@ -49,8 +52,11 @@ public class ChatMessageService {
         request.setMessage(request.getSender() + "님이 퇴장했습니다.");
         request.setType("LEAVE");
 
+        chatReadStatusService.patchLastRead(request.getRoomId(), request.getSenderId());
+
         messagingTemplate.convertAndSend("/topic/room/" + request.getRoomId(), request);
     }
+
 
     public PageResponse<ChatMessageResponse> getRecentMessage(Long roomId, Pageable pageable) {
         Page<ChatMessage> messages = chatMessageRepository.findByRoomId(roomId, pageable);

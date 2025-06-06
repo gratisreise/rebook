@@ -18,10 +18,10 @@ public class ChatReadStatusController {
 
     private final ChatReadStatusService chatReadStatusService;
 
-    //채팅방 읽기 업데이트
-    @PatchMapping("/reads/{roomId}")
-    public CommonResult patchLastRead(@PathVariable Long roomId){
-        chatReadStatusService.patchLastRead(roomId);
-        return ResponseService.getSuccessResult();
-    }
+//    //채팅방 읽기 업데이트
+//    @PatchMapping("/reads/{roomId}")
+//    public CommonResult patchLastRead(@PathVariable Long roomId){
+//        chatReadStatusService.patchLastRead(roomId);
+//        return ResponseService.getSuccessResult();
+//    }
 }
