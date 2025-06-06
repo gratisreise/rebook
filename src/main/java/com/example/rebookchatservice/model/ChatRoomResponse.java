@@ -13,6 +13,7 @@ public class ChatRoomResponse {
     private String user1Id;
     private String user2Id;
     private LocalDateTime createdAt;
+    private Integer notReadCount;
 
     public ChatRoomResponse(ChatRoom chatRoom) {
         this.id = chatRoom.getId();

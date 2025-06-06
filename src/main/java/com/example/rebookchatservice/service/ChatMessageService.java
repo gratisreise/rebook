@@ -1,9 +1,13 @@
 package com.example.rebookchatservice.service;
 
+import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.model.ChatMessageRequest;
+import com.example.rebookchatservice.model.ChatMessageResponse;
 import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +35,7 @@ public class ChatMessageService {
         saveMessage(request);
 
         // 2. 해당 채팅방 구독자들에게 메시지 전송
-        String destination = "/sub/chatroom/" + request.getId();
+        String destination = "/sub/chatroom/" + request.getRoomId();
         messagingTemplate.convertAndSend(destination, request);
     }
 
@@ -48,4 +52,9 @@ public class ChatMessageService {
         messagingTemplate.convertAndSend("/topic/room/" + request.getRoomId(), request);
     }
 
+    public PageResponse<ChatMessageResponse> getRecentMessage(Long roomId, Pageable pageable) {
+        Page<ChatMessage> messages = chatMessageRepository.findByRoomId(roomId, pageable);
+        Page<ChatMessageResponse> responses = messages.map(ChatMessageResponse::new);
+        return new PageResponse<>(responses);
+    }
 }

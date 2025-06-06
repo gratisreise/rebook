@@ -19,14 +19,13 @@ public class ChatMessage {
     @Id
     private String id; // MongoDB의 _id 필드와 매핑
     private String type; // ENTER, CHAT, LEAVE
-    private String roomId;
+    private Long roomId;
     private String sender;
     private String message;
     @CreatedDate
     private LocalDateTime sendAt;
 
     public ChatMessage(ChatMessageRequest request) {
-        this.id = request.getId();
         this.type = request.getType();
         this.roomId = request.getRoomId();
         this.sender = request.getSender();
