@@ -1,5 +1,6 @@
 package com.example.rebookchatservice.service;
 
+import com.example.rebookchatservice.exception.CMissingDataException;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ChatRoomReader {
     private final ChatRoomRepository chatRoomRepository;
+
+    public ChatRoom findById(Long id){
+        return chatRoomRepository.findById(id).orElseThrow(CMissingDataException::new);
+    }
 
     public Page<ChatRoom> getChatRooms(String myId, Pageable pageable) {
         return chatRoomRepository.findByUser1IdOrUser2Id(myId, myId, pageable);
