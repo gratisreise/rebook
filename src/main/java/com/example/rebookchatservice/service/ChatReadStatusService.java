@@ -2,6 +2,7 @@ package com.example.rebookchatservice.service;
 
 import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.model.entity.ChatReadStatus;
+import com.example.rebookchatservice.model.entity.compositekey.ChatReadStatusId;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class ChatReadStatusService {
 
     @Transactional
     public void patchLastRead(Long roomId, String userId) {
-        ChatReadStatus readStatus = chatReadStatusReader.findById(roomId, userId);
+        ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
+        ChatReadStatus readStatus = chatReadStatusReader.findById(statusId);
         LocalDateTime lastRead = chatMessageReader.lastMessageTime(roomId);
         readStatus.setLastRead(lastRead);
     }
