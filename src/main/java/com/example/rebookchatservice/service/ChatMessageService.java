@@ -6,6 +6,7 @@ import com.example.rebookchatservice.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class ChatMessageService {
         messagingTemplate.convertAndSend(destination, request);
     }
 
+    @Transactional
     public void receiveMessage(ChatMessageRequest request) {
         // 1. 메시지 저장 (DB, MongoDB 등)
         saveMessage(request);
@@ -33,8 +35,17 @@ public class ChatMessageService {
         messagingTemplate.convertAndSend(destination, request);
     }
 
+
     private void saveMessage(ChatMessageRequest request) {
         ChatMessage chatMessage = new ChatMessage(request);
         chatMessageRepository.save(chatMessage);
     }
+
+    public void leaveMessage(ChatMessageRequest request) {
+        request.setMessage(request.getSender() + "님이 퇴장했습니다.");
+        request.setType("LEAVE");
+
+        messagingTemplate.convertAndSend("/topic/room/" + request.getRoomId(), request);
+    }
+
 }

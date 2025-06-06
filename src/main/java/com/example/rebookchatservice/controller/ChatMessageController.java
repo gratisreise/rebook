@@ -18,7 +18,6 @@ public class ChatMessageController {
     // @RequestHeader("X-User-Id) String myId
 
     private final ChatMessageService chatMessageService;
-    private final SimpMessagingTemplate messagingTemplate;
 
     //채팅방 입장메세지
     @MessageMapping("/enter")
@@ -30,8 +29,12 @@ public class ChatMessageController {
     @MessageMapping("/message")
     public void receiveMessage(ChatMessageRequest request) {
         chatMessageService.receiveMessage(request);
-
     }
 
+    //채팅방 퇴장
+    @MessageMapping("/chat/exit")
+    public void exit(ChatMessageRequest request) {
+        chatMessageService.leaveMessage(request);
+    }
 
 }
