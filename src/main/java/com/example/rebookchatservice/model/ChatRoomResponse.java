@@ -13,7 +13,6 @@ public class ChatRoomResponse {
     private String user1Id;
     private String user2Id;
     private LocalDateTime createdAt;
-    private Integer notReadCount;
     private Long unreadCount;
 
     public ChatRoomResponse(ChatRoom chatRoom) {

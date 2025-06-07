@@ -23,7 +23,8 @@ public class ChatRoomService {
     @Transactional
     public Long createChatRoom(String myId, String yourId) {
         if (isRoomExists(myId, yourId)) {
-            throw new CDuplicatedDataException("이미 채팅방이 존재합니다.");
+            //코드변경필요 해당 객체의 아이디 조기 반환하는 걸로 변경
+            return chatRoomReader.getChatRoom(myId, yourId).getId();
         }
 
         ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId));
@@ -38,6 +39,8 @@ public class ChatRoomService {
             return chatRoomRepository.existsByUser1IdAndUser2Id(yourId, myId);
         }
     }
+
+
 
     public PageResponse<ChatRoomResponse> getMyChatRooms(String myId, Pageable pageable) {
         Page<ChatRoom> rooms = chatRoomReader.getChatRooms(myId, pageable);

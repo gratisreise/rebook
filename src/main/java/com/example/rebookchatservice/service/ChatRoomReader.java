@@ -25,4 +25,12 @@ public class ChatRoomReader {
     public Page<ChatRoom> getChatRooms(String myId, Pageable pageable) {
         return chatRoomRepository.findByUser1IdOrUser2Id(myId, myId, pageable);
     }
+
+    public ChatRoom getChatRoom(String myId, String yourId) {
+        if (myId.compareTo(yourId) < 0) {
+            return chatRoomRepository.findByUser1IdAndUser2Id(myId, yourId);
+        } else {
+            return chatRoomRepository.findByUser1IdAndUser2Id(yourId, myId);
+        }
+    }
 }

@@ -1,12 +1,18 @@
 spring:
   application:
     name: chat-service
+  cors:
+    allow:
+      origins:
+        - http://localhost:5173
+        - https://yourdomain.com
 
   config:
     import: "optional:configserver:http://localhost:8888"
 
   profiles:
     active: dev
+
 
 
 

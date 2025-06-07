@@ -7,6 +7,7 @@ import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.repository.ChatMessageRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatMessageService {
 
     private final SimpMessagingTemplate messagingTemplate;
@@ -30,16 +32,20 @@ public class ChatMessageService {
 
         // 해당 채팅방을 구독 중인 모든 클라이언트에게 입장 알림 브로드캐스트
         String destination = "/topic/room/" + request.getRoomId();
+        log.info("destination: {}", destination);
         messagingTemplate.convertAndSend(destination, request);
     }
 
     @Transactional
     public void receiveMessage(ChatMessageRequest request) {
+        log.info("request received: {}", request);
         // 1. 메시지 저장 (DB, MongoDB 등)
         saveMessage(request);
 
+
         // 2. 해당 채팅방 구독자들에게 메시지 전송
-        String destination = "/sub/chatroom/" + request.getRoomId();
+        String destination = "/topic/room/" + request.getRoomId();
+        log.info("destination: {}", destination);
         messagingTemplate.convertAndSend(destination, request);
     }
 
