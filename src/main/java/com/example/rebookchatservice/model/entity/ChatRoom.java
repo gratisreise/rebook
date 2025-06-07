@@ -49,4 +49,7 @@ public class ChatRoom {
         }
     }
 
+    public ChatRoom(Long roomId) {
+        this.id = roomId;
+    }
 }

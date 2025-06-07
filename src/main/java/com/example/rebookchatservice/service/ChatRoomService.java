@@ -3,6 +3,7 @@ package com.example.rebookchatservice.service;
 import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.exception.CDuplicatedDataException;
 import com.example.rebookchatservice.model.ChatRoomResponse;
+import com.example.rebookchatservice.model.entity.ChatReadStatus;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
 import java.util.List;
@@ -18,13 +19,16 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomReader chatRoomReader;
+    private final ChatReadStatusService chatReadStatusService;
 
     @Transactional
     public Long createChatRoom(String myId, String yourId) {
         if(isRoomExists(myId, yourId)){
            throw new CDuplicatedDataException("이미 채팅방이 존재합니다.");
         }
+
         ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId));
+        chatReadStatusService.crateChatReadStatus(myId, yourId, chatRoom.getId());
         return chatRoom.getId();
     }
 
@@ -42,7 +46,5 @@ public class ChatRoomService {
         Page<ChatRoomResponse> roomResponses = rooms.map(ChatRoomResponse::new);
         return new PageResponse<>(roomResponses);
     }
-
-
 
 }

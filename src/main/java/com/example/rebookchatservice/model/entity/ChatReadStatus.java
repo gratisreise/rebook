@@ -12,9 +12,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -28,9 +31,16 @@ public class ChatReadStatus {
     ChatReadStatusId id;
 
     @Column(nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime lastRead;
 
     @MapsId("roomId")
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom room;
+
+
+    public ChatReadStatus(ChatReadStatusId statusId, ChatRoom room) {
+        this.id = statusId;
+        this.room = room;
+    }
 }
