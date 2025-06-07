@@ -22,8 +22,8 @@ public class ChatRoomService {
 
     @Transactional
     public Long createChatRoom(String myId, String yourId) {
-        if(isRoomExists(myId, yourId)){
-           throw new CDuplicatedDataException("이미 채팅방이 존재합니다.");
+        if (isRoomExists(myId, yourId)) {
+            throw new CDuplicatedDataException("이미 채팅방이 존재합니다.");
         }
 
         ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId));
@@ -32,10 +32,10 @@ public class ChatRoomService {
     }
 
     private boolean isRoomExists(String myId, String yourId) {
-        if(myId.compareTo(yourId) < 0){
+        if (myId.compareTo(yourId) < 0) {
             return chatRoomRepository.existsByUser1IdAndUser2Id(myId, yourId);
         } else {
-            return  chatRoomRepository.existsByUser1IdAndUser2Id(yourId, myId);
+            return chatRoomRepository.existsByUser1IdAndUser2Id(yourId, myId);
         }
     }
 
@@ -48,7 +48,6 @@ public class ChatRoomService {
         });
         return new PageResponse<>(roomResponses);
     }
-
 
 
 }

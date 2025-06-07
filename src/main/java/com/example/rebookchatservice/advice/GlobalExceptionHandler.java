@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(CMissingDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult handleCMissingDataException(CMissingDataException e) {

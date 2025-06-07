@@ -19,14 +19,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Getter
 @Setter
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user1Id", "user2Id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user1Id", "user2Id"}))
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class ChatRoom {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 50)

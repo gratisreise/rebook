@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatMessageRequest {
+
     private String type; // ENTER, CHAT, LEAVE
     private Long roomId;
     private String sender;

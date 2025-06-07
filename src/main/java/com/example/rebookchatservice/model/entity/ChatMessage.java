@@ -30,6 +30,7 @@ public class ChatMessage {
         this.type = request.getType();
         this.roomId = request.getRoomId();
         this.sender = request.getSender();
+        this.senderId = request.getSenderId();
         this.message = request.getMessage();
     }
 }

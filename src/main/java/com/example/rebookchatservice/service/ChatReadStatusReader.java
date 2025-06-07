@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ChatReadStatusReader {
+
     private final ChatReadStatusRepository chatReadStatusRepository;
 
     public ChatReadStatus findById(ChatReadStatusId statusId) {
-        return chatReadStatusRepository.findById(statusId)
-            .orElseThrow(CMissingDataException::new);
+        return chatReadStatusRepository.findById(statusId).orElseThrow(CMissingDataException::new);
     }
 }

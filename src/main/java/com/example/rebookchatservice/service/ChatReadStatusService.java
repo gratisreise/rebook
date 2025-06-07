@@ -1,6 +1,5 @@
 package com.example.rebookchatservice.service;
 
-import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.model.entity.ChatReadStatus;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.model.entity.compositekey.ChatReadStatusId;
@@ -34,18 +33,13 @@ public class ChatReadStatusService {
         chatReadStatusRepository.save(readStatus2);
     }
 
-    public int getCount(String myId, Long id) {
-
-        return 0;
-    }
-
     public LocalDateTime getLastRead(String myId, Long roomId) {
         ChatReadStatusId statusId = new ChatReadStatusId(roomId, myId);
         ChatReadStatus readStatus = chatReadStatusReader.findById(statusId);
         return readStatus.getLastRead();
     }
 
-    private ChatReadStatus generateChatReadStatus(String userId, Long roomId){
+    private ChatReadStatus generateChatReadStatus(String userId, Long roomId) {
         ChatRoom room = new ChatRoom(roomId);
         ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
         return new ChatReadStatus(statusId, room);

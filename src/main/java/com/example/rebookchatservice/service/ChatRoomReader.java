@@ -15,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Transactional(readOnly = true)
 public class ChatRoomReader {
+
     private final ChatRoomRepository chatRoomRepository;
 
-    public ChatRoom findById(Long id){
+    public ChatRoom findById(Long id) {
         return chatRoomRepository.findById(id).orElseThrow(CMissingDataException::new);
     }
 

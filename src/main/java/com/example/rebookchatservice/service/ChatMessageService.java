@@ -53,6 +53,7 @@ public class ChatMessageService {
         request.setMessage(request.getSender() + "님이 퇴장했습니다.");
         request.setType("LEAVE");
 
+        //
         chatReadStatusService.patchLastRead(request.getRoomId(), request.getSenderId());
 
         messagingTemplate.convertAndSend("/topic/room/" + request.getRoomId(), request);
@@ -66,9 +67,9 @@ public class ChatMessageService {
     }
 
     public long getUnreadCount(String myId, Long roomId) {
-        //해당 방의 마지막읽은 날짜 확인
+        //마지막 읽은 날짜 확인
         LocalDateTime lastRead = chatReadStatusService.getLastRead(myId, roomId);
-        //해당 날짜 기준으로 안 읽은 문자메세지 카운트
+        //해당 날짜 이후 메세지 숫자 반환
         return chatMessageRepository.countByRoomIdAndSendAtAfter(roomId, lastRead);
     }
 }
