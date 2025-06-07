@@ -3,10 +3,8 @@ package com.example.rebookchatservice.service;
 import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.exception.CDuplicatedDataException;
 import com.example.rebookchatservice.model.ChatRoomResponse;
-import com.example.rebookchatservice.model.entity.ChatReadStatus;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +18,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomReader chatRoomReader;
     private final ChatReadStatusService chatReadStatusService;
+    private final ChatMessageService chatMessageService;
 
     @Transactional
     public Long createChatRoom(String myId, String yourId) {
@@ -40,11 +39,16 @@ public class ChatRoomService {
         }
     }
 
-
     public PageResponse<ChatRoomResponse> getMyChatRooms(String myId, Pageable pageable) {
         Page<ChatRoom> rooms = chatRoomReader.getChatRooms(myId, pageable);
         Page<ChatRoomResponse> roomResponses = rooms.map(ChatRoomResponse::new);
+        roomResponses.getContent().forEach(res -> {
+            long unreadCount = chatMessageService.getUnreadCount(myId, res.getId());
+            res.setUnreadCount(unreadCount);
+        });
         return new PageResponse<>(roomResponses);
     }
+
+
 
 }

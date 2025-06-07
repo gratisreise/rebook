@@ -26,15 +26,28 @@ public class ChatReadStatusService {
         readStatus.setLastRead(lastRead);
     }
 
-
     @Transactional
     public void crateChatReadStatus(String myId, String yourId, Long roomId) {
-        ChatRoom room = new ChatRoom(roomId);
-        ChatReadStatusId statusId1 = new ChatReadStatusId(roomId, myId);
-        ChatReadStatusId statusId2 = new ChatReadStatusId(roomId, yourId);
-        ChatReadStatus readStatus1 = new ChatReadStatus(statusId1, room);
-        ChatReadStatus readStatus2 = new ChatReadStatus(statusId2, room);
+        ChatReadStatus readStatus1 = generateChatReadStatus(myId, roomId);
+        ChatReadStatus readStatus2 = generateChatReadStatus(yourId, roomId);
         chatReadStatusRepository.save(readStatus1);
         chatReadStatusRepository.save(readStatus2);
+    }
+
+    public int getCount(String myId, Long id) {
+
+        return 0;
+    }
+
+    public LocalDateTime getLastRead(String myId, Long roomId) {
+        ChatReadStatusId statusId = new ChatReadStatusId(roomId, myId);
+        ChatReadStatus readStatus = chatReadStatusReader.findById(statusId);
+        return readStatus.getLastRead();
+    }
+
+    private ChatReadStatus generateChatReadStatus(String userId, Long roomId){
+        ChatRoom room = new ChatRoom(roomId);
+        ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
+        return new ChatReadStatus(statusId, room);
     }
 }

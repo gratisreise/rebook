@@ -21,6 +21,7 @@ public class ChatMessage {
     private String type; // ENTER, CHAT, LEAVE
     private Long roomId;
     private String sender;
+    private String senderId;
     private String message;
     @CreatedDate
     private LocalDateTime sendAt;

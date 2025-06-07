@@ -5,6 +5,7 @@ import com.example.rebookchatservice.model.ChatMessageRequest;
 import com.example.rebookchatservice.model.ChatMessageResponse;
 import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.repository.ChatMessageRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,5 +63,12 @@ public class ChatMessageService {
         Page<ChatMessage> messages = chatMessageRepository.findByRoomId(roomId, pageable);
         Page<ChatMessageResponse> responses = messages.map(ChatMessageResponse::new);
         return new PageResponse<>(responses);
+    }
+
+    public long getUnreadCount(String myId, Long roomId) {
+        //해당 방의 마지막읽은 날짜 확인
+        LocalDateTime lastRead = chatReadStatusService.getLastRead(myId, roomId);
+        //해당 날짜 기준으로 안 읽은 문자메세지 카운트
+        return chatMessageRepository.countByRoomIdAndSendAtAfter(roomId, lastRead);
     }
 }
