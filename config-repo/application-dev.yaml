@@ -46,3 +46,9 @@ management:
     web:
       exposure:
         include: "*" # 개발환경전부 보기
+
+cors:
+  allow:
+    origins: 
+    - http://localhost:5173
+    - http://localhost:3000
