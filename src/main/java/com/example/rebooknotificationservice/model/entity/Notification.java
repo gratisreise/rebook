@@ -1,8 +1,12 @@
 package com.example.rebooknotificationservice.model.entity;
 
+import com.example.rebooknotificationservice.enums.Type;
+import com.example.rebooknotificationservice.model.NotificationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +35,8 @@ public class Notification {
     private String content;
 
     @Column(nullable = false, length = 20)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     @Column(nullable = false)
     private boolean read;
@@ -43,4 +48,11 @@ public class Notification {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public Notification(NotificationRequest request) {
+        this.userId = request.getUserId();
+        this.type = request.getType();
+        this.content = request.getType().getMessage();
+        this.relatedId = request.getRelatedId();
+        this.read = request.isRead();
+    }
 }
