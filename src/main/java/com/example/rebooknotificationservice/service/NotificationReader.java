@@ -15,4 +15,6 @@ public class NotificationReader {
     public Page<Notification> getNotifications(String userId, Pageable pageable){
         return notificationRepository.findByUserId(userId, pageable);
     }
+
+
 }

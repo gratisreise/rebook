@@ -1,6 +1,5 @@
 package com.example.rebooknotificationservice.service;
 
-import com.example.rebooknotificationservice.model.NotificationSettingResponse;
 import com.example.rebooknotificationservice.model.entity.NotificationSetting;
 import com.example.rebooknotificationservice.repository.NotificationSettingRepository;
 import java.util.List;
@@ -9,14 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationSettingService {
+public class NotificationSettingReader {
     private final NotificationSettingRepository notificationSettingRepository;
-    private final NotificationSettingReader notificationSettingReader;
 
-    public List<NotificationSettingResponse> getAllNotificationSettings(String userId) {
-        return notificationSettingReader.getAllNotificationSettings(userId)
-            .stream().map(NotificationSettingResponse::new)
-            .toList();
+    public List<NotificationSetting> getAllNotificationSettings(String userId) {
+        return notificationSettingRepository.findById_UserId(userId);
     }
 
 }

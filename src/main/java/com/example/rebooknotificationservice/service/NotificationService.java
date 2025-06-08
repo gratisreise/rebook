@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationReader notificationReader;
+
     //알림생성
     @Transactional
     public void createNotification(NotificationRequest request) {
