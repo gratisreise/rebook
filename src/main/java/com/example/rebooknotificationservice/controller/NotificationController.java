@@ -39,5 +39,9 @@ public class NotificationController {
         return ResponseService.getSingleResult(notificationService.getNotifications(userId, pageable));
     }
 
-
+    @PatchMapping("/{notificationId}")
+    public CommonResult readNotification(@PathVariable Long notificationId) {
+        notificationService.readNotification(notificationId);
+        return ResponseService.getSuccessResult();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.rebooknotificationservice.service;
 
+import com.example.rebooknotificationservice.exception.CMissingDataException;
 import com.example.rebooknotificationservice.model.entity.Notification;
 import com.example.rebooknotificationservice.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,11 @@ public class NotificationReader {
 
     public Page<Notification> getNotifications(String userId, Pageable pageable){
         return notificationRepository.findByUserId(userId, pageable);
+    }
+
+    public Notification findById(Long id){
+        return notificationRepository.findById(id)
+            .orElseThrow(CMissingDataException::new);
     }
 
 

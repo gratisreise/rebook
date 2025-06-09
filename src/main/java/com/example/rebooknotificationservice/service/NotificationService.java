@@ -1,6 +1,7 @@
 package com.example.rebooknotificationservice.service;
 
 import com.example.rebooknotificationservice.common.PageResponse;
+import com.example.rebooknotificationservice.exception.CMissingDataException;
 import com.example.rebooknotificationservice.model.NotificationRequest;
 import com.example.rebooknotificationservice.model.NotificationResponse;
 import com.example.rebooknotificationservice.model.entity.Notification;
@@ -29,5 +30,12 @@ public class NotificationService {
         Page<Notification> notifications = notificationReader.getNotifications(userId, pageable);
         Page<NotificationResponse> responses = notifications.map(NotificationResponse::new);
         return new PageResponse<>(responses);
+    }
+
+    //알림읽음
+    @Transactional
+    public void readNotification(Long notificationId) {
+        Notification notification = notificationReader.findById(notificationId);
+        notification.setRead(true);
     }
 }
