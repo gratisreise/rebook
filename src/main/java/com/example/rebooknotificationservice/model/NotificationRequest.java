@@ -12,9 +12,10 @@ public class NotificationRequest {
     private String userId;
 
     @NotBlank
-    private Type type;
+    private String content;
 
-    private boolean read;
+    @NotBlank
+    private Type type;
 
     @NotBlank
     private String relatedId;
