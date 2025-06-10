@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class TradingResponse {
     private Long bookId;
+    private String userId;
     private String title;
     private String content;
     private String rating;
@@ -22,6 +23,7 @@ public class TradingResponse {
 
     public TradingResponse(Trading trading) {
         this.bookId = trading.getBookId();
+        this.userId = trading.getUserId();
         this.title = trading.getTitle();
         this.content = trading.getContent();
         this.rating = trading.getRating();
