@@ -15,7 +15,7 @@ public class NotificationRequest {
     private String content;
 
     @NotBlank
-    private Type type;
+    private String type;
 
     @NotBlank
     private String relatedId;

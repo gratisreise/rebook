@@ -1,6 +1,7 @@
 package com.example.rebooknotificationservice.service;
 
 import com.example.rebooknotificationservice.model.NotificationRequest;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +21,7 @@ public class SseService {
 
     // 알림 메시지 RabbitMQ에서 수신
     @RabbitListener(queues = "${notification.queue}")
-    public void receiveNotification(NotificationRequest message) {
+    public void receiveNotification(@Valid NotificationRequest message) {
         // 1. 알림 DB에 저장 (생략 가능)
         notificationService.createNotification(message);
 

@@ -50,7 +50,7 @@ public class Notification {
 
     public Notification(NotificationRequest request) {
         this.userId = request.getUserId();
-        this.type = request.getType();
+        this.type = Type.valueOf(request.getType());
         this.content = request.getContent();
         this.relatedId = request.getRelatedId();
         this.read = false;

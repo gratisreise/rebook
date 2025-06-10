@@ -17,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationReader notificationReader;
+    private final NotificationSettingService notificationSettingService;
 
     //알림생성
     @Transactional
     public void createNotification(NotificationRequest request) {
         Notification notification = new Notification(request);
+        notificationSettingService.createNotificationSetting(notification);
         notificationRepository.save(notification);
     }
 
