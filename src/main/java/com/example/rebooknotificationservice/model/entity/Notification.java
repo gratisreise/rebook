@@ -1,7 +1,7 @@
 package com.example.rebooknotificationservice.model.entity;
 
 import com.example.rebooknotificationservice.enums.Type;
-import com.example.rebooknotificationservice.model.NotificationRequest;
+import com.example.rebooknotificationservice.model.NotificationMessage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -48,7 +48,7 @@ public class Notification {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public Notification(NotificationRequest request) {
+    public Notification(NotificationMessage request) {
         this.userId = request.getUserId();
         this.type = Type.valueOf(request.getType());
         this.content = request.getContent();

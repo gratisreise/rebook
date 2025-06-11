@@ -1,13 +1,12 @@
 package com.example.rebooknotificationservice.service;
 
-import com.example.rebooknotificationservice.model.NotificationRequest;
+import com.example.rebooknotificationservice.model.NotificationMessage;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -21,7 +20,7 @@ public class SseService {
 
     // 알림 메시지 RabbitMQ에서 수신
     @RabbitListener(queues = "${notification.queue}")
-    public void receiveNotification(@Valid NotificationRequest message) {
+    public void receiveNotification(@Valid NotificationMessage message) {
         // 1. 알림 DB에 저장 (생략 가능)
         notificationService.createNotification(message);
 

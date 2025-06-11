@@ -2,7 +2,7 @@ package com.example.rebooknotificationservice.service;
 
 import com.example.rebooknotificationservice.common.PageResponse;
 import com.example.rebooknotificationservice.exception.CMissingDataException;
-import com.example.rebooknotificationservice.model.NotificationRequest;
+import com.example.rebooknotificationservice.model.NotificationMessage;
 import com.example.rebooknotificationservice.model.NotificationResponse;
 import com.example.rebooknotificationservice.model.entity.Notification;
 import com.example.rebooknotificationservice.repository.NotificationRepository;
@@ -21,12 +21,12 @@ public class NotificationService {
 
     //알림생성
     @Transactional
-    public void createNotification(NotificationRequest request) {
-        Notification notification = new Notification(request);
+    public void createNotification(NotificationMessage message) throws CMissingDataException {
+        //유저목록가져오기
+        Notification notification = new Notification(message);
         notificationSettingService.createNotificationSetting(notification);
         notificationRepository.save(notification);
     }
-
 
     public PageResponse<NotificationResponse> getNotifications(String userId, Pageable pageable) {
         Page<Notification> notifications = notificationReader.getNotifications(userId, pageable);
