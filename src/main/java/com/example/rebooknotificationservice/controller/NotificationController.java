@@ -29,7 +29,7 @@ public class NotificationController {
 //        return ResponseService.getSuccessResult();
 //    }
 
-    @GetMapping
+    @GetMapping("/me")
     public SingleResult<PageResponse<NotificationResponse>> getNotifications(
         @RequestParam String userId, @PageableDefault Pageable pageable) {
         return ResponseService.getSingleResult(notificationService.getNotifications(userId, pageable));
@@ -39,5 +39,10 @@ public class NotificationController {
     public CommonResult readNotification(@PathVariable Long notificationId) {
         notificationService.readNotification(notificationId);
         return ResponseService.getSuccessResult();
+    }
+
+    @GetMapping("/me/numbers")
+    public SingleResult<Long> getNotReadNumbers(@RequestParam String userId) {
+        return ResponseService.getSingleResult(notificationService.getNotReadNumbers(userId)) ;
     }
 }

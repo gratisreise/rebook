@@ -40,4 +40,8 @@ public class NotificationService {
         Notification notification = notificationReader.findById(notificationId);
         notification.setRead(true);
     }
+
+    public Long getNotReadNumbers(String userId) {
+        return notificationReader.getNotReadNumbers(userId);
+    }
 }
