@@ -1,8 +1,10 @@
 package com.example.rebooknotificationservice.service;
 
+import com.example.rebooknotificationservice.feigns.UserClient;
 import com.example.rebooknotificationservice.model.NotificationMessage;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
@@ -17,23 +19,27 @@ public class SseService {
     // 클라이언트별 Emitter 관리
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final NotificationService notificationService;
+    private final UserClient userClient;
 
     // 알림 메시지 RabbitMQ에서 수신
     @RabbitListener(queues = "${notification.queue}")
     public void receiveNotification(@Valid NotificationMessage message) {
         // 1. 알림 DB에 저장 (생략 가능)
-        notificationService.createNotification(message);
+        List<String> userIds = notificationService.createNotification(message);
 
         // 2. SSE 연결된 클라이언트에게 실시간 전송
-        SseEmitter emitter = emitters.get(message.getUserId());
-        if (emitter != null) {
-            try {
-                emitter.send(SseEmitter.event().name("notification")
-                    .data(message.getContent()));
-            } catch (Exception e) {
-                emitters.remove(message.getUserId());
+        userIds.forEach(userId ->{
+            SseEmitter emitter = emitters.get(userId);
+            if (emitter != null) {
+                try {
+                    emitter.send(SseEmitter.event().name("notification")
+                        .data(message.getContent()));
+                } catch (Exception e) {
+                    emitters.remove(userId);
+                }
             }
-        }
+        });
+
     }
 
     public SseEmitter connect(String userId) {

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NotificationMessage {
+
     @NotBlank
     private String userId;
 
@@ -17,5 +18,5 @@ public class NotificationMessage {
     private String type;
 
     @NotBlank
-    private String relatedId;
+    private String relatedInfo;
 }

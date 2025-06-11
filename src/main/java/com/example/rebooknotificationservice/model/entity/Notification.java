@@ -29,7 +29,7 @@ public class Notification {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String userId;
+    private String userId; //알림을 받는 상대 id 이거면
 
     @Column(nullable = false, length = 50)
     private String content;
@@ -42,17 +42,17 @@ public class Notification {
     private boolean read;
 
     @Column(nullable = false, length = 50)
-    private String relatedId; // 타입이 payment이면 userId
+    private String relatedInfo; // 타입이 payment이면 userId
 
     @Column(updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public Notification(NotificationMessage request) {
-        this.userId = request.getUserId();
-        this.type = Type.valueOf(request.getType());
-        this.content = request.getContent();
-        this.relatedId = request.getRelatedId();
+    public Notification(NotificationMessage message, String userId) {
+        this.userId = userId;
+        this.type = Type.valueOf(message.getType().toUpperCase());
+        this.content = message.getContent();
+        this.relatedInfo = message.getRelatedInfo();
         this.read = false;
     }
 }
