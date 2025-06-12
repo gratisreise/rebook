@@ -1,7 +1,10 @@
 package com.example.rebooknotificationservice.service;
 
 import com.example.rebooknotificationservice.feigns.UserClient;
-import com.example.rebooknotificationservice.model.NotificationMessage;
+import com.example.rebooknotificationservice.model.message.NotificationBookMessage;
+import com.example.rebooknotificationservice.model.message.NotificationChatMessage;
+import com.example.rebooknotificationservice.model.message.NotificationMessage;
+import com.example.rebooknotificationservice.model.message.NotificationTradeMessage;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -21,26 +24,53 @@ public class SseService {
     private final NotificationService notificationService;
     private final UserClient userClient;
 
-    // 알림 메시지 RabbitMQ에서 수신
-    @RabbitListener(queues = "${notification.queue}")
-    public void receiveNotification(@Valid NotificationMessage message) {
-        // 1. 알림 DB에 저장 (생략 가능)
-        List<String> userIds = notificationService.createNotification(message);
+    // 알림 메시지 RabbitMq에서 수신
+    @RabbitListener(queues = "${book.notification.queue}")
+    public void receiveBookNotification(@Valid NotificationBookMessage message) {
 
-        // 2. SSE 연결된 클라이언트에게 실시간 전송
-        userIds.forEach(userId ->{
-            SseEmitter emitter = emitters.get(userId);
-            if (emitter != null) {
-                try {
-                    emitter.send(SseEmitter.event().name("notification")
-                        .data(message.getContent()));
-                } catch (Exception e) {
-                    emitters.remove(userId);
-                }
-            }
+        List<String> userIds = userClient.findUserIdsByCategory(message.getCategory());
+
+        userIds.forEach(userId -> {
+            // 1. 알림 DB에 저장 (생략 가능)
+            notificationService.createBookNotification(message, userId);
+
+            // 2. 알림 전송
+            sendNotification(message, userId);
         });
-
     }
+
+    @RabbitListener(queues = "trade.notification.queue")
+    public void receiveTradeNotification(@Valid NotificationTradeMessage message) {
+        List<String> userIds = userClient.findUserIdsByMarkedBook(message.getBookId());
+
+        // 2.알람 전송
+        userIds.forEach(userId -> {
+            // 1. 알림 DB에 저장 (생략 가능)
+
+            // 2. 알림 전송
+            sendNotification(message, userId);
+        });
+    }
+
+    @RabbitListener(queues = "chat.notification.queue")
+    public void receiveChatNotification(@Valid NotificationChatMessage message) {
+        notificationService.createNotification(message);
+        sendNotification(message, message.getUserId());
+    }
+
+    private void sendNotification(NotificationMessage message, String userId) {
+        SseEmitter emitter = emitters.get(userId);
+        if (emitter != null) {
+            try {
+                emitter.send(SseEmitter.event().name("notification")
+                    .data(message.getMessage()));
+            } catch (Exception e) {
+                emitters.remove(userId);
+            }
+        }
+    }
+
+
 
     public SseEmitter connect(String userId) {
         SseEmitter emitter = new SseEmitter();

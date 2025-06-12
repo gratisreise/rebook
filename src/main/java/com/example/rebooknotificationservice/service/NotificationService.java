@@ -2,9 +2,9 @@ package com.example.rebooknotificationservice.service;
 
 import com.example.rebooknotificationservice.common.PageResponse;
 import com.example.rebooknotificationservice.exception.CMissingDataException;
-import com.example.rebooknotificationservice.feigns.ChatClient;
 import com.example.rebooknotificationservice.feigns.UserClient;
-import com.example.rebooknotificationservice.model.NotificationMessage;
+import com.example.rebooknotificationservice.model.message.NotificationBookMessage;
+import com.example.rebooknotificationservice.model.message.NotificationMessage;
 import com.example.rebooknotificationservice.model.NotificationResponse;
 import com.example.rebooknotificationservice.model.entity.Notification;
 import com.example.rebooknotificationservice.repository.NotificationRepository;
@@ -22,19 +22,23 @@ public class NotificationService {
     private final NotificationReader notificationReader;
     private final NotificationSettingService notificationSettingService;
     private final UserClient userClient;
-    private final ChatClient chatClient;
 
     //알림생성
     @Transactional
-    public List<String> createNotification(NotificationMessage message) throws CMissingDataException {
-        //유저목록가져오기
-        return switch(message.getType()){
-            case "book" -> sendBookAlaram(message);
-            case "chat" -> sendChatAlaram(message);
-            case "trade" ->sendTradeAlaram(message);
-            case "payment" -> sendPaymentAlarm(message);
-            default -> throw new CMissingDataException();
-        };
+    public void createBookNotification(NotificationBookMessage message, String userId) throws CMissingDataException {
+        Notification notification = new Notification(message, userId);
+        notificationSettingService.createNotificationSetting(notification);
+        notificationRepository.save(notification);
+    }
+
+    @Transactional
+    public void createChatNotification(NotificationMessage message) throws CMissingDataException {
+
+    }
+
+    @Transactional
+    public void createTradeNotification(NotificationMessage message) throws CMissingDataException {
+
     }
 
     public PageResponse<NotificationResponse> getNotifications(String userId, Pageable pageable) {
@@ -54,30 +58,4 @@ public class NotificationService {
         return notificationReader.getNotReadNumbers(userId);
     }
 
-
-
-    public List<String> sendBookAlaram(NotificationMessage message) {
-        List<String> userIds = userClient.findUserIdsByCategory(message.getRelatedInfo());
-        userIds.forEach(userId -> {
-            Notification notification = new Notification(message, userId);
-            notificationSettingService.createNotificationSetting(notification);
-            notificationRepository.save(notification);
-        });
-        return userIds;
-    }
-
-    public List<String> sendChatAlaram(NotificationMessage message) {
-        Notification notification = new Notification(message, message.getUserId());
-        notificationRepository.save(notification);
-        return List.of(notification.getUserId());
-    }
-
-    public List<String> sendTradeAlaram(NotificationMessage message) {
-
-        return null;
-    }
-
-    public List<String> sendPaymentAlarm(NotificationMessage message) {
-        return null;
-    }
 }

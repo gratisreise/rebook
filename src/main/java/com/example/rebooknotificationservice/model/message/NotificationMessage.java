@@ -1,4 +1,4 @@
-package com.example.rebooknotificationservice.model;
+package com.example.rebooknotificationservice.model.message;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -9,14 +9,9 @@ import lombok.Setter;
 public class NotificationMessage {
 
     @NotBlank
-    private String userId;
-
-    @NotBlank
-    private String content;
+    private String message;
 
     @NotBlank
     private String type;
 
-    @NotBlank
-    private String relatedInfo;
 }
