@@ -3,6 +3,7 @@ package com.example.rebookchatservice.service;
 import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.model.ChatMessageRequest;
 import com.example.rebookchatservice.model.ChatMessageResponse;
+import com.example.rebookchatservice.model.NotificationMessage;
 import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.repository.ChatMessageRepository;
 import java.time.LocalDateTime;
@@ -22,9 +23,10 @@ public class ChatMessageService {
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
     private final ChatReadStatusService chatReadStatusService;
+    private final NotificationPublisher notificationPublisher;
 
     public void enterEvent(ChatMessageRequest request) {
-        // 인원수 증가, 참여자 등록 등 부가 로직
+        // 입장메세지
         request.setMessage(request.getSender() + "님이 입장하셨습니다.");
         request.setType("ENTER");
 
@@ -32,6 +34,7 @@ public class ChatMessageService {
 
         // 해당 채팅방을 구독 중인 모든 클라이언트에게 입장 알림 브로드캐스트
         String destination = "/topic/room/" + request.getRoomId();
+
         log.info("destination: {}", destination);
         messagingTemplate.convertAndSend(destination, request);
     }
@@ -42,8 +45,12 @@ public class ChatMessageService {
         // 1. 메시지 저장 (DB, MongoDB 등)
         saveMessage(request);
 
+        // 2. rabbitmq 메세지 발행
+        String message  = "새로운 채팅이 도착했습니다.";
+        NotificationMessage notificationMessage = new NotificationMessage(request, message);
+        notificationPublisher.sendNotification(notificationMessage);
 
-        // 2. 해당 채팅방 구독자들에게 메시지 전송
+        // 3. 해당 채팅방 구독자들에게 메시지 전송
         String destination = "/topic/room/" + request.getRoomId();
         log.info("destination: {}", destination);
         messagingTemplate.convertAndSend(destination, request);

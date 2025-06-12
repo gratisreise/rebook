@@ -1,6 +1,5 @@
 package com.example.rebookchatservice.model;
 
-import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,15 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NotificationMessage implements Serializable {
-    @NotBlank
-    private String userId;
-
-    @NotBlank
-    private String content;
-
-    @NotBlank
+    private String message;
     private String type;
+    private String userId;
+    private String roomId;
 
-    @NotBlank
-    private String relatedId;
+    public NotificationMessage(ChatMessageRequest request, String message) {
+        this.message = message;
+        this.type = "CHAT";
+        this.userId = request.getReceiverId();
+        this.roomId = request.getRoomId().toString();
+    }
 }

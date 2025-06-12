@@ -12,6 +12,7 @@ public class ChatMessageRequest {
     private Long roomId;
     private String sender;
     private String senderId;
+    private String receiverId;
     private String message;
     private LocalDateTime sendAt;
 }
