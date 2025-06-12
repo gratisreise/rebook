@@ -10,7 +10,6 @@ public interface UserClient {
     @GetMapping("/alarms/books")
     List<String> findUserIdsByCategory(@RequestParam String category);
 
-
     @GetMapping("/alarms/trades")
     List<String> findUserIdsByMarkedBook(String bookId);
 }

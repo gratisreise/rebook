@@ -4,9 +4,11 @@ import com.example.rebooknotificationservice.common.PageResponse;
 import com.example.rebooknotificationservice.exception.CMissingDataException;
 import com.example.rebooknotificationservice.feigns.UserClient;
 import com.example.rebooknotificationservice.model.message.NotificationBookMessage;
+import com.example.rebooknotificationservice.model.message.NotificationChatMessage;
 import com.example.rebooknotificationservice.model.message.NotificationMessage;
 import com.example.rebooknotificationservice.model.NotificationResponse;
 import com.example.rebooknotificationservice.model.entity.Notification;
+import com.example.rebooknotificationservice.model.message.NotificationTradeMessage;
 import com.example.rebooknotificationservice.repository.NotificationRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +34,17 @@ public class NotificationService {
     }
 
     @Transactional
-    public void createChatNotification(NotificationMessage message) throws CMissingDataException {
-
+    public void createChatNotification(NotificationChatMessage message) throws CMissingDataException {
+        Notification notification = new Notification(message);
+        notificationSettingService.createNotificationSetting(notification);
+        notificationRepository.save(notification);
     }
 
     @Transactional
-    public void createTradeNotification(NotificationMessage message) throws CMissingDataException {
-
+    public void createTradeNotification(NotificationTradeMessage message, String userId) throws CMissingDataException {
+        Notification notification = new Notification(message, userId);
+        notificationSettingService.createNotificationSetting(notification);
+        notificationRepository.save(notification);
     }
 
     public PageResponse<NotificationResponse> getNotifications(String userId, Pageable pageable) {

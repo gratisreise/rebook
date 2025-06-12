@@ -2,7 +2,9 @@ package com.example.rebooknotificationservice.model.entity;
 
 import com.example.rebooknotificationservice.enums.Type;
 import com.example.rebooknotificationservice.model.message.NotificationBookMessage;
+import com.example.rebooknotificationservice.model.message.NotificationChatMessage;
 import com.example.rebooknotificationservice.model.message.NotificationMessage;
+import com.example.rebooknotificationservice.model.message.NotificationTradeMessage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -49,7 +51,6 @@ public class Notification {
     @CreatedDate
     private LocalDateTime createdAt;
 
-
     public Notification(NotificationBookMessage message, String userId) {
         this.userId = userId;
         this.message = message.getMessage();
@@ -58,5 +59,19 @@ public class Notification {
         this.relatedId = message.getBookId();
     }
 
+    public Notification(NotificationTradeMessage message, String userId) {
+        this.userId = userId;
+        this.message = message.getMessage();
+        this.type = Type.valueOf(message.getType().toUpperCase());
+        this.read = false;
+        this.relatedId = message.getTradingId();
+    }
 
+    public Notification(NotificationChatMessage message) {
+        this.userId = message.getUserId();
+        this.message = message.getMessage();
+        this.type = Type.valueOf(message.getType().toUpperCase());
+        this.read = false;
+        this.relatedId = message.getRoomId();
+    }
 }

@@ -31,10 +31,7 @@ public class SseService {
         List<String> userIds = userClient.findUserIdsByCategory(message.getCategory());
 
         userIds.forEach(userId -> {
-            // 1. 알림 DB에 저장 (생략 가능)
             notificationService.createBookNotification(message, userId);
-
-            // 2. 알림 전송
             sendNotification(message, userId);
         });
     }
@@ -43,18 +40,15 @@ public class SseService {
     public void receiveTradeNotification(@Valid NotificationTradeMessage message) {
         List<String> userIds = userClient.findUserIdsByMarkedBook(message.getBookId());
 
-        // 2.알람 전송
         userIds.forEach(userId -> {
-            // 1. 알림 DB에 저장 (생략 가능)
-
-            // 2. 알림 전송
+            notificationService.createTradeNotification(message, userId);
             sendNotification(message, userId);
         });
     }
 
     @RabbitListener(queues = "chat.notification.queue")
     public void receiveChatNotification(@Valid NotificationChatMessage message) {
-        notificationService.createNotification(message);
+        notificationService.createChatNotification(message);
         sendNotification(message, message.getUserId());
     }
 
@@ -69,8 +63,6 @@ public class SseService {
             }
         }
     }
-
-
 
     public SseEmitter connect(String userId) {
         SseEmitter emitter = new SseEmitter();
