@@ -1,6 +1,5 @@
 package com.example.rebooktradingservice.model;
 
-import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,15 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NotificationMessage implements Serializable {
-    @NotBlank
-    private String userId;
-
-    @NotBlank
-    private String content;
-
-    @NotBlank
+    private String message;
     private String type;
+    private String tradingId;
+    private String bookId;
 
-    @NotBlank
-    private String relatedId;
+    public NotificationMessage(Long tradingId, String content, Long bookId) {
+        this.message = content;
+        this.tradingId = tradingId.toString();
+        this.bookId = bookId.toString();
+        this.type = "TRADE";
+    }
 }

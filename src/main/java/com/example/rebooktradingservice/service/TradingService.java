@@ -5,6 +5,7 @@ import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.exception.CMissingDataException;
 import com.example.rebooktradingservice.exception.CUnauthorizedException;
 import com.example.rebooktradingservice.feigns.BookClient;
+import com.example.rebooktradingservice.model.NotificationMessage;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
@@ -27,6 +28,7 @@ public class TradingService {
     private final TradingReader tradingReader;
     private final BookClient bookClient;
     private final S3Service s3Service;
+    private final NotificationPublisher publisher;
 
     @Transactional
     public void postTrading(TradingRequest request, String userId) throws IOException {
@@ -36,13 +38,13 @@ public class TradingService {
     }
 
     public TradingResponse getTrading(Long tradingId) {
-        Trading trading = tradingReader.readTrading(tradingId);
+        Trading trading = tradingReader.findById(tradingId);
         return new TradingResponse(trading);
     }
 
     @Transactional
     public void updateState(Long tradingId, State state, String userId) {
-        Trading trading = tradingReader.readTrading(tradingId);
+        Trading trading = tradingReader.findById(tradingId);
         if(!trading.getUserId().equals(userId)) {
             log.error("Unauthorized updateTrading Access");
             throw new CUnauthorizedException("Unauthorized user Access");
@@ -53,10 +55,16 @@ public class TradingService {
     @Transactional
     public void updateTrading(TradingRequest request, String userId, Long tradingId)
         throws IOException {
-        Trading trading = tradingReader.readTrading(tradingId);
+        Trading trading = tradingReader.findById(tradingId);
         if(!trading.getUserId().equals(userId)) {
             log.error("Unauthorized updateState Access");
             throw new CUnauthorizedException("Unauthorized user Access");
+        }
+        if(request.getPrice() != trading.getPrice()) {
+            String content = "찜한 제품의 가격이 변동되었습니다.";
+            NotificationMessage message =
+                new NotificationMessage(tradingId, content, request.getBookId());
+            publisher.sendNotification(message);
         }
         String imageUrl = s3Service.upload(request.getImage());
         trading.update(request, imageUrl, userId);
@@ -75,7 +83,7 @@ public class TradingService {
             throw new CMissingDataException("Data is not found");
         }
 
-        Trading trading = tradingReader.readTrading(tradingId);
+        Trading trading = tradingReader.findById(tradingId);
 
         if(!trading.getUserId().equals(userId)) {
             log.error("Unauthorized deleteTrading Access");
