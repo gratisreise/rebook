@@ -6,7 +6,6 @@ import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(key.getBytes());
     }
 
-    public String getUserId(String token){
+    public String getUserId(String token) {
         return Jwts.parser()
             .verifyWith(key)
             .build()

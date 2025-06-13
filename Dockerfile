@@ -1,6 +1,6 @@
 # docker buildx build --platform=linux/amd64,linux/arm64 -t nooaahh/rebook-gateway --push .
-#docker build -t nooaahh/rebook-gateway:latest .
-#docker image prune -f
+# docker build -t nooaahh/rebook-gateway:latest .
+# docker image prune -f
 
 # 1단계: 빌드 (테스트 포함)
 FROM gradle:8.14.2-jdk17 AS builder
