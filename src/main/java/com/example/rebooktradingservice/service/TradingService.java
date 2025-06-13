@@ -35,6 +35,10 @@ public class TradingService {
         String imageUrl =  s3Service.upload(request.getImage());
         Trading trading = new Trading(request, imageUrl, userId);
         tradingRepository.save(trading);
+        //거래생성 메세지 발행
+        String content = "찜한 도서의 새로운 거래가 등록되었습니다.";
+        NotificationMessage message = new NotificationMessage(request.getBookId(), trading.getId(), content);
+        publisher.sendNotification(message);
     }
 
     public TradingResponse getTrading(Long tradingId) {

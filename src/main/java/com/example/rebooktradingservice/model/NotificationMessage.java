@@ -1,6 +1,9 @@
 package com.example.rebooktradingservice.model;
 
+import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +20,12 @@ public class NotificationMessage implements Serializable {
         this.tradingId = tradingId.toString();
         this.bookId = bookId.toString();
         this.type = "TRADE";
+    }
+
+    public NotificationMessage(Long bookId, Long tradingId, String content) {
+        this.message = content;
+        this.tradingId = tradingId.toString();
+        this.bookId = bookId.toString();
+        this.type = "BOOK";
     }
 }
