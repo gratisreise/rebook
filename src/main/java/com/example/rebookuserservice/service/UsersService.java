@@ -13,8 +13,6 @@ import com.example.rebookuserservice.repository.UserBookRepository;
 import com.example.rebookuserservice.repository.UserRepository;
 import com.example.rebookuserservice.repository.UserTradingRepository;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +87,7 @@ public class UsersService {
         //id로 도서 id 조회 페이지 네이션
         return userBookRepository.findByUserBookIdUserId(userId, pageable);
 
-        //도서 서비스에서 도서목록조회
+        //도서 서비스에서 도서목록조회: 리스트로 받고 해당 도서반환
 
         //도서 목록을 page에 넣고 보내기
     }
