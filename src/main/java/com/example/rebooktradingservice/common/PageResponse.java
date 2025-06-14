@@ -1,7 +1,5 @@
 package com.example.rebooktradingservice.common;
 
-import jakarta.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

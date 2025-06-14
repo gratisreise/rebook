@@ -5,7 +5,6 @@ import com.example.rebooktradingservice.model.entity.Trading;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter

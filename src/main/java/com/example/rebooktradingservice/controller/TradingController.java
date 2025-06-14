@@ -11,7 +11,6 @@ import com.example.rebooktradingservice.service.TradingReader;
 import com.example.rebooktradingservice.service.TradingService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,13 +30,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/tradings")
 public class TradingController {
     // @RequestHeader("X-User-Id") String userId
-    // @RequestParam String userId
+    // @RequestHeader("X-User-Id") String userId
     private final TradingService tradingService;
     private final TradingReader tradingReader;
 
 
     @PostMapping
-    public CommonResult postTrading(@RequestParam String userId, @ModelAttribute TradingRequest request)
+    public CommonResult postTrading(@RequestHeader("X-User-Id") String userId, @ModelAttribute TradingRequest request)
         throws IOException {
         tradingService.postTrading(request, userId);
         return ResponseService.getSuccessResult();
@@ -51,7 +51,7 @@ public class TradingController {
     public CommonResult updateState(
         @PathVariable Long tradingId,
         @RequestParam State state,
-        @RequestParam String userId
+        @RequestHeader("X-User-Id") String userId
     ){
         tradingService.updateState(tradingId, state, userId);
         return ResponseService.getSuccessResult();
@@ -59,7 +59,7 @@ public class TradingController {
 
     @PutMapping("/{tradingId}")
     public CommonResult updateTrading(
-        @PathVariable Long tradingId, @RequestParam String userId,
+        @PathVariable Long tradingId, @RequestHeader("X-User-Id") String userId,
         @ModelAttribute TradingRequest request
     ) throws IOException {
         tradingService.updateTrading(request, userId, tradingId);
@@ -68,13 +68,13 @@ public class TradingController {
 
     @GetMapping("/me")
     public SingleResult<PageResponse<TradingResponse>> getTradings(
-        @RequestParam String userId, @PageableDefault Pageable pageable
+        @RequestHeader("X-User-Id") String userId, @PageableDefault Pageable pageable
     ){
         return ResponseService.getSingleResult(tradingService.getTradings(userId, pageable));
     }
 
     @DeleteMapping("/{tradingId}")
-    public CommonResult deleteTrading(@PathVariable Long tradingId, @RequestParam String userId){
+    public CommonResult deleteTrading(@PathVariable Long tradingId, @RequestHeader("X-User-Id") String userId){
         tradingService.deleteTrading(tradingId, userId);
         return ResponseService.getSuccessResult();
     }
@@ -87,7 +87,7 @@ public class TradingController {
 
     @GetMapping("/recommendations")
     public SingleResult<PageResponse<TradingResponse>> getRecommendations(
-        @RequestParam String userId, @PageableDefault Pageable pageable
+        @RequestHeader("X-User-Id") String userId, @PageableDefault Pageable pageable
     ){
         return ResponseService.getSingleResult(tradingService.getRecommendations(userId, pageable));
     }
