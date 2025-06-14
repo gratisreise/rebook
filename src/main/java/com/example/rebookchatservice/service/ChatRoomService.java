@@ -1,7 +1,6 @@
 package com.example.rebookchatservice.service;
 
 import com.example.rebookchatservice.common.PageResponse;
-import com.example.rebookchatservice.exception.CDuplicatedDataException;
 import com.example.rebookchatservice.model.ChatRoomResponse;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.repository.ChatRoomRepository;

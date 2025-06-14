@@ -1,7 +1,6 @@
 package com.example.rebookchatservice.model;
 
 import com.example.rebookchatservice.model.entity.ChatRoom;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;

@@ -11,8 +11,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,14 +27,15 @@ public class ChatRoomController {
 
     //채팅방 생성
     @PostMapping("/{yourId}")
-    public SingleResult<Long> createChatRoom(@RequestParam String myId,
+    public SingleResult<Long> createChatRoom(@RequestHeader("X-User-Id") String myId,
         @PathVariable String yourId) {
         return ResponseService.getSingleResult(chatRoomService.createChatRoom(myId, yourId));
     }
 
     //채팅방 목록조회
     @GetMapping
-    public SingleResult<PageResponse<ChatRoomResponse>> getMyChatRooms(@RequestParam String myId,
+    public SingleResult<PageResponse<ChatRoomResponse>> getMyChatRooms(
+        @RequestHeader("X-User-Id") String myId,
         @PageableDefault Pageable pageable) {
         return ResponseService.getSingleResult(chatRoomService.getMyChatRooms(myId, pageable));
     }

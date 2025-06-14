@@ -6,6 +6,7 @@ import com.example.rebookchatservice.model.ChatMessageResponse;
 import com.example.rebookchatservice.model.NotificationMessage;
 import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.repository.ChatMessageRepository;
+import com.example.rebookchatservice.utils.NotificationPublisher;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +67,6 @@ public class ChatMessageService {
         request.setMessage(request.getSender() + "님이 퇴장했습니다.");
         request.setType("LEAVE");
 
-        //
         chatReadStatusService.patchLastRead(request.getRoomId(), request.getSenderId());
 
         messagingTemplate.convertAndSend("/topic/room/" + request.getRoomId(), request);

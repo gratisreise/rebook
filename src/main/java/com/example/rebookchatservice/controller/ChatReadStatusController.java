@@ -11,6 +11,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatReadStatusController {
     // @RquestParam
     // @RequestHeader("X-User-Id) String myId
-
     private final ChatReadStatusService chatReadStatusService;
 }
