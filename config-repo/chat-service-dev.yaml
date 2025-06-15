@@ -6,7 +6,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:1234@localhost:27017/rebookdb?authSource=admin
+      uri: mongodb://root:1234@mongodb:27017/rebookdb?authSource=admin
 
 notification:
   exchange: "{cipher}9d2d0c30e93d38238ebcd6d399243ee37bbd1412d06791ca322ec84f5f764dbe0c2c0c0e78b07bcc9645a6398a6e2bc3"
