@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class NotificationResponse {
     private String relatedId;
-    private String content;
+    private String message;
     private Type type;
 
     public NotificationResponse(Notification notification) {
         this.relatedId = notification.getRelatedId();
-        this.content = notification.getContent();
+        this.message = notification.getMessage();
         this.type = notification.getType();
     }
 }

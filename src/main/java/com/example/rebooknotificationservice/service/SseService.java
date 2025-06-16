@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class SseService {
 
@@ -25,7 +25,7 @@ public class SseService {
     private final UserClient userClient;
 
     // 알림 메시지 RabbitMq에서 수신
-    @RabbitListener(queues = "${book.notification.queue}")
+    @RabbitListener(queues = "book.notification.queue")
     public void receiveBookNotification(@Valid NotificationBookMessage message) {
 
         List<String> userIds = userClient.findUserIdsByCategory(message.getCategory());

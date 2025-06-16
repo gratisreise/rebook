@@ -13,8 +13,8 @@ public class NotificationSettingResponse {
     private boolean sendable;
 
     public NotificationSettingResponse(NotificationSetting notificationSetting) {
-        this.userId = notificationSetting.getNotification().getUserId();
-        this.type = notificationSetting.getNotification().getType();
+        this.userId = notificationSetting.getNotificationSettingId().getUserId();
+        this.type = notificationSetting.getNotificationSettingId().getType();
         this.sendable = notificationSetting.isSendable();
     }
 }

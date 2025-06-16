@@ -15,7 +15,7 @@ public class NotificationSettingReader {
     private final NotificationSettingRepository notificationSettingRepository;
 
     public List<NotificationSetting> getAllNotificationSettings(String userId) {
-        return notificationSettingRepository.findById_UserId(userId);
+        return notificationSettingRepository.findByNotificationSettingIdUserId(userId);
     }
 
     public NotificationSetting findById(Type type, String userId) {

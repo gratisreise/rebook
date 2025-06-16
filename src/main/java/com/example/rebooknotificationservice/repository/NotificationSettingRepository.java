@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface NotificationSettingRepository extends JpaRepository<NotificationSetting, NotificationSettingId> {
 
     // userId로 조회
-    List<NotificationSetting> findById_UserId(String userId);
+    List<NotificationSetting> findByNotificationSettingIdUserId(String userId);
 }

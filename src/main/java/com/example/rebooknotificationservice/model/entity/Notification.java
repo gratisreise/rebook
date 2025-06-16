@@ -32,7 +32,7 @@ public class Notification {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String userId; //알림을 받는 상대 id 이거면
+    private String userId; //알림을 받는 상대 id
 
     @Column(nullable = false, length = 50)
     private String message;

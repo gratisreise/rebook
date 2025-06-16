@@ -26,14 +26,8 @@ public class NotificationSetting {
     @Column(nullable = false)
     private boolean sendable;
 
-    @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "user_id")
-    private Notification notification;
-
     public NotificationSetting(NotificationSettingId settingId, Notification notification) {
        this.notificationSettingId = settingId;
-       this.notification = notification;
        this.sendable = true;
     }
 }
