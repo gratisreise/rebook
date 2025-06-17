@@ -1,6 +1,7 @@
 # docker buildx build --platform=linux/amd64,linux/arm64 -t nooaahh/rebook-trading-service --push .
 # docker build -t nooaahh/rebook-trading-service:latest .
 # docker image prune -f
+
 # 1. 빌드 환경
 FROM gradle:8.14.2-jdk17 AS builder
 WORKDIR /app

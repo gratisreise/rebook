@@ -9,6 +9,8 @@ import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.service.TradingReader;
 import com.example.rebooktradingservice.service.TradingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,14 +30,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tradings")
+@Tag(name="거래API")
 public class TradingController {
-    // @RequestHeader("X-User-Id") String userId
-    // @RequestHeader("X-User-Id") String userId
+
     private final TradingService tradingService;
     private final TradingReader tradingReader;
 
 
     @PostMapping
+    @Operation(summary = "거래등록")
     public CommonResult postTrading(@RequestHeader("X-User-Id") String userId, @ModelAttribute TradingRequest request)
         throws IOException {
         tradingService.postTrading(request, userId);
@@ -43,11 +46,13 @@ public class TradingController {
     }
 
     @GetMapping("/{tradingId}")
+    @Operation(summary = "거래상세조회")
     public SingleResult<TradingResponse> getTrading(@PathVariable Long tradingId){
         return ResponseService.getSingleResult(tradingService.getTrading(tradingId));
     }
 
     @PatchMapping("/{tradingId}")
+    @Operation(summary = "거래상태수정")
     public CommonResult updateState(
         @PathVariable Long tradingId,
         @RequestParam State state,
@@ -58,6 +63,7 @@ public class TradingController {
     }
 
     @PutMapping("/{tradingId}")
+    @Operation(summary = "거래수정")
     public CommonResult updateTrading(
         @PathVariable Long tradingId, @RequestHeader("X-User-Id") String userId,
         @ModelAttribute TradingRequest request
@@ -67,6 +73,7 @@ public class TradingController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "거래목록조회")
     public SingleResult<PageResponse<TradingResponse>> getTradings(
         @RequestHeader("X-User-Id") String userId, @PageableDefault Pageable pageable
     ){
@@ -74,18 +81,21 @@ public class TradingController {
     }
 
     @DeleteMapping("/{tradingId}")
+    @Operation(summary = "거래삭제")
     public CommonResult deleteTrading(@PathVariable Long tradingId, @RequestHeader("X-User-Id") String userId){
         tradingService.deleteTrading(tradingId, userId);
         return ResponseService.getSuccessResult();
     }
 
     @GetMapping("/books/{bookId}")
+    @Operation(summary = "모든거래조회")
     public SingleResult<PageResponse<TradingResponse>> getAllTradings(
         @PathVariable Long bookId, @PageableDefault Pageable pageable){
         return ResponseService.getSingleResult(tradingService.getAllTradings(bookId, pageable));
     }
 
     @GetMapping("/recommendations")
+    @Operation(summary = "추천거래목록조회")
     public SingleResult<PageResponse<TradingResponse>> getRecommendations(
         @RequestHeader("X-User-Id") String userId, @PageableDefault Pageable pageable
     ){
