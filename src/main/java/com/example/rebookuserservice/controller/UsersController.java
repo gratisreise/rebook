@@ -10,6 +10,8 @@ import com.example.rebookuserservice.model.UsersUpdateRequest;
 import com.example.rebookuserservice.model.entity.UserBook;
 import com.example.rebookuserservice.model.entity.UserTrading;
 import com.example.rebookuserservice.service.UsersService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -32,15 +34,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "유저API")
 public class UsersController {
     private final UsersService usersService;
 
     @GetMapping
+    @Operation(summary = "유저조회")
     public SingleResult<UsersResponse> getUser(@RequestHeader("X-User-Id")String userId) {
         return ResponseService.getSingleResult(usersService.getUser(userId));
     }
 
     @PutMapping
+    @Operation(summary = "유저수정")
     public CommonResult updateUser(
         @RequestHeader("X-User-Id")String userId,
         @Valid @ModelAttribute UsersUpdateRequest request
@@ -51,12 +56,14 @@ public class UsersController {
     }
 
     @DeleteMapping
+    @Operation(summary = "유저삭제")
     public CommonResult deleteUser(@RequestHeader("X-User-Id")String userId){
         usersService.deleteUser(userId);
         return ResponseService.getSuccessResult();
     }
 
     @PatchMapping("/me")
+    @Operation(summary = "비밀번호수정")
     public CommonResult updatePassword(
         @RequestHeader("X-User-Id")String userId,
         @Valid @RequestBody PasswordUpdateRequest request
@@ -67,18 +74,21 @@ public class UsersController {
     }
 
     @GetMapping("/categories")
+    @Operation(summary = "카테고리목록조회")
     public SingleResult<CategoryResponse> getCategories(@RequestHeader("X-User-Id")String userId) {
         return ResponseService.getSingleResult(usersService.getCategories(userId));
     }
 
     //짬한 도서목록 조회
     @GetMapping("/books")
+    @Operation(summary = "찜한도서조회")
     public SingleResult<Page<UserBook>> getMarkBooks(@RequestHeader("X-User-Id")String userId,  Pageable pageable){
         return ResponseService.getSingleResult(usersService.getMarkBooks(userId, pageable));
     }
 
     //찜한 거래목록 조회
     @GetMapping("/tradings")
+    @Operation(summary = "")
     public SingleResult<Page<UserTrading>> getTradings(
         @RequestHeader("X-User-Id")String userId,  Pageable pageable){
         return ResponseService.getSingleResult(usersService.getMarkTradings(userId, pageable));
