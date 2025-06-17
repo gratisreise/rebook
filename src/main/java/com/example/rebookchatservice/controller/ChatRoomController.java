@@ -5,6 +5,8 @@ import com.example.rebookchatservice.common.ResponseService;
 import com.example.rebookchatservice.common.SingleResult;
 import com.example.rebookchatservice.model.ChatRoomResponse;
 import com.example.rebookchatservice.service.ChatRoomService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/chats")
 @RequiredArgsConstructor
+@Tag(name="채팅방API")
 public class ChatRoomController {
 
     // @RquestParam
@@ -27,6 +30,7 @@ public class ChatRoomController {
 
     //채팅방 생성
     @PostMapping("/{yourId}")
+    @Operation(summary = "채팅방생성")
     public SingleResult<Long> createChatRoom(@RequestHeader("X-User-Id") String myId,
         @PathVariable String yourId) {
         return ResponseService.getSingleResult(chatRoomService.createChatRoom(myId, yourId));
@@ -34,6 +38,7 @@ public class ChatRoomController {
 
     //채팅방 목록조회
     @GetMapping
+    @Operation(summary = "내채팅방조회")
     public SingleResult<PageResponse<ChatRoomResponse>> getMyChatRooms(
         @RequestHeader("X-User-Id") String myId,
         @PageableDefault Pageable pageable) {

@@ -8,7 +8,7 @@ spring:
         - https://yourdomain.com
 
   config:
-    import: "optional:configserver:http://localhost:8888"
+    import: "optional:configserver:http://rebook-config:8888"
 
   profiles:
     active: dev

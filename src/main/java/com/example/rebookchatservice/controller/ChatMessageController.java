@@ -6,6 +6,8 @@ import com.example.rebookchatservice.common.SingleResult;
 import com.example.rebookchatservice.model.ChatMessageRequest;
 import com.example.rebookchatservice.model.ChatMessageResponse;
 import com.example.rebookchatservice.service.ChatMessageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/chats")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "채팅메세지API")
 public class ChatMessageController {
     // @RquestParam
     // @RequestHeader("X-User-Id) String myId
@@ -46,6 +49,7 @@ public class ChatMessageController {
 
     //채팅 메세지 조회
     @GetMapping("/message/{roomId}")
+    @Operation(summary = "채팅메세지조회")
     public SingleResult<PageResponse<ChatMessageResponse>> getRecentMessage(
         @PathVariable Long roomId, @PageableDefault Pageable pageable) {
         return ResponseService.getSingleResult(
