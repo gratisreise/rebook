@@ -32,11 +32,9 @@ public class ChatRoomService {
     }
 
     private boolean isRoomExists(String myId, String yourId) {
-        if (myId.compareTo(yourId) < 0) {
-            return chatRoomRepository.existsByUser1IdAndUser2Id(myId, yourId);
-        } else {
-            return chatRoomRepository.existsByUser1IdAndUser2Id(yourId, myId);
-        }
+        return (myId.compareTo(yourId) < 0) ?
+            chatRoomRepository.existsByUser1IdAndUser2Id(myId, yourId) :
+            chatRoomRepository.existsByUser1IdAndUser2Id(yourId, myId);
     }
 
 

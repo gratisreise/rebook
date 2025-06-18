@@ -7,7 +7,6 @@ import com.example.rebookchatservice.model.ChatMessageRequest;
 import com.example.rebookchatservice.model.ChatMessageResponse;
 import com.example.rebookchatservice.service.ChatMessageService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/chats")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "채팅메세지API")
 public class ChatMessageController {
     // @RquestParam
     // @RequestHeader("X-User-Id) String myId
