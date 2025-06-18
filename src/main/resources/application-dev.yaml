@@ -15,11 +15,11 @@ spring:
           predicates:
             - Path=/api/tradings/**
         - id: rebook-notification
-          uri: http://notification-service:9004
+          uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/api/notifications/**
         - id: rebook-chat
-          uri: http://chat-service:9003
+          uri: lb://CHAT-SERVICE
           predicates:
             - Path=/api/chats/**
       discovery:
@@ -31,6 +31,8 @@ spring:
             allowedOrigins:
               - "http://localhost:3001"
               - "http://host.docker.internal:3001"
+              - "http://localhost:3002"
+              - "http://host.docker.internal:3002"
             allowedMethods:
               - GET
               - POST

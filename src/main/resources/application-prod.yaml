@@ -10,28 +10,26 @@ spring:
             allowedHeaders: "*"
             allowCredentials: true
       routes:
-        - id: rebook-user
-          uri: http://{rebook-user}:8080
+        - id: user-service
+          uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/users/**
+            - Path=/api/users/**, /api/auths/**
         - id: rebook-book
-          uri: http://{rebook-book}:8080
+          uri: lb://BOOK-SERVICE
           predicates:
             - Path=/api/books/**
         - id: rebook-trading
-          uri: http://{rebook-trading}:8080
+          uri: lb://TRADING-SERVICE
           predicates:
             - Path=/api/tradings/**
         - id: rebook-notification
-          uri: http://{rebook-notification}:8080
+          uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/api/notifications/**
         - id: rebook-chat
-          uri: http://{rebook-chat}:8080
+          uri: lb://CHAT-SERVICE
           predicates:
             - Path=/api/chats/**
-
-
 management:
   endpoints:
     web:
