@@ -30,7 +30,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
   instance:
-    prefer-ip-address: ${spring.application.name}:main
+    instance-id: ${spring.application.name}:main
 
 # Actuator 및 모니터링
 management:
