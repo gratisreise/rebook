@@ -17,7 +17,7 @@ spring:
 
   # RabbitMQ 설정
   rabbitmq:
-    host: http://172.31.65.243
+    host: 172.31.65.243
     port: 5672
     username: rebook-admin
     password: "{cipher}45f14f29e5335a6fd7fd0ba53a999972027c800cb0051576ec79982a864d1ae2351f0cb575ac7e64cb1c45c3968a4d93"
