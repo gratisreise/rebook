@@ -1,7 +1,7 @@
 spring:
 # RDS: postgresql
   datasource:
-      url: jdbc:postgresql://rebook-book-db.cdwgag0uefv1.ap-northeast-2.rds.amazonaws.com:5432/rebookbookdb
+      url: jdbc:postgresql://book-db.cdwgag0uefv1.ap-northeast-2.rds.amazonaws.com:5432/rebookbookdb
       username: postgres
       password: "{cipher}10ce8d7223a5d9d531509ce1abc461dcc3fd5f4a199dc256e462bc89c0a8fdb048375b21d763adb92b4a7dbe6f23262e"
       driverClassName: org.postgresql.Driver
