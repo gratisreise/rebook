@@ -5,20 +5,15 @@ spring:
       username: rebook-chat-service-db
       password: "{cipher}8114ce0df7c5477ca2af2d5245eac848c0c3f45e92fb22be087728eb438b7eaf7ccccc49e1fd737538af51e58bb77e12"
       driverClassName: org.postgresql.Driver
-# Redis 설정
+
   data:
     redis:
       host: redis
       port: 6379
       password: "{cipher}3b3cd0ae2be22f2674dd6b7b2abddffb604b1b581256960f2a6d757d208f30391a02b8f5b35a356f7b9a114c1d1b520b"
-
-#mongodb 설정
-  data:
     mongodb:
       host: cluster0.xxxxx.mongodb.net
       port: 27017
       database: mydb
       username: rebook-chat-user
       password: "{cipher}552e3cdfebf43dc228073f9b571770ad0383a57f53e0c278ec3a628f1b54ff83121d0fa251ec4a32778e691c52d4413f"
-
-  
