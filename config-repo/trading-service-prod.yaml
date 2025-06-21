@@ -11,3 +11,7 @@ spring:
       host: redis
       port: 6379
       password: "{cipher}83acdec032924181aaa39e93ff2a7286867f2e8d86eec361cba9910b59954e739cc91b4984a4dd8c6aaf256cc8914e0d"
+
+notification:
+  exchange: trade.notification.exchange
+  routing-key: trade.notification.key
