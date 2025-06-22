@@ -1,7 +1,7 @@
 spring:
 # RDS: postgresql
   datasource:
-      url: jdbc:postgresql://postgresql:5432/rebooknotidb
+      url: jdbc:postgresql://notification-db.cdwgag0uefv1.ap-northeast-2.rds.amazonaws.com:5432/notificationdb
       username: rebook-noti-user
       password: "{cipher}96be085eba17331de2d0aa80f95a097fcd50ef0ff9593a378ba46f5b93143d0b0b11e49141f2341d0bd3ebb51dd5e79e"
       driverClassName: org.postgresql.Driver
