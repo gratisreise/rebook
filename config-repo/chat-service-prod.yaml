@@ -1,7 +1,7 @@
 spring:
 # RDS: postgresql
   datasource:
-      url: jdbc:postgresql://chat-db.cdwgag0uefv1.ap-northeast-2.rds.amazonaws.com:5432/rebookchatdb
+      url: jdbc:postgresql://chat-db.cdwgag0uefv1.ap-northeast-2.rds.amazonaws.com:5432/chatdb
       username: postgres
       password: "{cipher}8114ce0df7c5477ca2af2d5245eac848c0c3f45e92fb22be087728eb438b7eaf7ccccc49e1fd737538af51e58bb77e12"
       driverClassName: org.postgresql.Driver
