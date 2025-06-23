@@ -11,3 +11,15 @@ spring:
       host: redis
       port: 6379
       password: "{cipher}374945401425966b655c0cf4e8a9d086a1cb38e55ca90e785c46d207b2abee4e92a9017bfe46ad54d730030e4d1a3efd"
+
+# Eureka 클라이언트 설정
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.31.73.161:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:main
+    ip-address: 172.31.79.186
+    prefer-ip-address: true

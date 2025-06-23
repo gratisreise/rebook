@@ -22,19 +22,6 @@ spring:
     username: rebook-admin
     password: "{cipher}45f14f29e5335a6fd7fd0ba53a999972027c800cb0051576ec79982a864d1ae2351f0cb575ac7e64cb1c45c3968a4d93"
 
-# Eureka 클라이언트 설정
-eureka:
-  client:
-    service-url:
-      defaultZone: http://172.31.73.161:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    instance-id: ${spring.application.name}:main
-    prefer-ip-address: true
-    
-
-
 # Actuator 및 모니터링
 management:
   endpoints:

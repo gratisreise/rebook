@@ -14,3 +14,15 @@ spring:
 notification:
   exchange: book.notification.exchange
   routing-key: book.notification.key
+
+# Eureka 클라이언트 설정
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.31.73.161:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:main
+    ip-address: 172.31.79.204
+    prefer-ip-address: true
