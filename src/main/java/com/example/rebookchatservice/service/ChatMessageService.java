@@ -72,7 +72,7 @@ public class ChatMessageService {
         messagingTemplate.convertAndSend("/topic/room/" + request.getRoomId(), request);
     }
 
-
+    //마지막으로 읽은날짜 갱신
     public PageResponse<ChatMessageResponse> getRecentMessage(Long roomId, Pageable pageable) {
         Page<ChatMessage> messages = chatMessageRepository.findByRoomId(roomId, pageable);
         Page<ChatMessageResponse> responses = messages.map(ChatMessageResponse::new);

@@ -1,9 +1,11 @@
 package com.example.rebookchatservice.service;
 
+import com.example.rebookchatservice.exception.CMissingDataException;
 import com.example.rebookchatservice.model.entity.ChatReadStatus;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.model.entity.compositekey.ChatReadStatusId;
 import com.example.rebookchatservice.repository.ChatReadStatusRepository;
+import com.example.rebookchatservice.repository.ChatRoomRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class ChatReadStatusService {
     private final ChatReadStatusReader chatReadStatusReader;
     private final ChatMessageReader chatMessageReader;
     private final ChatReadStatusRepository chatReadStatusRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     @Transactional
     public void patchLastRead(Long roomId, String userId) {
@@ -40,7 +43,7 @@ public class ChatReadStatusService {
     }
 
     private ChatReadStatus generateChatReadStatus(String userId, Long roomId) {
-        ChatRoom room = new ChatRoom(roomId);
+        ChatRoom room = chatRoomRepository.findById(roomId).orElseThrow(CMissingDataException::new);
         ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
         return new ChatReadStatus(statusId, room);
     }
