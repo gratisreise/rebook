@@ -3,6 +3,7 @@ package com.example.rebookchatservice.controller;
 import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.common.ResponseService;
 import com.example.rebookchatservice.common.SingleResult;
+import com.example.rebookchatservice.model.ChatRoomRequest;
 import com.example.rebookchatservice.model.ChatRoomResponse;
 import com.example.rebookchatservice.service.ChatRoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,9 +33,10 @@ public class ChatRoomController {
     //채팅방 생성
     @PostMapping("/{yourId}")
     @Operation(summary = "채팅방생성")
-    public SingleResult<Long> createChatRoom(@RequestHeader("X-User-Id") String myId,
-        @PathVariable String yourId) {
-        return ResponseService.getSingleResult(chatRoomService.createChatRoom(myId, yourId));
+    public SingleResult<Long> createChatRoom(
+        @RequestHeader("X-User-Id") String myId,
+        @RequestBody ChatRoomRequest request) {
+        return ResponseService.getSingleResult(chatRoomService.createChatRoom(myId, request));
     }
 
     //채팅방 목록조회

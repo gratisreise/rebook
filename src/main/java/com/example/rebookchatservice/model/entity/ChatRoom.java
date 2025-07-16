@@ -35,11 +35,14 @@ public class ChatRoom {
     @Column(nullable = false, length = 50)
     private String user2Id;
 
+    @Column(nullable = false)
+    private Long tradingId;
+
     @Column(updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public ChatRoom(String user1Id, String user2Id) {
+    public ChatRoom(String user1Id, String user2Id, Long tradingId) {
         if (user1Id.compareTo(user2Id) < 0) {
             this.user1Id = user1Id;
             this.user2Id = user2Id;
@@ -47,9 +50,6 @@ public class ChatRoom {
             this.user1Id = user2Id;
             this.user2Id = user1Id;
         }
-    }
-
-    public ChatRoom(Long roomId) {
-        this.id = roomId;
+        this.tradingId = tradingId;
     }
 }

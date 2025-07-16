@@ -1,6 +1,7 @@
 package com.example.rebookchatservice.service;
 
 import com.example.rebookchatservice.common.PageResponse;
+import com.example.rebookchatservice.model.ChatRoomRequest;
 import com.example.rebookchatservice.model.ChatRoomResponse;
 import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
@@ -20,13 +21,13 @@ public class ChatRoomService {
     private final ChatMessageService chatMessageService;
 
     @Transactional
-    public Long createChatRoom(String myId, String yourId) {
+    public Long createChatRoom(String myId, ChatRoomRequest request) {
+        String yourId = request.getYourId();
         if (isRoomExists(myId, yourId)) {
             //코드변경필요 해당 객체의 아이디 조기 반환하는 걸로 변경
             return chatRoomReader.getChatRoom(myId, yourId).getId();
         }
-
-        ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId));
+        ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId, request.getTradingId()));
         chatReadStatusService.crateChatReadStatus(myId, yourId, chatRoom.getId());
         return chatRoom.getId();
     }
