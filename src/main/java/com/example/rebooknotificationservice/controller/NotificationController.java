@@ -6,6 +6,7 @@ import com.example.rebooknotificationservice.common.ResponseService;
 import com.example.rebooknotificationservice.common.SingleResult;
 import com.example.rebooknotificationservice.model.NotificationResponse;
 import com.example.rebooknotificationservice.service.NotificationService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -30,18 +31,21 @@ public class NotificationController {
 //    }
 
     @GetMapping("/me")
+    @Operation(summary = "내 알림 목록 조회")
     public SingleResult<PageResponse<NotificationResponse>> getNotifications(
         @RequestParam String userId, @PageableDefault Pageable pageable) {
         return ResponseService.getSingleResult(notificationService.getNotifications(userId, pageable));
     }
 
     @PatchMapping("/{notificationId}")
+    @Operation(summary = "알림 읽음")
     public CommonResult readNotification(@PathVariable Long notificationId) {
         notificationService.readNotification(notificationId);
         return ResponseService.getSuccessResult();
     }
 
     @GetMapping("/me/numbers")
+    @Operation(summary = "읽지 않은 알림 갯수")
     public SingleResult<Long> getNotReadNumbers(@RequestParam String userId) {
         return ResponseService.getSingleResult(notificationService.getNotReadNumbers(userId)) ;
     }
