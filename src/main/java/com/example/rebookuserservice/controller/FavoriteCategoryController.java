@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +24,10 @@ public class FavoriteCategoryController {
 
     @PostMapping("/categories")
     @Operation(summary = "선호카테고리등록")
-    public CommonResult postFavoriteCategory(@RequestParam String userId,
+    public CommonResult postFavoriteCategory(@RequestHeader("X-User-Id")String userId,
         @RequestBody CategoryRequest request) {
         favoriteCategoryService.postCategories(userId, request);
         return ResponseService.getSuccessResult();
     }
+
 }

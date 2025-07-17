@@ -21,9 +21,6 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(key.getBytes());
     }
 
-
-
-
     public String createAccessToken(String userId) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + accessTokenValidity);

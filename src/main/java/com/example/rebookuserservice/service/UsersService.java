@@ -83,38 +83,17 @@ public class UsersService {
         return new CategoryResponse(categories);
     }
 
-    public Page<UserBook> getMarkBooks(String userId, Pageable pageable) {
-        //id로 도서 id 조회 페이지 네이션
-        return userBookRepository.findByUserBookIdUserId(userId, pageable);
-
-        //도서 서비스에서 도서목록조회: 리스트로 받고 해당 도서반환
-
-        //도서 목록을 page에 넣고 보내기
-    }
-
-    public Page<UserTrading> getMarkTradings(String userId, Pageable pageable) {
-        //id로 거래 id 목록 페이지네이션
-        return userTradingRepository.findByUserTradingIdUserId(userId, pageable);
-
-
-        //거래 서비스에서 거래목록조회
-
-        //거래 목록을 page에 넣고 보내기
-
-    }
 
     public List<String> getRecommendedCategories(String userId) {
         return getFavoriteCategories(userId);
     }
 
     private List<String> getFavoriteCategories(String userId) {
-        List<String> categories = favoriteCategoryRepository
+        return favoriteCategoryRepository
             .findByFavoriteCategoryIdUserId(userId)
             .stream()
             .map(f -> f.getFavoriteCategoryId().getCategory())
             .toList();
-        log.info("Favorite categories: {}", categories);
-        return categories;
     }
 
 

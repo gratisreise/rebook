@@ -35,14 +35,10 @@ public class AuthService {
 
     @Transactional
     public TokenResponse login(LoginRequest request) {
-        String code = request.getCode();
-        log.info("Login request code: {}", code);
 
-        String keycloakToken = getKeycloakToken(code);
-        log.info("Login request keycloak token: {}", keycloakToken);
-
-        UserInfo userInfo = keycloakJwtUtil.getUserInfo(keycloakToken);
-        log.info("Login request userInfo: {}", userInfo.toString());
+        log.info("LoginRequest : {}", request.toString());
+        UserInfo userInfo = keycloakJwtUtil.getUserInfo(request.getAccessToken());
+        log.info("userInfo: {}", userInfo.toString());
         String userId = userInfo.getUserId();
 
         if(!userRepository.existsById(userId)){
