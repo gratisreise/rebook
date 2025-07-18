@@ -47,8 +47,9 @@ public class TradingController {
 
     @GetMapping("/{tradingId}")
     @Operation(summary = "거래상세조회")
-    public SingleResult<TradingResponse> getTrading(@PathVariable Long tradingId){
-        return ResponseService.getSingleResult(tradingService.getTrading(tradingId));
+    public SingleResult<TradingResponse> getTrading(
+        @RequestHeader("X-User-Id") String userId,@PathVariable Long tradingId){
+        return ResponseService.getSingleResult(tradingService.getTrading(userId, tradingId));
     }
 
     @PatchMapping("/{tradingId}")
@@ -90,8 +91,9 @@ public class TradingController {
     @GetMapping("/books/{bookId}")
     @Operation(summary = "모든거래조회")
     public SingleResult<PageResponse<TradingResponse>> getAllTradings(
+        @RequestHeader("X-User-Id") String userId,
         @PathVariable Long bookId, @PageableDefault Pageable pageable){
-        return ResponseService.getSingleResult(tradingService.getAllTradings(bookId, pageable));
+        return ResponseService.getSingleResult(tradingService.getAllTradings(userId, bookId, pageable));
     }
 
     @GetMapping("/recommendations")
