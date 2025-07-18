@@ -15,6 +15,4 @@ public class UsersUpdateRequest {
     @NotBlank
     @Length(min = 3, max = 20)
     private String nickname;
-
-    private MultipartFile profileImage;
 }

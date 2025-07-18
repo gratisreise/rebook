@@ -1,8 +1,6 @@
 package com.example.rebookuserservice.service;
 
 import com.example.rebookuserservice.exception.CMissingDataException;
-import com.example.rebookuserservice.feigns.KeycloakClient;
-import com.example.rebookuserservice.model.KeycloakRequest;
 import com.example.rebookuserservice.model.LoginRequest;
 import com.example.rebookuserservice.model.RefreshResponse;
 import com.example.rebookuserservice.model.TokenResponse;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AuthService {
     private final UserRepository userRepository;
-    private final KeycloakClient keycloakClient;
     private final KeycloakJwtUtil keycloakJwtUtil;
     private final RedisService redisService;
     private final JwtUtil jwtUtil;
@@ -53,7 +50,8 @@ public class AuthService {
         String refreshToken = jwtUtil.createRefreshToken(userId);
 
         cacheRefreshToken(refreshToken);
-
+        log.info("accessToken: {}", accessToken);
+        log.info("refreshToken: {}", refreshToken);
         return new TokenResponse(accessToken, refreshToken);
     }
 
@@ -68,13 +66,6 @@ public class AuthService {
         String accessToken = jwtUtil.createAccessToken(userId);
 
         return new RefreshResponse(accessToken);
-    }
-
-    private String getKeycloakToken(String code) {
-        KeycloakRequest keycloakRequest = new KeycloakRequest(code);
-        log.info("Get keycloak token request: {}", keycloakRequest);
-        return keycloakClient.getKeycloakToken(keycloakRequest)
-            .getAccessToken();
     }
 
     private void cacheRefreshToken(String refreshToken) {

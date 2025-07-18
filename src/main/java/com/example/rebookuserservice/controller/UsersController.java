@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/users")
@@ -40,14 +42,21 @@ public class UsersController {
         return ResponseService.getSingleResult(usersService.getUser(userId));
     }
 
+    @GetMapping("/{userId}")
+    @Operation(summary = "다른유저조회")
+    public SingleResult<UsersResponse> getUserOther(@PathVariable String userId) {
+        return ResponseService.getSingleResult(usersService.getUserOther(userId));
+    }
+
     @PutMapping
     @Operation(summary = "유저수정")
     public CommonResult updateUser(
         @RequestHeader("X-User-Id")String userId,
-        @Valid @ModelAttribute UsersUpdateRequest request
+        @RequestPart UsersUpdateRequest request,
+        @RequestPart(required = false) MultipartFile file
     ) throws IOException {
         log.info("update user {}", request.toString());
-        usersService.updateUser(userId, request);
+        usersService.updateUser(userId, request, file);
         return ResponseService.getSuccessResult();
     }
 

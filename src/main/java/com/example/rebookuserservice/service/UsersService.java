@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -41,20 +42,27 @@ public class UsersService {
     }
 
     @Transactional
-    public void updateUser(String userId, UsersUpdateRequest request) throws IOException {
+    public void updateUser(String userId, UsersUpdateRequest request, MultipartFile file) throws IOException {
         if(!userRepository.existsById(userId)) {
             throw new CInvalidDataException("존재하지 않는 유저입니다.");
         }
-        Users user = userReader.getUser(userId);
 
-        if(request.getProfileImage() != null) {
-            String imageUrl = s3Service.upload(request.getProfileImage());
+        Users user = userReader.getUser(userId);
+        String newEmail = request.getEmail();
+        String newNickname= request.getNickname();
+
+        if(file != null) {
+            String imageUrl = s3Service.upload(file);
             user.setProfileImage(imageUrl);
             log.info("Image url: {}", imageUrl);
         }
 
-        if(userRepository.existsByEmail(request.getEmail()) || userRepository.existsByNickname(request.getNickname())){
-            throw new CDuplicatedDataException("이메일이나 닉네임이 중복됩니다.");
+        if(!user.getEmail().equals(newEmail) && userRepository.existsByEmail(newEmail)){
+            throw new CDuplicatedDataException("중복된 이메일이 있습니다.");
+        }
+
+        if(!user.getNickname().equals(newNickname) && userRepository.existsByNickname(newNickname)){
+            throw new CDuplicatedDataException("중복된 닉네임이 있습니다.");
         }
 
         Users updatedUser = user.update(request);
@@ -97,4 +105,8 @@ public class UsersService {
     }
 
 
+    public UsersResponse getUserOther(String userId) {
+        Users user = userReader.getUser(userId);
+        return new UsersResponse(user);
+    }
 }
