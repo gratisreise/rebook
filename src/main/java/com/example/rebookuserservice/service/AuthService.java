@@ -1,5 +1,6 @@
 package com.example.rebookuserservice.service;
 
+import com.example.rebookuserservice.clients.NotificationClient;
 import com.example.rebookuserservice.exception.CMissingDataException;
 import com.example.rebookuserservice.model.LoginRequest;
 import com.example.rebookuserservice.model.RefreshResponse;
@@ -23,6 +24,7 @@ public class AuthService {
     private final KeycloakJwtUtil keycloakJwtUtil;
     private final RedisService redisService;
     private final JwtUtil jwtUtil;
+    private final NotificationClient notificationClient;
 
     private String basicName = "닉네임";
     private String refreshPrefix = "refresh:";
@@ -43,7 +45,10 @@ public class AuthService {
             users.setNickname(basicName + userId);
             users.setProfileImage(baseImageUrl);
             userRepository.save(users);
+
             log.info("Save UserInfo: {}", userInfo);
+            //알림설정생성
+            notificationClient.createAllSettings(userId);
         }
 
         String accessToken = jwtUtil.createAccessToken(userId);
@@ -52,6 +57,8 @@ public class AuthService {
         cacheRefreshToken(refreshToken);
         log.info("accessToken: {}", accessToken);
         log.info("refreshToken: {}", refreshToken);
+
+
         return new TokenResponse(accessToken, refreshToken);
     }
 
