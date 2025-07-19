@@ -12,5 +12,4 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     Page<Notification> findByUserId(String userId, Pageable pageable);
 
     Long countByUserIdAndRead(String userId, boolean read);
-    String
 }

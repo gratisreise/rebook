@@ -26,7 +26,7 @@ public class NotificationSetting {
     @Column(nullable = false)
     private boolean sendable;
 
-    public NotificationSetting(NotificationSettingId settingId, Notification notification) {
+    public NotificationSetting(NotificationSettingId settingId) {
        this.notificationSettingId = settingId;
        this.sendable = true;
     }

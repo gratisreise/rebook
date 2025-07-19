@@ -1,7 +1,6 @@
 # docker buildx build --platform=linux/amd64 -t nooaahh/rebook-notification-service --push .
 # docker build -t nooaahh/rebook-notification-service:latest .
 # docker image prune -f
-
 # 1. 빌드 환경
 FROM gradle:8.14.2-jdk17 AS builder
 WORKDIR /app

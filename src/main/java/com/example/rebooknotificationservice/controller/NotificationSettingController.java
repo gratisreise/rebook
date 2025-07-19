@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,13 @@ public class NotificationSettingController {
         @RequestHeader("X-User-Id") String userId) {
         return ResponseService.getListResult(
             notificationSettingService.getAllNotificationSettings(userId));
+    }
+
+    @PostMapping("/me/settings/{userId}")
+    @Operation(summary = "알림설정생성")
+    public CommonResult createNotificationsSettings(@PathVariable String userId){
+        notificationSettingService.createNotificationSetting(userId);
+        return ResponseService.getSuccessResult();
     }
 
     @PatchMapping("/settings")

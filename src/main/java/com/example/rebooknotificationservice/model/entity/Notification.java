@@ -45,7 +45,7 @@ public class Notification {
     private boolean read;
 
     @Column(nullable = false, length = 50)
-    private String relatedId; // 타입이 payment이면 userId
+    private String relatedId; //
 
     @Column(updatable = false)
     @CreatedDate

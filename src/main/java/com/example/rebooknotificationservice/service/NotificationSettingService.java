@@ -19,10 +19,10 @@ public class NotificationSettingService {
 
 
     @Transactional
-    public void createNotificationSetting(Notification notification) {
-        NotificationSettingId settingId = new NotificationSettingId(notification);
-        if(!notificationSettingRepository.existsById(settingId)) {
-            NotificationSetting setting = new NotificationSetting(settingId, notification);
+    public void createNotificationSetting(String userId) {
+        for(Type type : Type.values()){
+            NotificationSettingId settingId = new NotificationSettingId(userId, type);
+            NotificationSetting setting = new NotificationSetting(settingId);
             notificationSettingRepository.save(setting);
         }
     }

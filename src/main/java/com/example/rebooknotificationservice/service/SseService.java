@@ -29,21 +29,13 @@ public class SseService {
     public void receiveBookNotification(@Valid NotificationBookMessage message) {
 
         List<String> userIds = userClient.findUserIdsByCategory(message.getCategory());
-
-        userIds.forEach(userId -> {
-            notificationService.createBookNotification(message, userId);
-            sendNotification(message, userId);
-        });
+        userIds.forEach(userId -> sendNotification(message, userId));
     }
 
     @RabbitListener(queues = "trade.notification.queue")
     public void receiveTradeNotification(@Valid NotificationTradeMessage message) {
         List<String> userIds = userClient.findUserIdsByMarkedBook(message.getBookId());
-
-        userIds.forEach(userId -> {
-            notificationService.createTradeNotification(message, userId);
-            sendNotification(message, userId);
-        });
+        userIds.forEach(userId ->sendNotification(message, userId));
     }
 
     @RabbitListener(queues = "chat.notification.queue")

@@ -29,21 +29,18 @@ public class NotificationService {
     @Transactional
     public void createBookNotification(NotificationBookMessage message, String userId) throws CMissingDataException {
         Notification notification = new Notification(message, userId);
-        notificationSettingService.createNotificationSetting(notification);
         notificationRepository.save(notification);
     }
 
     @Transactional
     public void createChatNotification(NotificationChatMessage message) throws CMissingDataException {
         Notification notification = new Notification(message);
-        notificationSettingService.createNotificationSetting(notification);
         notificationRepository.save(notification);
     }
 
     @Transactional
     public void createTradeNotification(NotificationTradeMessage message, String userId) throws CMissingDataException {
         Notification notification = new Notification(message, userId);
-        notificationSettingService.createNotificationSetting(notification);
         notificationRepository.save(notification);
     }
 
