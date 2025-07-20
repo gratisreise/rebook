@@ -46,7 +46,8 @@ public class ChatRoomService {
 
     public PageResponse<ChatRoomResponse> getMyChatRooms(String myId, Pageable pageable) {
         Page<ChatRoom> rooms = chatRoomReader.getChatRooms(myId, pageable);
-        Page<ChatRoomResponse> roomResponses = rooms.map(ChatRoomResponse::new);
+        Page<ChatRoomResponse> roomResponses = rooms.map(content ->
+            new ChatRoomResponse(content, myId));
         roomResponses.getContent().forEach(res -> {
             long unreadCount = chatMessageService.getUnreadCount(myId, res.getId());
             res.setUnreadCount(unreadCount);

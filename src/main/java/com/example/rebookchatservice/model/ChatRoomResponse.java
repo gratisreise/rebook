@@ -9,15 +9,16 @@ import lombok.Setter;
 @Setter
 public class ChatRoomResponse {
     private Long id;
-    private String user1Id;
-    private String user2Id;
+    private String myId;
+    private String yourId;
     private LocalDateTime createdAt;
     private Long unreadCount;
 
-    public ChatRoomResponse(ChatRoom chatRoom) {
+    public ChatRoomResponse(ChatRoom chatRoom, String myId) {
         this.id = chatRoom.getId();
-        this.user1Id = chatRoom.getUser1Id();
-        this.user2Id = chatRoom.getUser2Id();
+        this.myId = chatRoom.getUser1Id();
+        this.yourId = myId.equals(chatRoom.getUser1Id())
+            ? chatRoom.getUser2Id() : chatRoom.getUser1Id();
         this.createdAt = chatRoom.getCreatedAt();
     }
 }
