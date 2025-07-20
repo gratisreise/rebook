@@ -46,9 +46,3 @@ management:
     web:
       exposure:
         include: "*" # 개발환경전부 보기
-
-cors:
-  allow:
-    origins:
-      - http://host.docker.internal:5173
-      - http://host.dockerinternal:3000

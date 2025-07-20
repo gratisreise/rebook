@@ -1,23 +1,18 @@
 # 포트설정(다중 서버)
 server:
   port: 8080
-springfox:
-  documentation:
-    enabled: false
+
 spring:
   # jpa 설정
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update 
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+    show-sql: false
 
   # RabbitMQ 설정
   rabbitmq:
-    host: 172.31.65.243
+    host: rabbitmq
     port: 5672
     username: rebook-admin
     password: "{cipher}45f14f29e5335a6fd7fd0ba53a999972027c800cb0051576ec79982a864d1ae2351f0cb575ac7e64cb1c45c3968a4d93"
@@ -28,10 +23,8 @@ management:
     web:
       exposure:
         include: health,info,prometheus # prometheus, health, info 엔드포인트 노출
-  
-# 로깅 설정 (예시)
-logging:
-  level:
-    root: INFO
-    org.springframework: INFO
-    org.hibernate.SQL: WARN
+
+# api-cods 설정
+springdoc:
+  api-docs:
+    enabled: false
