@@ -10,14 +10,14 @@ import lombok.Setter;
 public class ChatMessageResponse {
     private String type; // ENTER, CHAT, LEAVE
     private Long roomId;
-    private String sender;
+    private String senderId;
     private String message;
     private LocalDateTime sendAt;
 
     public ChatMessageResponse(ChatMessage chatMessage) {
         this.type = chatMessage.getType();
         this.roomId = chatMessage.getRoomId();
-        this.sender = chatMessage.getSender();
+        this.senderId = chatMessage.getSenderId();
         this.message = chatMessage.getMessage();
         this.sendAt = chatMessage.getSendAt();
     }

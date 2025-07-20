@@ -27,7 +27,7 @@ public class ChatMessageService {
     private final NotificationPublisher notificationPublisher;
 
     public void enterEvent(ChatMessageRequest request) {
-        // 입장메세지
+        // 입장
         request.setMessage(request.getSender() + "님이 입장하셨습니다.");
         request.setType("ENTER");
 
@@ -42,7 +42,7 @@ public class ChatMessageService {
 
     @Transactional
     public void receiveMessage(ChatMessageRequest request) {
-        log.info("request received: {}", request);
+        log.info("request received: {}", request.toString());
         // 1. 메시지 저장 (DB, MongoDB 등)
         saveMessage(request);
 

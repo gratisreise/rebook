@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "chatting")
@@ -20,7 +21,6 @@ public class ChatMessage {
     private String id; // MongoDB의 _id 필드와 매핑
     private String type; // ENTER, CHAT, LEAVE
     private Long roomId;
-    private String sender;
     private String senderId;
     private String message;
     @CreatedDate
@@ -29,7 +29,6 @@ public class ChatMessage {
     public ChatMessage(ChatMessageRequest request) {
         this.type = request.getType();
         this.roomId = request.getRoomId();
-        this.sender = request.getSender();
         this.senderId = request.getSenderId();
         this.message = request.getMessage();
     }

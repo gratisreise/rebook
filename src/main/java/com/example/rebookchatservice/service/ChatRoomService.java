@@ -1,6 +1,7 @@
 package com.example.rebookchatservice.service;
 
 import com.example.rebookchatservice.common.PageResponse;
+import com.example.rebookchatservice.exception.CDuplicatedDataException;
 import com.example.rebookchatservice.model.ChatRoomRequest;
 import com.example.rebookchatservice.model.ChatRoomResponse;
 import com.example.rebookchatservice.model.entity.ChatRoom;
@@ -23,8 +24,11 @@ public class ChatRoomService {
     @Transactional
     public Long createChatRoom(String myId, ChatRoomRequest request) {
         String yourId = request.getYourId();
+        if(yourId.equals(myId)){
+            throw new CDuplicatedDataException("같은유저입니다.");
+        }
         if (isRoomExists(myId, yourId)) {
-            //코드변경필요 해당 객체의 아이디 조기 반환하는 걸로 변경
+            //코드변경필요 해당  객체의 아이디 조기 반환하는 걸로 변경
             return chatRoomReader.getChatRoom(myId, yourId).getId();
         }
         ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom(myId, yourId, request.getTradingId()));

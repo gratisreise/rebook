@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+rebook-chat-service-api.postman_collection.json
+CLAUDE.md
+Rebook_chat-service.json
+GEMINI.md

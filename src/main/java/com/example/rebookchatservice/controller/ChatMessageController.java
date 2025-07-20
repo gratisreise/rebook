@@ -7,6 +7,7 @@ import com.example.rebookchatservice.model.ChatMessageRequest;
 import com.example.rebookchatservice.model.ChatMessageResponse;
 import com.example.rebookchatservice.service.ChatMessageService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -27,13 +28,13 @@ public class ChatMessageController {
 
     //채팅방 입장
     @MessageMapping("/api/chats/enter")
-    public void enterChat(ChatMessageRequest chatMessage) {
+    public void enterChat(@Valid ChatMessageRequest chatMessage) {
         chatMessageService.enterEvent(chatMessage);
     }
 
     // 메시지 수신 및 저장, 브로드캐스트
     @MessageMapping("/api/chats/message")
-    public void receiveMessage(ChatMessageRequest request) {
+    public void receiveMessage(@Valid ChatMessageRequest request) {
         chatMessageService.receiveMessage(request);
     }
 

@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name="채팅방API")
 public class ChatRoomController {
 
-    // @RquestParam
-    // @RequestHeader("X-User-Id) String myId
-
     private final ChatRoomService chatRoomService;
 
     //채팅방 생성
