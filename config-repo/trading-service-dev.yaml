@@ -3,5 +3,5 @@ server:
   port: 9002
 
 notification:
-  exchange: "{cipher}9d2be06e9a5cfb3e76323c4ba136047f0a26235292f724e004345484ee04abe63b438fb3665efab8ecd829586b7d30e8"
-  routing-key: "{cipher}12d08193dfabe1464b8be576f33f09239a3ef9730f6491f99980f1b84df08a7b0f80d0ba53b58cdfd383c105d9468605"
+  exchange: trade.notification.exchange
+  routing-key: trade.notification.key
