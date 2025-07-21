@@ -36,6 +36,7 @@ public class NotificationSettingService {
     @Transactional
     public void toggleNotificationSetting(Type type, String userId) {
         NotificationSetting setting = notificationSettingReader.findById(type, userId);
-        setting.setSendable(!setting.isSendable());
+        boolean change = !setting.isSendable();
+        setting.setSendable(change);
     }
 }

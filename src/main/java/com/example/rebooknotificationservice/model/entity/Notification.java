@@ -3,7 +3,6 @@ package com.example.rebooknotificationservice.model.entity;
 import com.example.rebooknotificationservice.enums.Type;
 import com.example.rebooknotificationservice.model.message.NotificationBookMessage;
 import com.example.rebooknotificationservice.model.message.NotificationChatMessage;
-import com.example.rebooknotificationservice.model.message.NotificationMessage;
 import com.example.rebooknotificationservice.model.message.NotificationTradeMessage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

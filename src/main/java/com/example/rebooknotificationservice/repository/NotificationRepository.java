@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
     Page<Notification> findByUserId(String userId, Pageable pageable);
-
-    Long countByUserIdAndRead(String userId, boolean read);
+    Page<Notification> findByUserIdAndReadFalse(String userId, Pageable pageable);
+    Long countByUserIdAndReadFalse(String userId);
 }

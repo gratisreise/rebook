@@ -1,5 +1,6 @@
 package com.example.rebooknotificationservice.service;
 
+import com.example.rebooknotificationservice.feigns.BookClient;
 import com.example.rebooknotificationservice.feigns.UserClient;
 import com.example.rebooknotificationservice.model.message.NotificationBookMessage;
 import com.example.rebooknotificationservice.model.message.NotificationChatMessage;
@@ -11,35 +12,48 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SseService {
 
     // 클라이언트별 Emitter 관리
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final NotificationService notificationService;
+    private final BookClient bookClient;
     private final UserClient userClient;
 
-    // 알림 메시지 RabbitMq에서 수신
+    // 알림 메시지 RabbitMsq에서 수신
     @RabbitListener(queues = "book.notification.queue")
     public void receiveBookNotification(@Valid NotificationBookMessage message) {
-
-        List<String> userIds = userClient.findUserIdsByCategory(message.getCategory());
-        userIds.forEach(userId -> sendNotification(message, userId));
+        log.info("도서알림진행중");
+        List<String> userIds = userClient.getUserIdsByCategory(message.getCategory());
+        log.info("아이디받음");
+        userIds.forEach(userId -> {
+            notificationService.createBookNotification(message, userId);
+            sendNotification(message, userId);
+        });
     }
 
     @RabbitListener(queues = "trade.notification.queue")
     public void receiveTradeNotification(@Valid NotificationTradeMessage message) {
-        List<String> userIds = userClient.findUserIdsByMarkedBook(message.getBookId());
-        userIds.forEach(userId ->sendNotification(message, userId));
+        long bookId = Long.parseLong(message.getBookId());
+        List<String> userIds = bookClient.getUserIdsByBookId(bookId);
+        log.info("거래알림진행중");
+        userIds.forEach(userId -> {
+            notificationService.createTradeNotification(message, userId);
+            sendNotification(message, userId);
+        });
     }
 
     @RabbitListener(queues = "chat.notification.queue")
     public void receiveChatNotification(@Valid NotificationChatMessage message) {
+        log.info("채팅알람메세지 {}", message.toString());
         notificationService.createChatNotification(message);
         sendNotification(message, message.getUserId());
     }

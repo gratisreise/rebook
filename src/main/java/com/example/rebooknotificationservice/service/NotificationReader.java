@@ -3,6 +3,7 @@ package com.example.rebooknotificationservice.service;
 import com.example.rebooknotificationservice.exception.CMissingDataException;
 import com.example.rebooknotificationservice.model.entity.Notification;
 import com.example.rebooknotificationservice.repository.NotificationRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ public class NotificationReader {
     private final NotificationRepository notificationRepository;
 
     public Page<Notification> getNotifications(String userId, Pageable pageable){
-        return notificationRepository.findByUserId(userId, pageable);
+        return notificationRepository.findByUserIdAndReadFalse(userId, pageable);
     }
 
     public Notification findById(Long id){
@@ -26,6 +27,6 @@ public class NotificationReader {
 
 
     public Long getNotReadNumbers(String userId) {
-        return notificationRepository.countByUserIdAndRead(userId, false);
+        return notificationRepository.countByUserIdAndReadFalse(userId);
     }
 }
