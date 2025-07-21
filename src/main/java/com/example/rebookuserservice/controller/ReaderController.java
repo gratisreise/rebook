@@ -7,10 +7,8 @@ import com.example.rebookuserservice.service.UserReader;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +32,8 @@ public class ReaderController {
 
     @GetMapping("/alarms/books")
     @Operation(summary = "유저id목록조회")
-    public  List<String> findUserIdsByCategory(@RequestParam String category) {
-        return favoriteCategoryReader.findByCategory(category);
-    }
-
-    @GetMapping("/alarms/trades/{bookId}")
-    @Operation(summary = "찜한도서목록조회")
-    public  List<String> findUserIdsByMarkedBook(@PathVariable Long bookId) {
-        return userBookService.getUserIdsByBookId(bookId);
+    public  List<String> getUserIdsByCategory(@RequestParam String category) {
+        return favoriteCategoryReader.findUserIdsByCategory(category);
     }
 
 }

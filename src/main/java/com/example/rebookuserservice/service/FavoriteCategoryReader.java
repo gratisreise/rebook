@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 public class FavoriteCategoryReader {
     private final FavoriteCategoryRepository favoriteCategoryRepository;
 
-    public List<String> findByCategory(String category){
-        return favoriteCategoryRepository
-            .findByFavoriteCategoryIdCategory(category)
-            .stream()
-            .map(data -> data.getFavoriteCategoryId().getCategory())
-            .toList();
+    public List<String> findUserIdsByCategory(String category) {
+        return favoriteCategoryRepository.findUserIdsByCategory(category);
     }
 }
