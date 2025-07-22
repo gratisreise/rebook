@@ -12,4 +12,5 @@ public class TestController {
     public CommonResult test(){
         return ResponseService.getSuccessResult();
     }
+
 }

@@ -3,7 +3,7 @@ package com.example.rebookchatservice.service;
 import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.model.ChatMessageRequest;
 import com.example.rebookchatservice.model.ChatMessageResponse;
-import com.example.rebookchatservice.model.NotificationMessage;
+import com.example.rebookchatservice.model.message.NotificationChatMessage;
 import com.example.rebookchatservice.model.entity.ChatMessage;
 import com.example.rebookchatservice.repository.ChatMessageRepository;
 import com.example.rebookchatservice.utils.NotificationPublisher;
@@ -47,9 +47,9 @@ public class ChatMessageService {
         saveMessage(request);
 
         // 2. rabbitmq 메세지 발행
-        String message  = "새로운 채팅이 도착했습니다.";
-        NotificationMessage notificationMessage = new NotificationMessage(request, message);
-        notificationPublisher.sendNotification(notificationMessage);
+        String message = "새로운 채팅이 도착했습니다.";
+        NotificationChatMessage notificationChatMessage = new NotificationChatMessage(request, message);
+        notificationPublisher.sendNotification(notificationChatMessage);
 
         // 3. 해당 채팅방 구독자들에게 메시지 전송
         String destination = "/topic/room/" + request.getRoomId();
@@ -82,6 +82,7 @@ public class ChatMessageService {
     public long getUnreadCount(String myId, Long roomId) {
         //마지막 읽은 날짜 확인
         LocalDateTime lastRead = chatReadStatusService.getLastRead(myId, roomId);
+        log.info("last read: {}", lastRead);
         //해당 날짜 이후 메세지 숫자 반환
         return chatMessageRepository.countByRoomIdAndSendAtAfter(roomId, lastRead);
     }

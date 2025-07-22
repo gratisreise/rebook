@@ -8,11 +8,13 @@ import com.example.rebookchatservice.repository.ChatReadStatusRepository;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatReadStatusService {
 
     private final ChatReadStatusReader chatReadStatusReader;
@@ -22,9 +24,13 @@ public class ChatReadStatusService {
 
     @Transactional
     public void patchLastRead(Long roomId, String userId) {
+        log.info("마지막읽은날짜 시작");
         ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
+        log.info("statusId {}", statusId.toString());
         ChatReadStatus readStatus = chatReadStatusReader.findById(statusId);
+        log.info("readStaus {}", readStatus.toString());
         LocalDateTime lastRead = chatMessageReader.lastMessageTime(roomId);
+        log.info("lastReadTime: {}", lastRead.toString());
         readStatus.setLastRead(lastRead);
     }
 
