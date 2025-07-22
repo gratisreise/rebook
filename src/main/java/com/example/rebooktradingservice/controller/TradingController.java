@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,9 +41,12 @@ public class TradingController {
 
     @PostMapping
     @Operation(summary = "거래등록")
-    public CommonResult postTrading(@RequestHeader("X-User-Id") String userId, @ModelAttribute TradingRequest request)
+    public CommonResult postTrading(
+        @RequestHeader("X-User-Id") String userId,
+        @RequestPart TradingRequest request,
+        @RequestPart MultipartFile file)
         throws IOException {
-        tradingService.postTrading(request, userId);
+        tradingService.postTrading(request, userId, file);
         return ResponseService.getSuccessResult();
     }
 
@@ -67,9 +72,10 @@ public class TradingController {
     @Operation(summary = "거래수정")
     public CommonResult updateTrading(
         @PathVariable Long tradingId, @RequestHeader("X-User-Id") String userId,
-        @ModelAttribute TradingRequest request
+        @RequestPart TradingRequest request,
+        @RequestPart(required = false) MultipartFile file
     ) throws IOException {
-        tradingService.updateTrading(request, userId, tradingId);
+        tradingService.updateTrading(request, userId, tradingId, file);
         return ResponseService.getSuccessResult();
     }
 

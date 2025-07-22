@@ -38,7 +38,7 @@ public class Trading {
     @Column(nullable = false)
     private String userId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String title;
 
     @Column(nullable = false, length = 800)
@@ -75,12 +75,11 @@ public class Trading {
         this.state = request.getState();
     }
 
-    public void update(TradingRequest request, String imageUrl, String userId) {
+    public void update(TradingRequest request, String userId) {
         this.bookId = request.getBookId();
         this.userId = userId;
         this.title = request.getTitle();
         this.content = request.getContent();
-        this.imageUrl = imageUrl;
         this.rating = request.getRating();
         this.price = request.getPrice();
         this.state = request.getState();

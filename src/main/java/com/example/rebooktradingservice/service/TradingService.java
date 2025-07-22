@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -36,8 +37,8 @@ public class TradingService {
     private final ResponseService responseService;
 
     @Transactional
-    public void postTrading(TradingRequest request, String userId) throws IOException {
-        String imageUrl =  s3Service.upload(request.getImage());
+    public void postTrading(TradingRequest request, String userId, MultipartFile file) throws IOException {
+        String imageUrl =  s3Service.upload(file);
         Trading trading = new Trading(request, imageUrl, userId);
         tradingRepository.save(trading);
 
@@ -65,7 +66,7 @@ public class TradingService {
     }
 
     @Transactional
-    public void updateTrading(TradingRequest request, String userId, Long tradingId)
+    public void updateTrading(TradingRequest request, String userId, Long tradingId, MultipartFile file)
         throws IOException {
         Trading trading = tradingReader.findById(tradingId);
         if(!trading.getUserId().equals(userId)) {
@@ -78,8 +79,13 @@ public class TradingService {
                 new NotificationTradeMessage(tradingId, content, request.getBookId());
             publisher.sendNotification(message);
         }
-        String imageUrl = s3Service.upload(request.getImage());
-        trading.update(request, imageUrl, userId);
+
+        if(file != null){
+            String imageUrl = s3Service.upload(file);
+            trading.setImageUrl(imageUrl);
+        }
+
+        trading.update(request, userId);
     }
 
     public PageResponse<TradingResponse> getTradings(String userId, Pageable pageable) {

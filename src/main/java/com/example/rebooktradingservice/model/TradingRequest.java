@@ -19,7 +19,7 @@ public class TradingRequest {
     private Long bookId;
 
     @NotBlank
-    @Length(min = 3, max = 30)
+    @Length(min = 3, max = 100)
     private String title;
 
     @NotBlank
@@ -36,6 +36,4 @@ public class TradingRequest {
     @NotNull
     private State state;
 
-    @NotNull
-    private MultipartFile image;
 }
