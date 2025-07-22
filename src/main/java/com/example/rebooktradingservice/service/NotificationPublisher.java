@@ -1,6 +1,6 @@
 package com.example.rebooktradingservice.service;
 
-import com.example.rebooktradingservice.model.NotificationMessage;
+import com.example.rebooktradingservice.model.message.NotificationTradeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,7 @@ public class NotificationPublisher {
     private String routingKey;
 
 
-    public void sendNotification(NotificationMessage message) {
+    public void sendNotification(NotificationTradeMessage message) {
         amqpTemplate.convertAndSend(exchange, routingKey, message);
     }
 }

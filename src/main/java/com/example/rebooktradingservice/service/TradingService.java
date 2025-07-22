@@ -6,7 +6,7 @@ import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.exception.CMissingDataException;
 import com.example.rebooktradingservice.exception.CUnauthorizedException;
 import com.example.rebooktradingservice.feigns.BookClient;
-import com.example.rebooktradingservice.model.NotificationMessage;
+import com.example.rebooktradingservice.model.message.NotificationTradeMessage;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
@@ -40,9 +40,11 @@ public class TradingService {
         String imageUrl =  s3Service.upload(request.getImage());
         Trading trading = new Trading(request, imageUrl, userId);
         tradingRepository.save(trading);
+
         //거래생성 메세지 발행
         String content = "찜한 도서의 새로운 거래가 등록되었습니다.";
-        NotificationMessage message = new NotificationMessage(request.getBookId(), trading.getId(), content);
+        NotificationTradeMessage message = new NotificationTradeMessage(trading.getId(), content, request.getBookId());
+        log.info("메세지 전송완료");
         publisher.sendNotification(message);
     }
 
@@ -72,8 +74,8 @@ public class TradingService {
         }
         if(request.getPrice() != trading.getPrice()) {
             String content = "찜한 제품의 가격이 변동되었습니다.";
-            NotificationMessage message =
-                new NotificationMessage(tradingId, content, request.getBookId());
+            NotificationTradeMessage message =
+                new NotificationTradeMessage(tradingId, content, request.getBookId());
             publisher.sendNotification(message);
         }
         String imageUrl = s3Service.upload(request.getImage());

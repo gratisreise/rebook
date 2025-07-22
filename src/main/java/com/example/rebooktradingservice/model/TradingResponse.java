@@ -28,6 +28,7 @@ public class TradingResponse {
         this.userId = trading.getUserId();
         this.title = trading.getTitle();
         this.content = trading.getContent();
+        this.rating = trading.getRating();
         this.price = trading.getPrice();
         this.state = trading.getState();
         this.imageUrl = trading.getImageUrl();
