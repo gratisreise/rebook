@@ -21,7 +21,12 @@ spring:
         - id: rebook-chat
           uri: lb://CHAT-SERVICE
           predicates:
-            - Path=/api/chats/**
+            - Path=/api/chats/**, /ws-chat/**
+        - id: rebook-chat-ws
+          uri: lb:ws://CHAT-SERVICE
+          predicates:
+            - Path=/ws-chat/**
+            - Header=Upgrade, websocket
       discovery:
         locator:
           enabled: true
@@ -29,10 +34,8 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - "http://localhost:3001"
-              - "http://host.docker.internal:3001"
-              - "http://localhost:3002"
-              - "http://host.docker.internal:3002"
+              - "http://localhost:5173"
+              - "http://host.docker.internal:5173"
             allowedMethods:
               - GET
               - POST

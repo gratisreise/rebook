@@ -1,9 +1,10 @@
 package com.example.rebookgateway;
 
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -26,7 +27,17 @@ public class CustomFilter implements GlobalFilter, Ordered {
         if (uri.contains("/api/auths")) {
             return chain.filter(exchange);
         }
+        if(uri.contains("/ws-chat")){
+            return webSocketConnect(exchange, chain);
+        }
+
+
         String token = getToken(exchange);
+        if(token.isBlank()){ // sse 연결
+            Map<String, String> params = exchange.getRequest().getQueryParams().toSingleValueMap();
+            token = params.get("token");
+            log.info("sse토큰:{}", token);
+        }
         log.info("token: {}", token);
         if (token.isBlank() || !jwtUtil.validateToken(token)) {
             log.error("토큰이 없거나 유효하지 않음");
@@ -42,6 +53,19 @@ public class CustomFilter implements GlobalFilter, Ordered {
         ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
         log.info("Mutated Exchange: {}", mutatedExchange);
         return chain.filter(mutatedExchange);
+    }
+
+    private Mono<Void> webSocketConnect(ServerWebExchange exchange, GatewayFilterChain chain) {
+        Map<String, String> params = exchange.getRequest().getQueryParams().toSingleValueMap();
+        String token = params.get("token");
+        log.info("웹소켓연결");
+
+        if (token != null && !jwtUtil.validateToken(token)) {
+            log.error("토큰이 없거나 유효하지 않음");
+            return onError(exchange, "Token Not Found", HttpStatus.UNAUTHORIZED);
+        }
+
+        return chain.filter(exchange);
     }
 
     private String getToken(ServerWebExchange exchange) {

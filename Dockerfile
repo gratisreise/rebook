@@ -1,4 +1,4 @@
-# docker buildx build --platform=linux/amd64,linux/arm64 -t nooaahh/rebook-gateway --push .
+# docker buildx build --platform=linux/amd64 -t nooaahh/rebook-gateway --push .
 # docker build -t nooaahh/rebook-gateway:latest .
 # docker image prune -f
 
@@ -12,15 +12,17 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 
+# 종속성 다운로드
 RUN chmod +x ./gradlew && ./gradlew dependencies --no-daemon
 
+# 소스 코드 복사
 COPY src src
 
 # 테스트 실행 및 빌드 (bootJar 생성)
 RUN ./gradlew bootJar --no-daemon
 
 # 2단계: 실행 환경
-FROM openjdk:17-slim
+FROM gcr.io/distroless/java17-debian11
 WORKDIR /app
 
 # 빌드 단계에서 생성된 jar 복사

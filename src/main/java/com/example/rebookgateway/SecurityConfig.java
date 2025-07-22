@@ -20,7 +20,8 @@ public class SecurityConfig {
         "/api/books/**",
         "/api/tradings/**",
         "/api/chats/**",
-        "/api/notifications/**"
+        "/api/notifications/**",
+        "/ws-chat/**"
     };
 
     @Bean
