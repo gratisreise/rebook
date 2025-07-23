@@ -25,26 +25,20 @@ public class TradingUserService {
 
     @Transactional
     public void tradingMark(String userId, Long tradingId) {
-        if(!tradingRepository.existsById(tradingId)){
-            tradingRepository.deleteById(tradingId);
+        TradingUserId tradingUserId = new TradingUserId(tradingId, userId);
+        if(!tradingRepository.existsById(tradingId)){//없으면
+            tradingUserRepository.deleteById(tradingUserId);// 삭제
             return;
         }
-        TradingUserId tradingUserId = new TradingUserId(tradingId, userId);
-        Trading trading = tradingRepository.findById(tradingId)
-            .orElseThrow(CMissingDataException::new);
-        TradingUser tradingUser = new TradingUser(tradingUserId, trading);
-        tradingUserRepository.save(tradingUser);
-    }
-
-    @Transactional
-    public void tradingUnMark(String userId, Long tradingId) {
-        if(!tradingRepository.existsById(tradingId)){
-            throw new CMissingDataException("Trading not found");
+        if(tradingUserRepository.existsById(tradingUserId)){ // 마킹 -> 언마킹
+            tradingUserRepository.deleteById(tradingUserId);
+        } else { // 언마킹 -> 마킹
+            Trading trading = tradingRepository.findById(tradingId)
+                .orElseThrow(CMissingDataException::new);
+            TradingUser tradingUser = new TradingUser(tradingUserId, trading);
+            tradingUserRepository.save(tradingUser);
         }
-        TradingUserId tradingUserId = new TradingUserId(tradingId, userId);
-        tradingUserRepository.deleteById(tradingUserId);
     }
-
 
     public Page<TradingResponse> getMarkedTradings(String userId, Pageable pageable) {
         Page<Trading> markedTradings = tradingUserRepository.findTradingByUserId(userId, pageable);
