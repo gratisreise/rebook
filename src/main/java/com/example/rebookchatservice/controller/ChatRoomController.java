@@ -1,5 +1,6 @@
 package com.example.rebookchatservice.controller;
 
+import com.example.rebookchatservice.common.CommonResult;
 import com.example.rebookchatservice.common.PageResponse;
 import com.example.rebookchatservice.common.ResponseService;
 import com.example.rebookchatservice.common.SingleResult;
@@ -10,8 +11,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.repository.Update;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,4 +47,6 @@ public class ChatRoomController {
         @PageableDefault Pageable pageable) {
         return ResponseService.getSingleResult(chatRoomService.getMyChatRooms(myId, pageable));
     }
+
+
 }

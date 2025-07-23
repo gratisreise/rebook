@@ -6,7 +6,9 @@ import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.model.entity.compositekey.ChatReadStatusId;
 import com.example.rebookchatservice.repository.ChatReadStatusRepository;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
+import java.lang.instrument.ClassDefinition;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,18 +28,19 @@ public class ChatReadStatusService {
     public void patchLastRead(Long roomId, String userId) {
         log.info("마지막읽은날짜 시작");
         ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
-        log.info("statusId {}", statusId.toString());
         ChatReadStatus readStatus = chatReadStatusReader.findById(statusId);
-        log.info("readStaus {}", readStatus.toString());
-        LocalDateTime lastRead = chatMessageReader.lastMessageTime(roomId);
-        log.info("lastReadTime: {}", lastRead.toString());
+        ZoneId seoulZone = ZoneId.of("Asia/Seoul");
+        LocalDateTime lastRead = LocalDateTime.now(seoulZone);
+        log.info("lastReadTime: {}", lastRead);
         readStatus.setLastRead(lastRead);
     }
 
     @Transactional
     public void crateChatReadStatus(String myId, String yourId, Long roomId) {
-        ChatReadStatus readStatus1 = generateChatReadStatus(myId, roomId);
-        ChatReadStatus readStatus2 = generateChatReadStatus(yourId, roomId);
+        ZoneId seoulZone = ZoneId.of("Asia/Seoul");
+        LocalDateTime lastRead = LocalDateTime.now(seoulZone);
+        ChatReadStatus readStatus1 = generateChatReadStatus(myId, roomId, lastRead);
+        ChatReadStatus readStatus2 = generateChatReadStatus(yourId, roomId, lastRead);
         chatReadStatusRepository.save(readStatus1);
         chatReadStatusRepository.save(readStatus2);
     }
@@ -48,9 +51,9 @@ public class ChatReadStatusService {
         return readStatus.getLastRead();
     }
 
-    private ChatReadStatus generateChatReadStatus(String userId, Long roomId) {
+    private ChatReadStatus generateChatReadStatus(String userId, Long roomId, LocalDateTime lastRead) {
         ChatRoom room = chatRoomRepository.findById(roomId).orElseThrow(CMissingDataException::new);
         ChatReadStatusId statusId = new ChatReadStatusId(roomId, userId);
-        return new ChatReadStatus(statusId, room);
+        return new ChatReadStatus(statusId, room, lastRead);
     }
 }

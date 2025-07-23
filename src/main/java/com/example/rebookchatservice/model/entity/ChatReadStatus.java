@@ -14,21 +14,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @EntityListeners(AuditingEntityListener.class)
 public class ChatReadStatus {
 
     @EmbeddedId
     ChatReadStatusId id;
 
-    @Column(nullable = false, updatable = false)
-    @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime lastRead;
 
     @MapsId("roomId")
@@ -36,7 +35,8 @@ public class ChatReadStatus {
     private ChatRoom room;
 
 
-    public ChatReadStatus(ChatReadStatusId statusId, ChatRoom room) {
+    public ChatReadStatus(ChatReadStatusId statusId, ChatRoom room, LocalDateTime lastRead) {
+        this.lastRead = lastRead;
         this.id = statusId;
         this.room = room;
     }
