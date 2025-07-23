@@ -24,12 +24,6 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-//    @PostMapping
-//    public CommonResult createNotification(@Valid @RequestBody NotificationRequest request) {
-//        notificationService.createNotification(request);
-//        return ResponseService.getSuccessResult();
-//    }
-
     @GetMapping("/me")
     @Operation(summary = "내 알림 목록 조회")
     public SingleResult<PageResponse<NotificationResponse>> getNotifications(
@@ -49,4 +43,7 @@ public class NotificationController {
     public SingleResult<Long> getNotReadNumbers(@RequestParam String userId) {
         return ResponseService.getSingleResult(notificationService.getNotReadNumbers(userId)) ;
     }
+
+
+
 }

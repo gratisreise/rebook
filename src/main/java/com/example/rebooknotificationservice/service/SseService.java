@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -71,7 +72,7 @@ public class SseService {
     }
 
     public SseEmitter connect(String userId) {
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(600_000L);
 
         emitters.put(userId, emitter);
 
@@ -84,10 +85,27 @@ public class SseService {
             emitter.send(SseEmitter.event()
                 .name("connected")
                 .data("connected"));
+            log.info("sse연결 성공!!");
         } catch (IOException e) {
+            log.warn("sse연결 실패!!");
             emitters.remove(userId);
         }
 
         return emitter;
+    }
+
+    @Scheduled(fixedRate = 540_000)
+    public void sendHeartbeat() {
+        for (Map.Entry<String, SseEmitter> entry : emitters.entrySet()) {
+            try {
+                entry.getValue().send(SseEmitter.event()
+                    .name("heartbeat")
+                    .data("ping"));
+            } catch (Exception e) {
+                // 예외 발생 시 해당 emitter 제거 (연결 끊김 처리)
+                emitters.remove(entry.getKey());
+                log.warn("Heartbeat 전송 실패, emitter 제거 userId={}", entry.getKey());
+            }
+        }
     }
 }
