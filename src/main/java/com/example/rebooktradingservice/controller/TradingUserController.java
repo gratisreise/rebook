@@ -1,7 +1,6 @@
 package com.example.rebooktradingservice.controller;
 
 import com.example.rebooktradingservice.common.CommonResult;
-import com.example.rebooktradingservice.common.ListResult;
 import com.example.rebooktradingservice.common.ResponseService;
 import com.example.rebooktradingservice.common.SingleResult;
 import com.example.rebooktradingservice.model.TradingResponse;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

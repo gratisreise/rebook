@@ -3,7 +3,6 @@ package com.example.rebooktradingservice.model.message;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
