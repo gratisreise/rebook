@@ -14,11 +14,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ChatMessageReader {
     private final ChatMessageRepository chatMessageRepository;
-
-    public LocalDateTime lastMessageTime(Long roomId){
-        return chatMessageRepository
-            .findFirstByRoomIdOrderBySendAtDesc(roomId)
-            .orElseThrow(CMissingDataException::new)
-            .getSendAt();
-    }
 }

@@ -6,7 +6,6 @@ import com.example.rebookchatservice.model.entity.ChatRoom;
 import com.example.rebookchatservice.model.entity.compositekey.ChatReadStatusId;
 import com.example.rebookchatservice.repository.ChatReadStatusRepository;
 import com.example.rebookchatservice.repository.ChatRoomRepository;
-import java.lang.instrument.ClassDefinition;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
