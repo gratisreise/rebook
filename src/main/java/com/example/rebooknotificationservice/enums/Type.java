@@ -1,9 +1,7 @@
 package com.example.rebooknotificationservice.enums;
 
-import com.ctc.wstx.shaded.msv_core.grammar.trex.typed.TypedElementPattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Getter

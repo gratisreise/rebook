@@ -3,7 +3,6 @@ package com.example.rebooknotificationservice.service;
 import com.example.rebooknotificationservice.exception.CMissingDataException;
 import com.example.rebooknotificationservice.model.entity.Notification;
 import com.example.rebooknotificationservice.repository.NotificationRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -88,10 +88,18 @@ public class SseService {
             log.info("sse연결 성공!!");
         } catch (IOException e) {
             log.warn("sse연결 실패!!");
-            emitters.remove(userId);
+            sendErrorToClient(userId, e.getMessage());
         }
 
         return emitter;
+    }
+
+    public void sendErrorToClient(String userId, String errorMsg) {
+        SseEmitter emitter = emitters.get(userId);
+        if (emitter != null) {
+            emitter.completeWithError(new RuntimeException(errorMsg));
+            emitters.remove(userId);
+        }
     }
 
     @Scheduled(fixedRate = 540_000)

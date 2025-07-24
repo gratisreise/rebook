@@ -2,7 +2,6 @@ package com.example.rebooknotificationservice.service;
 
 import com.example.rebooknotificationservice.enums.Type;
 import com.example.rebooknotificationservice.model.NotificationSettingResponse;
-import com.example.rebooknotificationservice.model.entity.Notification;
 import com.example.rebooknotificationservice.model.entity.NotificationSetting;
 import com.example.rebooknotificationservice.model.entity.compositekey.NotificationSettingId;
 import com.example.rebooknotificationservice.repository.NotificationSettingRepository;
