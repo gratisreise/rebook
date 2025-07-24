@@ -7,9 +7,7 @@ import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
 import com.example.rebookuserservice.model.entity.Users;
 import com.example.rebookuserservice.repository.FavoriteCategoryRepository;
-import com.example.rebookuserservice.repository.UserBookRepository;
 import com.example.rebookuserservice.repository.UserRepository;
-import com.example.rebookuserservice.repository.UserTradingRepository;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +25,6 @@ public class UsersService {
     private final S3Service s3Service;
     private final KeycloakService keycloakService;
     private final FavoriteCategoryRepository  favoriteCategoryRepository;
-    private final UserBookRepository userBookRepository;
-    private final UserTradingRepository userTradingRepository;
 
     //유저 정보 조회
     @Transactional(readOnly = true)
