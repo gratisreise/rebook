@@ -3,12 +3,27 @@ server:
   port: 8080
 
 spring:
+
+  # RDS: postgresql
+  datasource:
+      url: jdbc:postgresql://34.158.202.64:5432/rebookdb
+      username: postgres
+      password: "{cipher}a0f8ea4d7d74caffe583c19daba3d7b2a63833dfda90f2df9853841732e3b8e1ebda6d50a0525afcc75cef698a6bb428"
+      driverClassName: org.postgresql.Driver
+
   # jpa 설정
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update 
     show-sql: false
+
+  # Redis 설정
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: "{cipher}69adf03401dde86d3c5d82d4f089ded5c5ebdc212e3ed7eaec9ef9dca71b9a8f1f4ae4280c58f9ae91a3d369e06806e1"
 
   # RabbitMQ 설정
   rabbitmq:
@@ -28,3 +43,12 @@ management:
 springdoc:
   api-docs:
     enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rebook-eureka:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:main
