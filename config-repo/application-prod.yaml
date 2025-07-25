@@ -30,7 +30,7 @@ spring:
     host: rabbitmq
     port: 5672
     username: rebook-admin
-    password: "{cipher}45f14f29e5335a6fd7fd0ba53a999972027c800cb0051576ec79982a864d1ae2351f0cb575ac7e64cb1c45c3968a4d93"
+    password: "{cipher}44cc7c7b2ad2dece6031b1968351707371d5dd9dc351539b67fdabc84990a5fe26a5f5e385b35ecc707455d3b4085bda"
 
 # Actuator 및 모니터링
 management:
