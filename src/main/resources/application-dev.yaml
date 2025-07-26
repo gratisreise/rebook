@@ -21,11 +21,11 @@ spring:
         - id: rebook-chat
           uri: lb://CHAT-SERVICE
           predicates:
-            - Path=/api/chats/**, /ws-chat/**
+            - Path=/api/chats/**, /api/ws-chat/**
         - id: rebook-chat-ws
           uri: lb:ws://CHAT-SERVICE
           predicates:
-            - Path=/ws-chat/**
+            - Path=/api/ws-chat/**
             - Header=Upgrade, websocket
       discovery:
         locator:

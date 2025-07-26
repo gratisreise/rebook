@@ -13,4 +13,4 @@ spring:
     name: rebook-gateway
 
   profiles:
-    active: dev
+    active: prod

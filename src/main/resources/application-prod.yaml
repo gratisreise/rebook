@@ -5,7 +5,8 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - "http://rebook-front:3001"
+              - "http://localhost:5173"
+              - "https://rebookk.click"
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
@@ -29,7 +30,12 @@ spring:
         - id: rebook-chat
           uri: lb://CHAT-SERVICE
           predicates:
-            - Path=/api/chats/**
+            - Path=/api/chats/**, /api/ws-chat/**
+        - id: rebook-chat-ws
+          uri: lb:ws://CHAT-SERVICE
+          predicates:
+            - Path=/api/ws-chat/**
+            - Header=Upgrade, websocket
 management:
   endpoints:
     web:

@@ -27,19 +27,20 @@ public class CustomFilter implements GlobalFilter, Ordered {
         if (uri.contains("/api/auths")) {
             return chain.filter(exchange);
         }
-        if(uri.contains("/ws-chat")){
+        if(uri.contains("/api/ws-chat")){
             return webSocketConnect(exchange, chain);
         }
 
 
         String token = getToken(exchange);
+
         if(token.isBlank()){ // sse 연결
             Map<String, String> params = exchange.getRequest().getQueryParams().toSingleValueMap();
             token = params.get("token");
             log.info("sse토큰:{}", token);
         }
         log.info("token: {}", token);
-        if (token.isBlank() || !jwtUtil.validateToken(token)) {
+        if (token == null || token.isBlank() || !jwtUtil.validateToken(token)) {
             log.error("토큰이 없거나 유효하지 않음");
             return onError(exchange, "Token Not Found", HttpStatus.UNAUTHORIZED);
         }

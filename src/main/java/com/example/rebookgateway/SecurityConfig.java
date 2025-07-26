@@ -21,7 +21,7 @@ public class SecurityConfig {
         "/api/tradings/**",
         "/api/chats/**",
         "/api/notifications/**",
-        "/ws-chat/**"
+        "/api/ws-chat/**"
     };
 
     @Bean
