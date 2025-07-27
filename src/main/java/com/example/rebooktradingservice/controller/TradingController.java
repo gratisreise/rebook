@@ -108,4 +108,13 @@ public class TradingController {
     ){
         return ResponseService.getSingleResult(tradingService.getRecommendations(userId, pageable));
     }
+    @GetMapping("/others/{userId}")
+    @Operation(summary ="타인의 거래목록")
+    public SingleResult<PageResponse<TradingResponse>> getOthersTradings(
+        @PathVariable String userId,
+        @PageableDefault Pageable pageable
+    ){
+        return ResponseService.getSingleResult(tradingService.getOthersTradings(userId, pageable));
+    }
+
 }

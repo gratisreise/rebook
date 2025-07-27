@@ -1,6 +1,8 @@
 package com.example.rebooktradingservice.service;
 
+import com.example.rebooktradingservice.common.PageResponse;
 import com.example.rebooktradingservice.exception.CMissingDataException;
+import com.example.rebooktradingservice.model.TradingResponse;
 import com.example.rebooktradingservice.model.entity.Trading;
 import com.example.rebooktradingservice.repository.TradingRepository;
 import java.util.List;
@@ -35,4 +37,9 @@ public class TradingReader {
         return tradingRepository.findByBookIdIn(bookIds, pageable);
     }
 
+    public PageResponse<TradingResponse> getOthersTradings(String userId, Pageable pageable) {
+        Page<Trading> tradings = tradingRepository.findByUserId(userId, pageable);
+        Page<TradingResponse> responses = tradings.map(TradingResponse::new);
+        return new PageResponse<>(responses);
+    }
 }

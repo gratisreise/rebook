@@ -140,4 +140,8 @@ public class TradingService {
         }
         return res;
     }
+
+    public PageResponse<TradingResponse> getOthersTradings(String userId, Pageable pageable) {
+        return tradingReader.getOthersTradings(userId, pageable);
+    }
 }

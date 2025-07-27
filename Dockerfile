@@ -1,4 +1,4 @@
-# docker buildx build --platform=linux/amd64,linux/arm64 -t nooaahh/rebook-trading-service --push .
+# docker buildx build --platform=linux/amd64 -t nooaahh/rebook-trading-service --push .
 # docker build -t nooaahh/rebook-trading-service:latest .
 # docker image prune -f
 
