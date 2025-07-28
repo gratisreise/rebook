@@ -1,12 +1,7 @@
 spring: 
     data:
     mongodb:
-      host: mongodb
-      port: 27017
-      database: chatdb
-      username: mongos
-      password: "{cipher}1acba52d88b706d2243177e61f9585710583bf6aecb3a5cb790f55c109bdb4f338ddbc80c1019ce70b0b856bdba6105f"
-      authentication-database: admin
+      uri: "{cipher}f49a1efc820933c60ea78f08fcdaf9ba81f5e116be33327b581b8074380acb7a331af6b5c8cc92206b6fea130ea40f399c973205d4d433c8d12a05c6eee9141d2ea766d3f8eecf9442ea6ceb214a498553f740cd68b1e41a10da7f764edb5cac"
       
 # rabbitmq queue 연결
 notification:
