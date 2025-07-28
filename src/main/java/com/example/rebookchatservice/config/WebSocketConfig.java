@@ -10,12 +10,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final String[] WHITE_LIST ={"http://localhost:5173", "https://yourdomagin.com"};
+    private final String[] WHITE_LIST ={"http://localhost:5173", "https://rebookk.click"};
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 클라이언트가 연결할 엔드포인트 등록
-        registry.addEndpoint("/ws-chat")
+        registry.addEndpoint("/api/ws-chat")
             .setAllowedOrigins(WHITE_LIST)
             .withSockJS()
             .setSuppressCors(true);
