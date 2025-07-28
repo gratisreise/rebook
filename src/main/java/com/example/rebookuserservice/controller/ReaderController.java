@@ -2,7 +2,6 @@ package com.example.rebookuserservice.controller;
 
 import com.example.rebookuserservice.model.feigns.AuthorsRequest;
 import com.example.rebookuserservice.service.FavoriteCategoryReader;
-import com.example.rebookuserservice.service.UserBookService;
 import com.example.rebookuserservice.service.UserReader;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReaderController {
     private final UserReader userReader;
     private final FavoriteCategoryReader favoriteCategoryReader;
-    private final UserBookService userBookService;
 
     @PostMapping("/authors")
     @Operation(summary = "유저이름조회")
