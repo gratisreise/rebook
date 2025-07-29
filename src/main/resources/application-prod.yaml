@@ -7,7 +7,13 @@ spring:
             allowedOrigins:
               - "http://localhost:5173"
               - "https://rebookk.click"
-            allowedMethods: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
             allowedHeaders: "*"
             allowCredentials: true
       routes:

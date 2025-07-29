@@ -52,7 +52,7 @@ public class CustomFilter implements GlobalFilter, Ordered {
             .header("X-User-Id", userId).build();
 
         ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
-        log.info("Mutated Exchange: {}", mutatedExchange);
+        log.info("Mutated User Id: {}", mutatedExchange.getRequest().getHeaders().get("X-User-Id"));
         return chain.filter(mutatedExchange);
     }
 
