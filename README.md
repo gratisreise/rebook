@@ -41,7 +41,6 @@ Rebook Eureka Server는 마이크로서비스 아키텍처에서 **서비스 디
 ┌─────────────────────────────────────────────────────┐
 │                 Rebook Eureka Server                │
 │              (Service Discovery Registry)            │
-│                  http://localhost:8761               │
 └─────────────────────────────────────────────────────┘
            ▲              ▲              ▲
            │              │              │
@@ -71,7 +70,6 @@ Rebook Eureka Server는 마이크로서비스 아키텍처에서 **서비스 디
 ---
 
 #### 5. Eureka 대시보드 확인
-브라우저에서 접속: **http://localhost:8761**
 
 ✅ 대시보드에서 확인 가능한 정보:
 - 등록된 서비스 목록
@@ -113,5 +111,3 @@ rebook-eureka/
 | `eureka.client.register-with-eureka` | false | 자기 자신을 등록하지 않음 |
 | `eureka.client.fetch-registry` | false | 레지스트리를 가져오지 않음 |
 | `sentry.dsn` | ${SENTRY_DSN} | 환경 변수에서 주입 |
-
-> ⚠️ **중요**: `register-with-eureka: false`는 독립 실행형 Eureka 서버의 표준 설정입니다.
