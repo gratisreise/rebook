@@ -1,3 +1,7 @@
+# docker buildx build --platform=linux/amd64 -t nooaahh/rebook-config --push .
+# docker build -t nooaahh/rebook-config:latest .
+# docker image prune -f
+
 # 1단계: 빌드 (테스트 포함)
 FROM gradle:8.14.2-jdk17 AS builder
 WORKDIR /app
@@ -7,9 +11,11 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
-COPY src src
 
-RUN chmod +x ./gradlew
+
+RUN chmod +x ./gradlew && ./gradlew dependencies --no-daemon
+
+COPY src src
 
 # 테스트 실행 및 빌드 (bootJar 생성)
 RUN ./gradlew bootJar --no-daemon
@@ -24,3 +30,4 @@ COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8888
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
+#docker buildx build --platform=linux/amd64,linux/arm64 -t nooaahh/rebook-config --push .

@@ -23,7 +23,7 @@ spring:
           search-paths: config-repo
 
   profiles:
-    active: dev
+    active: prod
 
   #파일등록
 
