@@ -28,7 +28,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleRuntimeException(RuntimeException e) {
         return ResponseService.getFailResult(e);
     }
