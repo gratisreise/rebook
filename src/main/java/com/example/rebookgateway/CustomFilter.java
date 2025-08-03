@@ -24,7 +24,7 @@ public class CustomFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String uri = exchange.getRequest().getURI().toString();
         log.info("uri: {}", uri);
-        if (uri.contains("/api/auths")) {
+        if (uri.contains("/api/auths") || uri.contains("/swagger-ui/index.html")) {
             return chain.filter(exchange);
         }
         if(uri.contains("/api/ws-chat")){
