@@ -2,3 +2,7 @@ spring:
   mvc:
     async:
       request-timeout: 3600000  # 1시간
+
+springdoc:
+  api-docs:
+    path: api/chats/v3/api-docs

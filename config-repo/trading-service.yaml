@@ -9,3 +9,7 @@ aws:
     region: ap-northeast-2
     access-key: "{cipher}8bc6bde5821552dd06b0c3100eb886ca071467b6eb7cc669500fd5669ee81a3f4a37ac6d7ba2e35a1a599b16e28215ba"
     secret-key: "{cipher}1db69cfa189cdb4970ad2e3b621013f3105c06c780add3d1ba89c3cbca4845d0dcba7592a789e9cf107e20d4316e4de499903baf7f82a848e0d6b91a7cf87935"
+
+springdoc:
+  api-docs:
+    path: api/tradings/v3/api-docs

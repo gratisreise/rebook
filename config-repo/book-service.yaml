@@ -14,3 +14,7 @@ gemini:
 naver:
   client-id: "{cipher}8a7de5e23acbbcaf9c16d65d4d25af14693c148f01378c8ad481042b50260aeb9cc0eba387285111d2e5a0e807b27abc"
   client-secret: "{cipher}32404d33398ee0328ab1f06750e44b88ce92f63b0404949fa30bd4cbf14c0f33"
+
+springdoc:
+  api-docs:
+    path: api/books/v3/api-docs
