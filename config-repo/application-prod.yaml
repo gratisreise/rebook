@@ -42,7 +42,7 @@ management:
 # api-cods 설정
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
 
 eureka:
   client:
