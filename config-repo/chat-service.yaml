@@ -6,3 +6,5 @@ spring:
 springdoc:
   api-docs:
     path: api/chats/v3/api-docs
+  swagger-ui:
+    path: api/chats/swagger-ui/index.html

@@ -13,3 +13,5 @@ aws:
 springdoc:
   api-docs:
     path: api/tradings/v3/api-docs
+  swagger-ui:
+    path: api/tradings/swagger-ui/index.html

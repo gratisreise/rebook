@@ -15,3 +15,5 @@ aws:
 springdoc:
   api-docs:
     path: api/users/v3/api-docs
+  swagger-ui:
+    path: api/users/swagger-ui/index.html

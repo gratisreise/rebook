@@ -18,3 +18,5 @@ naver:
 springdoc:
   api-docs:
     path: api/books/v3/api-docs
+  swagger-ui:
+    path: api/books/swagger-ui/index.html
