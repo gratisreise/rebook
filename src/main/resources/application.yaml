@@ -11,6 +11,5 @@ jwt:
 spring:
   application:
     name: rebook-gateway
-
   profiles:
     active: prod

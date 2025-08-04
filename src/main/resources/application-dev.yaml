@@ -2,7 +2,7 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-service
+        - id: rebook-user
           uri: lb://USER-SERVICE
           predicates:
             - Path=/api/users/**, /api/auths/**
@@ -55,6 +55,20 @@ eureka:
     fetch-registry: true
   instance:
     instance-id: ${spring.application.name}:origin
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: rebook-user
+        url: /api/users/v3/api-docs
+      - name: rebook-book
+        url: /api/books/v3/api-docs
+      - name: rebook-trading
+        url: /api/tradings/v3/api-docs
+      - name: rebook-chat
+        url: /api/chats/v3/api-docs
+      - name: rebook-notification
+        url: /api/notifications/v3/api-docs
 
 management:
   endpoints:
