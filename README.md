@@ -5,9 +5,10 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.13-brightgreen)
 ![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2023.0.5-blue)
 ![Java](https://img.shields.io/badge/Java-17-orange)
-![Gradle](https://img.shields.io/badge/Gradle-8.14.2-02303A)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791)
 ![RabbitMQ](https://img.shields.io/badge/RabbitMQ-3.x-FF6600)
+![Redis](https://img.shields.io/badge/Redis-6+-DC382D)
+![Gradle](https://img.shields.io/badge/Gradle-8.14.2-02303A)
 
 **Rebook 마이크로서비스 아키텍처의 실시간 알림 서비스**
 
@@ -17,330 +18,358 @@ RabbitMQ 기반 메시지 처리와 Server-Sent Events를 통한 실시간 알�
 
 ---
 
-## 📋 목차
+## 1. 개요
 
-- [개요](#-개요)
-- [주요 기능](#-주요-기능)
-- [기술 스택](#-기술-스택)
-- [시스템 요구사항](#-시스템-요구사항)
-- [API 문서](#-api-문서)
-- [아키텍처](#-아키텍처)
-- [알림 유형](#-알림-유형)
+**Rebook Notification Service**는 중고 도서 거래 플랫폼 Rebook의 핵심 백엔드 마이크로서비스로, 사용자에게 실시간 알림을 제공합니다. Spring Boot 기반으로 구현된 본 서비스는 **RabbitMQ 메시지 처리**, **Server-Sent Events (SSE)**, **서비스 디스커버리**를 통한 확장 가능한 구조를 제공합니다.
 
----
 
-## 📖 개요
+### 서비스 역할
 
-Rebook 알림 서비스는 Spring Boot 기반의 마이크로서비스로, 도서 거래 플랫폼의 실시간 알림을 담당합니다. RabbitMQ를 통한 비동기 메시지 처리와 Server-Sent Events(SSE)를 통한 실시간 클라이언트 통신을 제공합니다.
+본 서비스는 Rebook 플랫폼 내에서 다음과 같은 역할을 담당합니다:
 
-### 핵심 역할
-
-| 기능 | 설명 |
-|-----|------|
-| 📚 **도서 알림** | 관심 카테고리에 새 도서 등록 시 실시간 알림 |
-| 💱 **거래 알림** | 찜한 도서가 거래 가능해질 때 즉시 알림 |
-| 💬 **채팅 알림** | 채팅 메시지 도착 시 실시간 알림 전송 |
-| 🔔 **SSE 통신** | 지속적 연결을 통한 실시간 푸시 알림 |
-| ⚙️ **설정 관리** | 사용자별 알림 수신 설정 관리 |
+- **실시간 알림 전송**: Server-Sent Events (SSE)를 통한 클라이언트 푸시 알림
+- **메시지 기반 처리**: RabbitMQ를 통한 비동기 알림 생성 및 발송
+- **알림 관리**: 알림 조회, 읽음 처리, 삭제 기능 제공
+- **알림 설정**: 사용자별 알림 수신 설정 관리
+- **외부 서비스 연동**: User Service, Book Service와 OpenFeign 연동
 
 ---
 
-## ✨ 주요 기능
+## 2. 목차
 
-### 1. 실시간 알림 전송
-- **Server-Sent Events (SSE)** 기반 실시간 통신
-- 사용자별 독립적인 SSE 연결 관리
-- 자동 재연결 및 타임아웃 처리
-- 끊김 없는 알림 전송 보장
-
-### 2. 메시지 기반 알림 생성
-- **RabbitMQ** 를 통한 비동기 메시지 처리
-- 3가지 전용 큐 운영 (도서/거래/채팅)
-- Topic Exchange 기반 라우팅
-- 메시지 손실 방지 및 재시도 메커니즘
-
-### 3. 알림 설정 관리
-- 사용자별 알림 수신 설정
-- 알림 유형별 on/off 제어
-- 자동 설정 생성 및 업데이트
-- 읽음/미읽음 상태 추적
-
-### 4. 외부 서비스 연동
-- **User Service**: 관심 사용자 조회 (OpenFeign)
-- **Chat Service**: 채팅 알림 연동
-- **Eureka**: 서비스 디스커버리
-- **Spring Cloud Config**: 중앙 설정 관리
+- [1. 개요](#1-개요)
+- [2. 목차](#2-목차)
+- [3. 주요 기능](#3-주요-기능)
+- [4. 기술 스택](#4-기술-스택)
+- [5. 아키텍처](#5-아키텍처)
+- [6. API 문서](#6-api-문서)
+- [7. 프로젝트 구조](#7-프로젝트-구조)
 
 ---
 
-## 🛠 기술 스택
+## 3. 주요 기능
 
-### 핵심 프레임워크
-- **Java 17** - LTS 버전
-- **Spring Boot 3.3.13** - 최신 안정 버전
-- **Spring Cloud 2023.0.5** - 마이크로서비스 지원
+### 3.1 실시간 알림 전송
 
-### 주요 의존성
+#### Server-Sent Events (SSE)
+- ✅ SSE 기반 실시간 푸시 알림
+- ✅ 사용자별 독립적인 SSE 연결 관리
+- ✅ 자동 재연결 및 타임아웃 처리 (10분)
+- ✅ Heartbeat 메커니즘을 통한 연결 유지 (9분 주기)
+- ✅ ConcurrentHashMap 기반 효율적 연결 관리
+- ✅ 연결 실패 시 자동 에러 처리 및 정리
 
-| 카테고리 | 기술 | 버전 | 용도 |
-|---------|------|------|------|
-| **웹** | Spring Web | 3.3.13 | REST API, SSE |
-| **데이터** | Spring Data JPA | 3.3.13 | ORM, 데이터 액세스 |
-| **데이터베이스** | PostgreSQL | 16 | 관계형 데이터베이스 |
-| **메시징** | Spring AMQP | 3.1.10 | RabbitMQ 연동 |
-| **캐싱** | Spring Data Redis | 3.3.13 | 분산 캐싱 |
-| **클라우드** | Spring Cloud Config | 4.1.4 | 중앙 설정 관리 |
-| **디스커버리** | Netflix Eureka Client | 4.1.4 | 서비스 등록/발견 |
-| **HTTP 클라이언트** | OpenFeign | 4.1.4 | 선언적 REST 클라이언트 |
-| **모니터링** | Spring Actuator | 3.3.13 | 헬스 체크, 메트릭 |
-| **메트릭** | Micrometer Prometheus | 1.14.2 | 메트릭 수집 |
-| **에러 트래킹** | Sentry | 7.18.1 | 실시간 에러 모니터링 |
-| **API 문서** | SpringDoc OpenAPI | 2.8.2 | Swagger UI 생성 |
-| **개발 도구** | Lombok | 1.18.36 | 보일러플레이트 제거 |
-| **빌드** | Gradle | 8.14.2 | 빌드 자동화 |
+#### 알림 조회 및 관리
+- ✅ 사용자별 알림 목록 조회 (페이지네이션 지원)
+- ✅ 읽지 않은 알림 개수 조회
+- ✅ 알림 읽음 상태 업데이트
+- ✅ 알림 생성 시간 기준 정렬
+- ✅ 타입별 알림 필터링 (BOOK, TRADE, CHAT, PAYMENT)
+
+### 3.2 메시지 기반 알림 처리
+
+#### RabbitMQ 메시지 처리
+- ✅ 3가지 전용 큐 운영 (도서/거래/채팅)
+- ✅ Topic Exchange 기반 메시지 라우팅
+- ✅ JSON 메시지 자동 직렬화/역직렬화 (Jackson2JsonMessageConverter)
+- ✅ 메시지 손실 방지를 위한 durable queue 설정
+- ✅ 비동기 메시지 리스너를 통한 알림 생성
+
+#### 알림 유형별 처리
+- ✅ **도서 알림 (BOOK)**: 관심 카테고리 신규 도서 등록 시 알림
+  - User Service에서 카테고리별 관심 사용자 조회
+  - 해당 사용자들에게 일괄 알림 생성 및 전송
+- ✅ **거래 알림 (TRADE)**: 찜한 도서 거래 가능 시 알림
+  - Book Service에서 도서를 찜한 사용자 조회
+  - 관심 사용자에게 거래 가능 알림 전송
+- ✅ **채팅 알림 (CHAT)**: 새 채팅 메시지 도착 시 알림
+  - 메시지 수신자에게 직접 알림 전송
+
+### 3.3 알림 설정 관리
+
+- ✅ 사용자별 알림 수신 설정 관리
+- ✅ 알림 유형별 on/off 제어 (sendable 플래그)
+- ✅ 자동 설정 생성 (최초 조회 시)
+- ✅ 설정 업데이트 기능
+- ✅ 복합키(Composite Key) 기반 효율적인 설정 관리
+
+### 3.4 외부 서비스 연동 (Event-Driven)
+
+- ✅ User Service 연동: 관심 카테고리별 사용자 목록 조회 (OpenFeign)
+- ✅ Book Service 연동: 도서 찜한 사용자 목록 조회 (OpenFeign)
+- ✅ Book Service 이벤트 수신: 신규 도서 등록 알림
+- ✅ Trade Service 이벤트 수신: 거래 가능 알림
+- ✅ Chat Service 이벤트 수신: 채팅 메시지 알림
+- ✅ Eureka 기반 서비스 디스커버리
+
 
 ---
 
-## 📚 API 문서
+## 4. 기술 스택
 
-### Swagger UI
+### 4.1 백엔드 프레임워크
 
-애플리케이션 실행 후 다음 URL에서 인터랙티브 API 문서를 확인할 수 있습니다:
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **Spring Boot** | 3.3.13 | 애플리케이션 프레임워크 |
+| **Java** | 17 | 프로그래밍 언어 |
+| **Spring Data JPA** | - | ORM 및 데이터 접근 계층 |
+| **Spring Validation** | - | 요청 데이터 유효성 검증 |
+| **Lombok** | - | 보일러플레이트 코드 제거 |
+
+### 4.2 데이터베이스 & 캐싱
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **PostgreSQL** | 16 | 관계형 데이터베이스 (메인 데이터 저장소) |
+| **Redis** | 6+ | 분산 캐싱 및 세션 관리 |
+
+### 4.3 마이크로서비스 인프라 (Spring Cloud)
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **Eureka Client** | 2023.0.5 | 서비스 디스커버리 및 등록 |
+| **Spring Cloud Config** | 2023.0.5 | 중앙화된 설정 관리 (외부 Config Server) |
+| **OpenFeign** | 2023.0.5 | 선언적 HTTP 클라이언트 (User/Book Service 연동) |
+
+### 4.4 메시징 & 이벤트
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **RabbitMQ (AMQP)** | 3.x | 비동기 메시징 및 이벤트 수신 |
+| **Spring AMQP** | - | RabbitMQ 통합 및 메시지 컨버터 |
+
+### 4.5 실시간 통신
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **Server-Sent Events (SSE)** | - | 실시간 클라이언트 푸시 알림 |
+| **Spring Web MVC** | - | SSE 연결 관리 및 이벤트 스트리밍 |
+
+### 4.6 모니터링 & 로깅
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **Spring Actuator** | - | 헬스체크 및 메트릭 엔드포인트 |
+| **Prometheus** | - | 메트릭 수집 및 모니터링 |
+| **Sentry** | 8.13.2 | 실시간 에러 트래킹 및 알림 |
+| **SLF4J & Logback** | - | 애플리케이션 로깅 |
+
+### 4.7 API 문서화
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **SpringDoc OpenAPI 3** | 2.6.0 | Swagger UI 기반 REST API 문서 자동 생성 |
+
+### 4.8 빌드 & 배포
+
+| 기술 | 버전 | 용도 |
+|------|------|------|
+| **Gradle** | 8.14.2 | 빌드 자동화 도구 |
+| **Docker** | - | 컨테이너화 및 배포 |
+| **Jacoco** | - | 테스트 커버리지 분석 |
+| **JUnit 5** | - | 단위 테스트 프레임워크 |
+
+---
+
+## 5. 아키텍처
+
+### 5.1 마이크로서비스 아키텍처
 
 ```
-http://localhost:8080/swagger-ui/index.html
+┌─────────────────┐
+│  API Gateway    │ ← 인증 및 라우팅 (X-User-Id 헤더 주입)
+└────────┬────────┘
+         │
+         ├──────────────┬──────────────┬──────────────┬──────────────┐
+         │              │              │              │              │
+    ┌────▼────┐    ┌────▼────┐   ┌────▼────┐    ┌────▼────┐    ┌────▼────┐
+    │  Notif. │◄───┤  User   │   │  Book   │    │ Trading │    │  Chat   │
+    │ Service │    │ Service │   │ Service │    │ Service │    │ Service │
+    └────▲────┘    └─────────┘   └────┬────┘    └────┬────┘    └────┬────┘
+         │         (OpenFeign)         │              │              │
+         │                             │              │              │
+         │         ┌──────────────┐    │              │              │
+         └─────────┤  RabbitMQ    │◄───┴──────────────┴──────────────┘
+                   │  (AMQP)      │  (Notification Events)
+                   └──────────────┘
+
+                   ┌──────────────┐
+                   │ SSE Clients  │◄────── Real-time Push Notifications
+                   │  (Browsers)  │
+                   └──────────────┘
+
+    ┌─────────────────────────────────────────────┐
+    │        Infrastructure Services              │
+    ├─────────────────────────────────────────────┤
+    │  Eureka  │  Config Server  │  PostgreSQL   │
+    │  Redis   │  Prometheus     │  Sentry       │
+    └─────────────────────────────────────────────┘
 ```
 
-### 주요 엔드포인트
 
-#### 알림 관리 API
-
-| Method | Endpoint | 설명 | 파라미터 |
-|--------|----------|------|---------|
-| `GET` | `/notifications/{userId}` | 사용자 알림 목록 조회 | userId (Long) |
-| `GET` | `/notifications/unread/{userId}` | 읽지 않은 알림 조회 | userId (Long) |
-| `PUT` | `/notifications/{notificationId}/read` | 알림 읽음 처리 | notificationId (Long) |
-| `DELETE` | `/notifications/{notificationId}` | 알림 삭제 | notificationId (Long) |
-
-#### SSE 연결 API
-
-| Method | Endpoint | 설명 | 파라미터 |
-|--------|----------|------|---------|
-| `GET` | `/notifications/subscribe/{userId}` | SSE 구독 (실시간 알림 수신) | userId (Long) |
-
-
-#### 알림 설정 API
-
-| Method | Endpoint | 설명 | Body |
-|--------|----------|------|------|
-| `GET` | `/notification-settings/{userId}` | 알림 설정 조회 | - |
-| `PUT` | `/notification-settings` | 알림 설정 업데이트 | NotificationSettingRequest |
-
-#### 모니터링 & 헬스 체크
-
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| `GET` | `/actuator/health` | 전체 헬스 체크 |
-| `GET` | `/actuator/health/readiness` | 준비 상태 확인 |
-| `GET` | `/actuator/health/liveness` | 활성 상태 확인 |
-| `GET` | `/actuator/prometheus` | Prometheus 메트릭 |
-| `GET` | `/actuator/metrics` | 애플리케이션 메트릭 |
-
----
-
-## 🏗 아키텍처
-
-### 시스템 아키텍처
+### 5.2 엔티티 관계도 (ERD)
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Rebook 마이크로서비스 생태계                 │
-├─────────────────────────────────────────────────────────────┤
-│  User Service  │  Book Service  │  Trade Service │ Chat Service  │
-└────────┬────────────────┬────────────────┬──────────────┬────┘
-         │                │                │              │
-         │ (HTTP/Feign)   │                │              │
-         │                ▼                ▼              ▼
-         │           ┌────────────────────────────────────┐
-         │           │        RabbitMQ (Message Broker)   │
-         │           │  ┌──────────┬──────────┬─────────┐ │
-         │           │  │  Book    │  Trade   │  Chat   │ │
-         │           │  │  Queue   │  Queue   │  Queue  │ │
-         │           │  └────┬─────┴────┬─────┴────┬────┘ │
-         │           └───────┼──────────┼──────────┼──────┘
-         │                   │          │          │
-         │                   ▼          ▼          ▼
-         │         ┌─────────────────────────────────────┐
-         │         │   Notification Service              │
-         │         │  ┌───────────────────────────────┐  │
-         └────────▶│  │  NotificationController       │  │
-                   │  │  - REST API                   │  │
-                   │  │  - SSE Management             │  │
-                   │  └─────────────┬─────────────────┘  │
-                   │                │                     │
-                   │                ▼                     │
-                   │  ┌───────────────────────────────┐  │
-                   │  │  NotificationService          │  │
-                   │  │  - Message Processing         │  │
-                   │  │  - Business Logic             │  │
-                   │  │  - SSE Broadcasting           │  │
-                   │  └─────────────┬─────────────────┘  │
-                   │                │                     │
-                   │                ▼                     │
-                   │  ┌───────────────────────────────┐  │
-                   │  │  NotificationRepository       │  │
-                   │  │  - JPA Data Access            │  │
-                   │  └─────────────┬─────────────────┘  │
-                   └────────────────┼─────────────────────┘
-                                    │
-                                    ▼
-                            ┌──────────────┐
-                            │ PostgreSQL   │
-                            │  Database    │
-                            └──────────────┘
+┌─────────────────────────────┐
+│      Notification           │
+├─────────────────────────────┤
+│ PK  id (Long)               │
+│     userId (String)         │
+│     type (Type enum)        │ ← BOOK, TRADE, CHAT, PAYMENT
+│     message (String)        │
+│     relatedId (String)      │ ← bookId, tradingId, roomId
+│     read (Boolean)          │
+│     createdAt (LocalDateTime)│
+└─────────────────────────────┘
 
-                   ┌─────────────┐
-                   │  SSE Client │◀───────── Real-time Push
-                   └─────────────┘
+
+┌─────────────────────────────┐
+│   NotificationSetting       │  (알림 설정)
+├─────────────────────────────┤
+│ PK  userId (String)         │ ← Composite Key
+│ PK  type (Type enum)        │ ← Composite Key
+│     sendable (Boolean)      │
+└─────────────────────────────┘
 ```
 
----
+**엔티티 설계 패턴**:
+- **JPA Auditing**: `@EntityListeners(AuditingEntityListener.class)`로 생성 시간 자동 관리
+- **복합키 (Composite Key)**: `NotificationSettingId` 임베디드 클래스로 사용자-알림유형 관계 표현
+- **다형성 처리**: `type` enum과 `relatedId`로 다양한 알림 유형 통합 관리
+- **읽음 상태 관리**: `read` 플래그로 읽지 않은 알림 필터링
 
-## 🔔 알림 유형
 
-### 1. 도서 알림 (BOOK)
+### 5.2 알림흐름
+![알림흐름](https://rebook-bucket.s3.ap-northeast-2.amazonaws.com/rebook/notiflow.png)
 
-**트리거 조건**: 새 도서가 사용자 관심 카테고리에 등록될 때
 
-- **메시지 소스**: `book.notification.queue`
-- **Exchange**: `book.notification.exchange` (Topic)
-- **라우팅 키**: `book.notification`
-- **대상 사용자**: 해당 카테고리에 관심 등록한 모든 사용자
+## 6. API 문서
 
-**메시지 구조**:
-```json
-{
-  "type": "BOOK",
-  "bookId": 123,
-  "message": "관심 카테고리에 새로운 도서가 등록되었습니다: 클린 코드"
-}
+### 6.1 Swagger UI 접근
+
+애플리케이션 실행 후 아래 URL에서 대화형 API 문서를 확인할 수 있습니다:
+
+```
+https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-notification
 ```
 
-**워크플로우**:
-1. Book Service → RabbitMQ 메시지 발행
-2. Notification Service가 메시지 수신
-3. User Service에서 관심 카테고리 사용자 조회
-4. 각 사용자에게 알림 생성 및 SSE 전송
+### 6.2 API 엔드포인트 상세
 
----
+#### 6.2.1 SSE 연결 API (`SseController`)
 
-### 2. 거래 알림 (TRADE)
+| Method | Endpoint | Summary |
+|--------|----------|---------|
+| **GET** | `/api/notifications/sse/connect` | SSE 구독 (실시간 알림 수신) |
 
-**트리거 조건**: 사용자가 찜한 도서가 거래 가능 상태가 될 때
+#### 6.2.2 알림 관리 API (`NotificationController`)
 
-- **메시지 소스**: `trade.notification.queue`
-- **Exchange**: `trade.notification.exchange` (Topic)
-- **라우팅 키**: `trade.notification`
-- **대상 사용자**: 해당 도서를 찜한 사용자
+| Method | Endpoint | Summary |
+|--------|----------|---------|
+| **GET** | `/api/notifications/me` | 내 알림 목록 조회 (페이지네이션) |
+| **GET** | `/api/notifications/me/numbers` | 읽지 않은 알림 개수 조회 |
+| **PATCH** | `/api/notifications/{notificationId}` | 알림 읽음 처리 |
 
-**워크플로우**:
-1. Trade Service → RabbitMQ 메시지 발행
-2. Notification Service가 메시지 수신
-3. User Service에서 찜한 사용자 조회
-4. 각 사용자에게 알림 생성 및 SSE 전송
+#### 6.2.3 알림 설정 API (`NotificationSettingController`)
 
----
-
-### 3. 채팅 알림 (CHAT)
-
-**트리거 조건**: 사용자에게 새 채팅 메시지가 도착할 때
-
-- **메시지 소스**: `chat.notification.queue`
-- **Exchange**: `chat.notification.exchange` (Topic)
-- **라우팅 키**: `chat.notification`
-- **대상 사용자**: 메시지 수신자
-
-**워크플로우**:
-1. Chat Service → RabbitMQ 메시지 발행
-2. Notification Service가 메시지 수신
-3. 지정된 사용자에게 알림 생성 및 SSE 전송
-
----
+| Method | Endpoint | Summary |
+|--------|----------|---------|
+| **GET** | `/api/settings/{userId}` | 알림 설정 조회 |
+| **PUT** | `/api/settings` | 알림 설정 업데이트 |
 
 
-## 📁 프로젝트 구조
+## 7. 프로젝트 구조
+
+### 주요 디렉토리 설명
+
+| 디렉토리 | 역할 | 주요 기능 |
+|---------|------|----------|
+| **advice/** | 전역 예외 처리 | `@RestControllerAdvice`로 모든 컨트롤러 예외 통합 핸들링 |
+| **common/** | 공통 응답 모델 | 통일된 API 응답 구조 제공 (`CommonResult`, `SingleResult`, `PageResponse`) |
+| **config/** | 인프라 설정 | RabbitMQ Queue/Exchange/Binding 설정 |
+| **controller/** | REST API | 엔드포인트 정의 및 Swagger 문서화, SSE 연결 관리 |
+| **enums/** | 상태 관리 | 알림 타입 enum (BOOK, TRADE, CHAT, PAYMENT) |
+| **exception/** | 커스텀 예외 | 도메인별 예외 클래스 (404, 400, 401, 409) |
+| **feigns/** | 서비스 간 통신 | OpenFeign을 통한 User/Book Service 동기 호출 |
+| **model/** | DTO 및 엔티티 | JPA 엔티티, 메시지 DTO, 요청/응답 DTO |
+| **repository/** | 데이터 접근 | Spring Data JPA 리포지토리 인터페이스 |
+| **service/** | 비즈니스 로직 | 알림 생성, SSE 전송, 설정 관리, 메시지 수신 로직 |
+
 
 ```
 rebook-notification-service/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/notificationservice/
-│   │   │   ├── advice/                      # 전역 예외 처리
-│   │   │   │   └── GlobalExceptionHandler.java
-│   │   │   ├── config/                      # 설정 클래스
-│   │   │   │   ├── RabbitMQConfig.java
-│   │   │   │   ├── SwaggerConfig.java
-│   │   │   │   └── WebConfig.java
-│   │   │   ├── controller/                  # REST 컨트롤러
-│   │   │   │   ├── NotificationController.java
-│   │   │   │   └── NotificationSettingController.java
-│   │   │   ├── entity/                      # JPA 엔티티
-│   │   │   │   ├── Notification.java
-│   │   │   │   ├── NotificationSetting.java
-│   │   │   │   └── NotificationSettingId.java
-│   │   │   ├── exception/                   # 커스텀 예외
-│   │   │   │   ├── CMissingDataException.java
-│   │   │   │   ├── CInvalidDataException.java
-│   │   │   │   └── CNotificationNotFoundException.java
-│   │   │   ├── messagequeue/                # RabbitMQ 처리
-│   │   │   │   ├── NotificationListener.java
-│   │   │   │   └── message/
-│   │   │   │       ├── BookNotificationMessage.java
-│   │   │   │       ├── TradeNotificationMessage.java
-│   │   │   │       └── ChatNotificationMessage.java
-│   │   │   ├── model/                       # DTO & 응답 모델
-│   │   │   │   ├── request/
-│   │   │   │   │   └── NotificationSettingRequest.java
-│   │   │   │   ├── response/
-│   │   │   │   │   ├── CommonResult.java
-│   │   │   │   │   ├── SingleResult.java
-│   │   │   │   │   └── ListResult.java
-│   │   │   │   └── dto/
-│   │   │   │       └── NotificationDto.java
-│   │   │   ├── repository/                  # JPA 리포지토리
-│   │   │   │   ├── NotificationRepository.java
-│   │   │   │   └── NotificationSettingRepository.java
-│   │   │   ├── service/                     # 비즈니스 로직
-│   │   │   │   ├── NotificationService.java
-│   │   │   │   ├── NotificationSettingService.java
-│   │   │   │   ├── ResponseService.java
-│   │   │   │   └── reader/
-│   │   │   │       ├── NotificationReader.java
-│   │   │   │       └── NotificationSettingReader.java
-│   │   │   ├── client/                      # Feign 클라이언트
-│   │   │   │   ├── UserServiceFeignClient.java
-│   │   │   │   └── ChatServiceFeignClient.java
-│   │   │   └── NotificationServiceApplication.java
+│   │   ├── java/com/example/rebooknotificationservice/
+│   │   │   ├── advice/                        # 전역 예외 처리
+│   │   │   │   └── GlobalExceptionHandler.java  (RestControllerAdvice)
+│   │   │   │
+│   │   │   ├── common/                        # 공통 응답 모델
+│   │   │   │   ├── CommonResult.java           (기본 성공 응답)
+│   │   │   │   ├── SingleResult.java           (단일 데이터 응답)
+│   │   │   │   ├── ListResult.java             (리스트 응답)
+│   │   │   │   ├── PageResponse.java           (페이지네이션 응답)
+│   │   │   │   ├── ResponseService.java        (응답 래핑 팩토리)
+│   │   │   │   └── ResultCode.java             (응답 코드 상수)
+│   │   │   │
+│   │   │   ├── config/                        # 설정 클래스
+│   │   │   │   └── RabbitConfig.java           (RabbitMQ Queue/Exchange/Binding)
+│   │   │   │
+│   │   │   ├── controller/                    # REST 컨트롤러
+│   │   │   │   ├── SseController.java          (SSE 연결 엔드포인트)
+│   │   │   │   ├── NotificationController.java (알림 CRUD)
+│   │   │   │   └── NotificationSettingController.java  (설정 관리)
+│   │   │   │
+│   │   │   ├── enums/                         # 열거형
+│   │   │   │   └── Type.java                   (알림 타입: BOOK, TRADE, CHAT, PAYMENT)
+│   │   │   │
+│   │   │   ├── exception/                     # 커스텀 예외
+│   │   │   │   ├── CMissingDataException.java  (404 데이터 미존재)
+│   │   │   │   ├── CDuplicatedDataException.java (409 중복 데이터)
+│   │   │   │   ├── CUnauthorizedException.java (401 권한 없음)
+│   │   │   │   └── CInvalidDataException.java  (400 유효하지 않은 입력)
+│   │   │   │
+│   │   │   ├── feigns/                        # Feign 클라이언트
+│   │   │   │   ├── UserClient.java             (User Service 연동)
+│   │   │   │   └── BookClient.java             (Book Service 연동)
+│   │   │   │
+│   │   │   ├── model/                         # DTO 및 엔티티
+│   │   │   │   ├── entity/                    # JPA 엔티티
+│   │   │   │   │   ├── Notification.java       (알림 메인 엔티티)
+│   │   │   │   │   ├── NotificationSetting.java (알림 설정 엔티티)
+│   │   │   │   │   └── compositekey/
+│   │   │   │   │       └── NotificationSettingId.java (복합키)
+│   │   │   │   ├── message/                   # 메시징 DTO
+│   │   │   │   │   ├── NotificationMessage.java (메시지 인터페이스)
+│   │   │   │   │   ├── NotificationBookMessage.java
+│   │   │   │   │   ├── NotificationTradeMessage.java
+│   │   │   │   │   └── NotificationChatMessage.java
+│   │   │   │   ├── NotificationResponse.java   (알림 응답 DTO)
+│   │   │   │   └── NotificationSettingResponse.java (설정 응답 DTO)
+│   │   │   │
+│   │   │   ├── repository/                    # JPA 리포지토리
+│   │   │   │   ├── NotificationRepository.java (알림 데이터 접근)
+│   │   │   │   └── NotificationSettingRepository.java (설정 데이터 접근)
+│   │   │   │
+│   │   │   ├── service/                       # 비즈니스 로직
+│   │   │   │   ├── SseService.java             (SSE 연결 관리, RabbitMQ 리스너)
+│   │   │   │   ├── NotificationService.java    (알림 생성 및 관리)
+│   │   │   │   ├── NotificationReader.java     (알림 조회 전용)
+│   │   │   │   ├── NotificationSettingService.java (설정 관리)
+│   │   │   │   └── NotificationSettingReader.java  (설정 조회 전용)
+│   │   │   │
+│   │   │   └── RebookNotificationServiceApplication.java (메인 애플리케이션)
+│   │   │
 │   │   └── resources/
-│   │       ├── application.yaml             # 기본 설정
-│   │       ├── application-dev.yaml         # 개발 환경
-│   │       ├── application-prod.yaml        # 프로덕션
-│   │       └── logback-spring.xml           # 로깅 설정
+│   │       ├── application.yaml               (기본 설정)
+│   │       ├── application-dev.yaml           (개발 환경)
+│   │       └── application-prod.yaml          (운영 환경)
+│   │
 │   └── test/
-│       └── java/com/notificationservice/    # 테스트 코드
-│           ├── controller/
-│           ├── service/
-│           └── integration/
-├── gradle/                                   # Gradle Wrapper
-│   └── wrapper/
-│       ├── gradle-wrapper.jar
-│       └── gradle-wrapper.properties
-├── build.gradle                              # Gradle 빌드 설정
-├── settings.gradle                           # Gradle 프로젝트 설정
-├── gradlew                                   # Gradle Wrapper (Unix)
-├── gradlew.bat                               # Gradle Wrapper (Windows)
-├── Dockerfile                                # Docker 이미지 빌드
-├── docker-compose.yml                        # Docker Compose 설정
-├── CLAUDE.md                                 # Claude Code 가이드
-└── README.md                                 # 프로젝트 문서
+│       └── java/com/example/rebooknotificationservice/
+│           └── (테스트 클래스들)
+│
+├── build.gradle                               # Gradle 빌드 설정
+├── Dockerfile                                 # Docker 이미지 빌드
+└── README.md                                  # 프로젝트 문서 (본 파일)
 ```
