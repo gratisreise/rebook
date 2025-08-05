@@ -230,7 +230,7 @@
 애플리케이션 실행 후 아래 URL에서 대화형 API 문서를 확인할 수 있습니다:
 
 ```
-http://localhost:8080/swagger-ui.html
+https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-trading
 ```
 
 ### 6.2 API 엔드포인트 상세
