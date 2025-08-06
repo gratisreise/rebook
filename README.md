@@ -17,18 +17,6 @@
   - 💬 [Chat Service](#-chat-service)
   - 🔔 [Notification Service](#-notification-service)
 - 🔐 [보안 설정](#-보안-설정)
-- 🗃️ 데이터베이스 구성
-- 🐳 Docker 환경 설정
-- 🔗 Config Server 연동 방법
-- 📊 모니터링 & 관찰성
-- 🔄 설정 동적 업데이트
-- 🧪 설정 검증 및 테스트
-- ⚠️ 보안 및 운영 주의사항
-- 🗺️ 개선 우선순위 로드맵
-- ✅ 보안 점검 체크리스트
-- 📎 참고 자료
-- 🤔 문제 해결 (Troubleshooting)
-- ✉️ 지원 및 문의
 
 ## 📁 저장소 구조
 
