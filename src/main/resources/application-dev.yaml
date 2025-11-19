@@ -52,3 +52,5 @@ eureka:
     fetch-registry: true
   instance:
     instance-id: ${spring.application.name}:main
+
+

@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,14 +22,16 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class AuthUser {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
+    @Column(unique = true, length = 200)
     private String userId;
 
-    @Column(nullable = false, length = 30)
+    @Column(unique = true, length = 40)
     private String username;
 
     @Column(length = 30)
@@ -41,7 +45,7 @@ public class AuthUser {
     @Enumerated(EnumType.STRING)
     private Provider provider;
 
-    @Column(nullable = false, length = 300)
+    @Column(length = 300)
     private String providerId;
 
     @Column(updatable = false)

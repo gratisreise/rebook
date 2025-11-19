@@ -1,8 +1,13 @@
 package com.example.rebookauthservice.clients;
 
+import com.example.rebookauthservice.model.dto.UsersCreateRequest;
+import com.example.rebookauthservice.model.dto.UsersResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "user-service")
 public interface UserClient {
-
+    @PostMapping("/api/user/login")
+    String createUser(@RequestBody UsersCreateRequest request);
 }
