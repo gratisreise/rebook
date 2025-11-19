@@ -11,23 +11,23 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Getter
-@Setter
-public class SignUpRequest {
+
+public record SignUpRequest(
     @NotBlank
     @Length(min=3, max=40)
-    private String username;
+    String username,
 
     @Password
-    private String password;
+    String password,
 
     @NotBlank
     @Length(min=3, max=15)
-    private String nickname;
+    String nickname,
 
     @NotBlank
     @Email
-    private String email;
+    String email
+) {
 
     public AuthUser toEntity(String userId, PasswordEncoder encoder){
         return AuthUser.builder()

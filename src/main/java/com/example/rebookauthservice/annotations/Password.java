@@ -2,8 +2,6 @@ package com.example.rebookauthservice.annotations;
 
 
 import com.example.rebookauthservice.classes.PasswordValidator;
-import com.example.rebookauthservice.common.ResultCode;
-import com.sun.net.httpserver.Authenticator.Result;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;

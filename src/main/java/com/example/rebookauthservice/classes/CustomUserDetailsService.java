@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AuthUser user = authRepository.findByUsername(username)
-            .orElseThrow(CMissingDataException::new);
+            .orElseThrow(() -> new UsernameNotFoundException("아이디나 비밀번호가 틀립니다."));
         return new CustomUserDetails(user);
     }
 }

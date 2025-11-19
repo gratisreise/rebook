@@ -5,6 +5,8 @@ import com.example.rebookauthservice.common.CommonResult;
 import com.example.rebookauthservice.common.ResponseService;
 import com.example.rebookauthservice.common.ResultCode;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,10 +33,25 @@ public class GlobalExceptionHandler {
         return ResponseService.getFailResult(ResultCode.DATA_DUPLICATED);
     }
 
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CommonResult handleUsernameNotFoundException(UsernameNotFoundException ex){
+        return ResponseService.getFailResult(ex);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CommonResult handleBadCredentialsException(BadCredentialsException ex){
+        return ResponseService.getFailResult(ResultCode.PASSWORD_UNMATCHED);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handleRuntimeException(RuntimeException ex){
         return ResponseService.getFailResult(ex);
     }
+
+
 
 }
