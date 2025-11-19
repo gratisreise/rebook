@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,6 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "유저API")
 public class UsersController {
     private final UsersService usersService;
+
+
 
     @GetMapping
     @Operation(summary = "유저조회")
@@ -73,7 +76,6 @@ public class UsersController {
         @Valid @RequestBody PasswordUpdateRequest request
     ){
         log.info("update password {}", request.getPassword());
-        usersService.updatePassword(userId, request.getPassword());
         return ResponseService.getSuccessResult();
     }
 

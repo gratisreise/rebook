@@ -3,6 +3,7 @@ package com.example.rebookuserservice.service;
 import com.example.rebookuserservice.exception.CDuplicatedDataException;
 import com.example.rebookuserservice.exception.CInvalidDataException;
 import com.example.rebookuserservice.model.CategoryResponse;
+import com.example.rebookuserservice.model.UsersCreateRequest;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
 import com.example.rebookuserservice.model.entity.Users;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +25,10 @@ public class UsersService {
     private final UserRepository userRepository;
     private final UserReader userReader;
     private final S3Service s3Service;
-    private final KeycloakService keycloakService;
     private final FavoriteCategoryRepository  favoriteCategoryRepository;
+
+    @Value("${aws.basic}")
+    private String baseImageUrl;
 
     //유저 정보 조회
     @Transactional(readOnly = true)
@@ -61,28 +65,18 @@ public class UsersService {
         log.info("User updated: {}", updatedUser);
     }
 
-
     @Transactional
     public void deleteUser(String userId) {
         if(!userRepository.existsById(userId)) {
             throw new CInvalidDataException("존재하지 않는 유저입니다.");
         }
-        keycloakService.deleteUser(userId);
         userRepository.deleteById(userId);
-    }
-
-    public void updatePassword(String userId, String password) {
-        if(!userRepository.existsById(userId)) {
-            throw new CInvalidDataException("존재하지 않는 유저입니다.");
-        }
-        keycloakService.updatePassword(userId, password);
     }
 
     public CategoryResponse getCategories(String userId) {
         List<String> categories = getFavoriteCategories(userId);
         return new CategoryResponse(categories);
     }
-
 
     public List<String> getRecommendedCategories(String userId) {
         return getFavoriteCategories(userId);
@@ -96,9 +90,15 @@ public class UsersService {
             .toList();
     }
 
-
     public UsersResponse getUserOther(String userId) {
         Users user = userReader.getUser(userId);
         return new UsersResponse(user);
+    }
+
+    @Transactional
+    public String createUser(UsersCreateRequest request) {
+        Users user = request.toEntity(baseImageUrl);
+        Users savedUsers = userRepository.save(user);
+        return savedUsers.getId();
     }
 }

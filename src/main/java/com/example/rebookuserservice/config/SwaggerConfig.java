@@ -13,8 +13,8 @@ public class SwaggerConfig {
         return new OpenAPI()
             .components(new Components())
             .info(new Info()
-                .title("API 제목")
-                .description("API 설명")
+                .title("유저서비스")
+                .description("유저서비스 관련 API 문서")
                 .version("1.0.0"));
     }
 }
