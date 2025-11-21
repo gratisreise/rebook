@@ -3,6 +3,7 @@ package com.example.rebookuserservice.service;
 import com.example.rebookuserservice.exception.CDuplicatedDataException;
 import com.example.rebookuserservice.exception.CInvalidDataException;
 import com.example.rebookuserservice.model.CategoryResponse;
+import com.example.rebookuserservice.model.OAuthUsersRequest;
 import com.example.rebookuserservice.model.UsersCreateRequest;
 import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
@@ -98,6 +99,13 @@ public class UsersService {
     @Transactional
     public String createUser(UsersCreateRequest request) {
         Users user = request.toEntity(baseImageUrl);
+        Users savedUsers = userRepository.save(user);
+        return savedUsers.getId();
+    }
+
+    @Transactional
+    public String createUser(OAuthUsersRequest request) {
+        Users user = request.toEntity();
         Users savedUsers = userRepository.save(user);
         return savedUsers.getId();
     }

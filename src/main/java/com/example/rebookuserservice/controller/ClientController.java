@@ -1,7 +1,7 @@
 package com.example.rebookuserservice.controller;
 
+import com.example.rebookuserservice.model.OAuthUsersRequest;
 import com.example.rebookuserservice.model.UsersCreateRequest;
-import com.example.rebookuserservice.model.UsersResponse;
 import com.example.rebookuserservice.model.feigns.AuthorsRequest;
 import com.example.rebookuserservice.service.FavoriteCategoryReader;
 import com.example.rebookuserservice.service.UserReader;
@@ -44,6 +44,11 @@ public class ClientController {
         return usersService.createUser(request);
     }
 
+    @PostMapping("/oauth/login")
+    @Operation(summary = "소셜로그인")
+    public String createUser(@RequestBody OAuthUsersRequest request){
+        return usersService.createUser(request);
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.rebookuserservice.service;
 
 import com.example.rebookuserservice.exception.CMissingDataException;
+import com.example.rebookuserservice.model.OAuthUsersRequest;
 import com.example.rebookuserservice.model.entity.Users;
 import com.example.rebookuserservice.model.feigns.AuthorsRequest;
 import com.example.rebookuserservice.repository.UserRepository;
@@ -28,9 +29,5 @@ public class UserReader {
                 .getNickname())
             .toList();
     }
-
-
-
-
 
 }

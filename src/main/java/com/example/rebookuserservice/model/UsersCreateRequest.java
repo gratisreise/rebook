@@ -1,5 +1,6 @@
 package com.example.rebookuserservice.model;
 
+import com.example.rebookuserservice.enums.Provider;
 import com.example.rebookuserservice.model.entity.Users;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class UsersCreateRequest {
             .email(email)
             .nickname(nickname)
             .profileImage(image)
+            .provider(Provider.LOCAL)
             .build();
     }
 

@@ -1,6 +1,6 @@
 package com.example.rebookuserservice.model.entity;
 
-import com.example.rebookuserservice.enums.Role;
+import com.example.rebookuserservice.enums.Provider;
 import com.example.rebookuserservice.model.UserInfo;
 import com.example.rebookuserservice.model.UsersUpdateRequest;
 import jakarta.persistence.Column;
@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -32,7 +31,7 @@ public class Users {
     @Column(length = 50)
     private String id;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     private String email;
 
     @Column(nullable = false, length = 100)
