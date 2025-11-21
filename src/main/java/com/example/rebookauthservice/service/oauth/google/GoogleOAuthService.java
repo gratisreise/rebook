@@ -75,9 +75,6 @@ public class GoogleOAuthService extends AbstractOAuthService {
         return new GoogleOAuthUserInfo(userInfo);
     }
 
-
-    // provider랑 id로 체크
-    // 있으면 그냥 userId반환 없으면 요청해서 반환
     @Override
     public String createOrGetUser(OAuthUserInfo userInfo) {
         Provider provider = Provider.GOOGLE;
