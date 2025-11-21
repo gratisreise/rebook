@@ -4,12 +4,14 @@ import com.example.rebookauthservice.clients.UserClient;
 import com.example.rebookauthservice.exception.CDuplicatedDataException;
 import com.example.rebookauthservice.exception.CMissingDataException;
 import com.example.rebookauthservice.model.dto.LoginRequest;
+import com.example.rebookauthservice.model.dto.OAuthRequest;
 import com.example.rebookauthservice.model.dto.SignUpRequest;
 import com.example.rebookauthservice.model.dto.TokenResponse;
 import com.example.rebookauthservice.model.dto.UsersCreateRequest;
 import com.example.rebookauthservice.model.entity.AuthUser;
 import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.utils.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,6 +62,7 @@ public class AuthService {
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    //소셜로그인
+    //토큰 리프레쉬
+
 
 }

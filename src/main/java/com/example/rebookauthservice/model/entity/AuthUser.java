@@ -41,7 +41,6 @@ public class AuthUser {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private Provider provider;
 

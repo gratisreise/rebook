@@ -5,9 +5,12 @@ import com.example.rebookauthservice.common.CommonResult;
 import com.example.rebookauthservice.common.ResponseService;
 import com.example.rebookauthservice.common.SingleResult;
 import com.example.rebookauthservice.model.dto.LoginRequest;
+import com.example.rebookauthservice.model.dto.OAuthRequest;
 import com.example.rebookauthservice.model.dto.SignUpRequest;
 import com.example.rebookauthservice.model.dto.TokenResponse;
 import com.example.rebookauthservice.service.AuthService;
+import com.example.rebookauthservice.service.oauth.OAuthService;
+import com.example.rebookauthservice.service.oauth.OAuthServiceFactory;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final OAuthServiceFactory oAuthServiceFactory;
 
     //회원가입
     @PostMapping("/sign-up")
@@ -36,7 +40,13 @@ public class AuthController {
         return ResponseService.getSingleResult(authService.login(request));
     }
 
+
     //소셜로그인
+    @GetMapping("/oauth/login")
+    public SingleResult<TokenResponse> socialLogin(@Valid @RequestBody OAuthRequest request){
+        OAuthService service = oAuthServiceFactory.getOAuthService(request.provider());
+        return ResponseService.getSingleResult(service.login(request));
+    }
 
     //리프레쉬
 

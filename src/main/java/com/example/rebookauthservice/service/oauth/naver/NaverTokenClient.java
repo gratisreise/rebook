@@ -1,0 +1,20 @@
+package com.example.rebookauthservice.service.oauth.naver;
+
+
+import com.example.rebookauthservice.config.FeignConfig;
+import com.example.rebookauthservice.model.dto.oauth.naver.NaverTokenResponse;
+import java.util.Map;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@FeignClient(
+    name = "naverTokenClient",
+    url = "https://nid.naver.com",
+    configuration = FeignConfig.class
+)
+public interface NaverTokenClient {
+    @PostMapping(value = "/oauth2.0/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    NaverTokenResponse getAccessToken(@RequestBody Map<String, ?> params);
+}
