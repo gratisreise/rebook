@@ -17,6 +17,7 @@ import com.example.rebookauthservice.service.oauth.AbstractOAuthService;
 import com.example.rebookauthservice.service.oauth.kako.KakaoTokenClient;
 import com.example.rebookauthservice.service.oauth.kako.KakaoUserClient;
 import com.example.rebookauthservice.utils.JwtUtil;
+import com.example.rebookauthservice.utils.RedisUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -44,10 +45,11 @@ public class NaverOAuthService extends AbstractOAuthService {
         UserClient userClient,
         JwtUtil jwtUtil,
         AuthRepository authRepository,
+        RedisUtil redisUtil,
         NaverTokenClient naverTokenClient,
         NaverUserClient naverUserClient
     ){
-        super(userClient, jwtUtil, authRepository);
+        super(userClient, jwtUtil, authRepository, redisUtil);
         this.naverTokenClient = naverTokenClient;
         this.naverUserClient = naverUserClient;
     }

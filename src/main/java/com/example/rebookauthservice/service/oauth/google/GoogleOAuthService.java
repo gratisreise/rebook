@@ -14,6 +14,7 @@ import com.example.rebookauthservice.model.entity.AuthUser;
 import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.service.oauth.AbstractOAuthService;
 import com.example.rebookauthservice.utils.JwtUtil;
+import com.example.rebookauthservice.utils.RedisUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -39,10 +40,11 @@ public class GoogleOAuthService extends AbstractOAuthService {
         UserClient userClient,
         JwtUtil jwtUtil,
         AuthRepository authRepository,
+        RedisUtil redisUtil,
         GoogleTokenClient googleTokenClient,
         GoogleUserClient googleUserClient
     ){
-        super(userClient, jwtUtil, authRepository);
+        super(userClient, jwtUtil, authRepository, redisUtil);
         this.googleTokenClient = googleTokenClient;
         this.googleUserClient = googleUserClient;
     }

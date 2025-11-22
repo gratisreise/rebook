@@ -64,6 +64,7 @@ dependencies {
     // ===== 캐싱 ====
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+
     // ===== s3 ====
     implementation platform('software.amazon.awssdk:bom:2.27.21') // 최신 버전은 Maven Central에서 확인
     implementation 'software.amazon.awssdk:s3'

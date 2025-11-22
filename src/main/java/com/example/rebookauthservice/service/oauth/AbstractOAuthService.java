@@ -6,6 +6,7 @@ import com.example.rebookauthservice.model.dto.TokenResponse;
 import com.example.rebookauthservice.model.dto.oauth.OAuthUserInfo;
 import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.utils.JwtUtil;
+import com.example.rebookauthservice.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public abstract class AbstractOAuthService implements OAuthService{
     protected final UserClient userClient;
     protected final JwtUtil jwtUtil;
     protected final AuthRepository authRepository;
+    protected final RedisUtil redisUtil;
 
     @Override
     public TokenResponse login(OAuthRequest request){
@@ -28,6 +30,9 @@ public abstract class AbstractOAuthService implements OAuthService{
 
         String jwtToken = jwtUtil.createAccessToken(userId);
         String refreshToken = jwtUtil.createRefreshToken(userId);
+
+        //리프레쉬 토큰 저장
+        redisUtil.save(userId, refreshToken);
 
         return new TokenResponse(jwtToken, refreshToken);
     }

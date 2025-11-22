@@ -50,4 +50,13 @@ public class JwtUtil {
             .compact();
     }
 
+    public String getRefreshUserId(String token){
+        return Jwts.parser()
+            .verifyWith(refreshKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .getSubject();
+    }
+
 }

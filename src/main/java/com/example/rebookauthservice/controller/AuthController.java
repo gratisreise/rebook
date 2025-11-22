@@ -6,6 +6,8 @@ import com.example.rebookauthservice.common.ResponseService;
 import com.example.rebookauthservice.common.SingleResult;
 import com.example.rebookauthservice.model.dto.LoginRequest;
 import com.example.rebookauthservice.model.dto.OAuthRequest;
+import com.example.rebookauthservice.model.dto.RefreshRequest;
+import com.example.rebookauthservice.model.dto.RefreshResponse;
 import com.example.rebookauthservice.model.dto.SignUpRequest;
 import com.example.rebookauthservice.model.dto.TokenResponse;
 import com.example.rebookauthservice.service.AuthService;
@@ -49,7 +51,15 @@ public class AuthController {
     }
 
     //리프레쉬
+    @GetMapping("/refresh")
+    public SingleResult<RefreshResponse> refresh(@Valid @RequestBody RefreshRequest request) {
+        return ResponseService.getSingleResult(authService.refresh(request.refreshToken()));
+    }
 
-    //패스포트생성
+
+
+
+
+
 
 }

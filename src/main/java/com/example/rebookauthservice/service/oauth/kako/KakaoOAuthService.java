@@ -15,6 +15,7 @@ import com.example.rebookauthservice.model.entity.AuthUser;
 import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.service.oauth.AbstractOAuthService;
 import com.example.rebookauthservice.utils.JwtUtil;
+import com.example.rebookauthservice.utils.RedisUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -43,10 +44,11 @@ public class KakaoOAuthService extends AbstractOAuthService {
         UserClient userClient,
         JwtUtil jwtUtil,
         AuthRepository authRepository,
+        RedisUtil redisUtil,
         KakaoTokenClient kakaoTokenClient,
         KakaoUserClient kakaoUserClient
     ){
-        super(userClient, jwtUtil, authRepository);
+        super(userClient, jwtUtil, authRepository, redisUtil);
         this.kakaoTokenClient = kakaoTokenClient;
         this.kakaoUserClient = kakaoUserClient;
     }
