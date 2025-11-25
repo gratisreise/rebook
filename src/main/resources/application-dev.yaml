@@ -5,7 +5,12 @@ spring:
         - id: rebook-user
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/users/**, /api/auths/**
+            - Path=/api/users/**
+        - id: rebook-auth
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
+            - Path=/passport/**
         - id: rebook-book
           uri: lb://BOOK-SERVICE
           predicates:

@@ -10,54 +10,81 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+
+//일반 요청 => 패스포트 필요
+//인즈&인가 요청 => 그냥 바로 서비스로 이어줌
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class CustomFilter implements GlobalFilter, Ordered {
 
     private final JwtUtil jwtUtil;
+    private final WebClient authWebClient;
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final String PASSPORT_HEADER = "X-Passport";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String uri = exchange.getRequest().getURI().toString();
         log.info("uri: {}", uri);
-        if (uri.contains("/api/auths")) {
+
+        // 인증 & 인가 요청
+        if (uri.startsWith("/api/auth")) {
             return chain.filter(exchange);
         }
-        if(uri.contains("/swagger-ui") || uri.contains("/v3/api-docs") || uri.contains("/swagger-resources")){
+        // swagger api 문서 요청
+        if(uri.startsWith("/swagger-ui") || uri.startsWith("/v3/api-docs") || uri.startsWith("/swagger-resources")){
             return chain.filter(exchange);
         }
 
-        if(uri.contains("/api/ws-chat")){
+        // 웹소켓 요청
+        if(uri.startsWith("/api/ws-chat")){
             return webSocketConnect(exchange, chain);
         }
 
 
+        //토큰추출
         String token = getToken(exchange);
 
-        if(token.isBlank()){ // sse 연결
+        if(token.isBlank()){ // 없으면 SSE연결이라고?? => 개선해야할 듯 연결조건자체를 변경해봐야할 듯
             Map<String, String> params = exchange.getRequest().getQueryParams().toSingleValueMap();
             token = params.get("token");
+            if(token == null || token.isBlank() || !jwtUtil.validateToken(token)){
+                return onError(exchange);
+            }
             log.info("sse토큰:{}", token);
         }
         log.info("token: {}", token);
+
+        //토큰검증
         if (token == null || token.isBlank() || !jwtUtil.validateToken(token)) {
             log.error("토큰이 없거나 유효하지 않음");
-            return onError(exchange, "Token Not Found", HttpStatus.UNAUTHORIZED);
+            return onError(exchange);
         }
 
-        String userId = jwtUtil.getUserId(token);
-        log.info("User Id: {}", userId);
+        return getPassport(exchange, chain, token);
+    }
 
-        ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
-            .header("X-User-Id", userId).build();
-
-        ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
-        log.info("Mutated User Id: {}", mutatedExchange.getRequest().getHeaders().get("X-User-Id"));
-        return chain.filter(mutatedExchange);
+    private Mono<Void> getPassport(ServerWebExchange exchange, GatewayFilterChain chain,
+        String token) {
+        return authWebClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/passport")
+                .queryParam("jwt", token)
+                .build())
+            .retrieve()
+            .bodyToMono(String.class)            // ← body를 문자열로 받는 유일한 방법
+            .flatMap(passport -> {
+                ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
+                    .header(PASSPORT_HEADER, passport)
+                    .build();
+                return chain.filter(exchange.mutate().request(mutatedRequest).build());
+            });
     }
 
     private Mono<Void> webSocketConnect(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -67,27 +94,23 @@ public class CustomFilter implements GlobalFilter, Ordered {
 
         if (token != null && !jwtUtil.validateToken(token)) {
             log.error("토큰이 없거나 유효하지 않음");
-            return onError(exchange, "Token Not Found", HttpStatus.UNAUTHORIZED);
+            return onError(exchange);
         }
 
         return chain.filter(exchange);
     }
 
     private String getToken(ServerWebExchange exchange) {
-        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
-        log.info("authHeader: {}", authHeader);
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        String authHeader = exchange.getRequest().getHeaders().getFirst(AUTHORIZATION_HEADER);
+        if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
             return "";
         }
-        int prefixLength = "Bearer ".length();
-        return authHeader.substring(prefixLength);
+        return authHeader.substring(BEARER_PREFIX.length());
     }
 
-    private Mono<Void> onError(ServerWebExchange exchange, String e, HttpStatus httpStatus) {
-        ServerHttpResponse httpResponse = exchange.getResponse();
-        httpResponse.setStatusCode(httpStatus);
-
-        return httpResponse.setComplete();
+    private Mono<Void> onError(ServerWebExchange exchange) {
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        return exchange.getResponse().setComplete();
     }
 
 
