@@ -19,8 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
-
+public class SecurityConfig { //유저 검증용
 
     private static final String[] WHITELISTED_URLS = {
         "/api/auth/**"

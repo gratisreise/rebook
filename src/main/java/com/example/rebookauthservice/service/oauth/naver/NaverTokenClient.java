@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-    name = "naverTokenClient",
+    name = "naverToken",
     url = "https://nid.naver.com",
     configuration = FeignConfig.class
 )

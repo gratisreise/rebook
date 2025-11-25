@@ -56,10 +56,4 @@ public class AuthController {
         return ResponseService.getSingleResult(authService.refresh(request.refreshToken()));
     }
 
-
-
-
-
-
-
 }

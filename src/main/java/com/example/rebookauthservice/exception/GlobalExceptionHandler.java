@@ -27,12 +27,17 @@ public class GlobalExceptionHandler {
         return ResponseService.getFailResult(ResultCode.DATA_MISSED);
     }
 
+    @ExceptionHandler(AuthUserDataMissedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CommonResult handleMissingDataException(AuthUserDataMissedException ex){
+        return ResponseService.getFailResult(ResultCode.AUTH_USER_DATA_MISSED);
+    }
+
     @ExceptionHandler(CInvalidDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult handleInvalidDataException(CInvalidDataException ex){
         return ResponseService.getFailResult(ResultCode.DATA_DUPLICATED);
     }
-
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -51,7 +56,5 @@ public class GlobalExceptionHandler {
     public CommonResult handleRuntimeException(RuntimeException ex){
         return ResponseService.getFailResult(ex);
     }
-
-
 
 }

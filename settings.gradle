@@ -1,1 +1,15 @@
 rootProject.name = 'rebook-auth-service'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+
+        maven {
+            url = uri("https://maven.pkg.github.com/gratisreise/passport-common")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}

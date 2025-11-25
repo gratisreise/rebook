@@ -12,7 +12,6 @@ public interface UserClient {
     @PostMapping("/api/users/sign-up")
     String createUser(@RequestBody UsersCreateRequest request);
 
-
     @PostMapping("/api/users/oauth/login")
     String createUser(@RequestBody OAuthUsersRequest request);
 }

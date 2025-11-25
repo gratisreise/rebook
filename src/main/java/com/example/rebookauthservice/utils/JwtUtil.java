@@ -59,4 +59,13 @@ public class JwtUtil {
             .getSubject();
     }
 
+    public String getAccessUserId(String token){
+        return Jwts.parser()
+            .verifyWith(refreshKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .getSubject();
+    }
+
 }

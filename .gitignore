@@ -213,4 +213,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij,gradle,macos
+# End of https://www.toptal.com/developers/gitignore/api/intellij,gradle,macos\
+
+.claude
+CLAUDE.md

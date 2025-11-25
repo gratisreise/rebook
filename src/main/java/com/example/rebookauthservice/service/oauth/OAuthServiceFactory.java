@@ -1,7 +1,7 @@
 package com.example.rebookauthservice.service.oauth;
 
 
-import com.example.rebookauthservice.annotations.OAuthServiceType;
+import com.example.rebookauthservice.annotation.OAuthServiceType;
 import com.example.rebookauthservice.enums.Provider;
 import java.util.HashMap;
 import java.util.List;

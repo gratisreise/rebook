@@ -7,6 +7,11 @@ jwt:
   access-secret: 0cb8be12c0d3beb399670730c850e2013c2f7dcc07fbbdd7224b0920abb423f1545a96cdd5addcc74cabee72b6c75a8977be34b130c8e53fc14f0324fb8df187
   refresh-secret: 0cb8be12c0d3beb399670730c850e2013c2f7dcc07fbbdd7224b0920abb423f1545a96cdd5addcc74cabee72b6c75a8977be34b130c8e53fc14f0324fb8df187
 
+passport:
+  validity: 100000
+  secret-key: key
+  hmac-algorithm: algo
+
 spring:
   # RDS: postgresql
   datasource:

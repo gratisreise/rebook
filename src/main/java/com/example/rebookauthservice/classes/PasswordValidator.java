@@ -1,7 +1,7 @@
 package com.example.rebookauthservice.classes;
 
 
-import com.example.rebookauthservice.annotations.Password;
+import com.example.rebookauthservice.annotation.Password;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

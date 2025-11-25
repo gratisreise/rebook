@@ -1,7 +1,7 @@
 package com.example.rebookauthservice.service.oauth.naver;
 
 
-import com.example.rebookauthservice.annotations.OAuthServiceType;
+import com.example.rebookauthservice.annotation.OAuthServiceType;
 import com.example.rebookauthservice.clients.UserClient;
 import com.example.rebookauthservice.enums.Provider;
 import com.example.rebookauthservice.exception.CMissingDataException;
@@ -14,8 +14,6 @@ import com.example.rebookauthservice.model.dto.oauth.naver.NaverUserInfo;
 import com.example.rebookauthservice.model.entity.AuthUser;
 import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.service.oauth.AbstractOAuthService;
-import com.example.rebookauthservice.service.oauth.kako.KakaoTokenClient;
-import com.example.rebookauthservice.service.oauth.kako.KakaoUserClient;
 import com.example.rebookauthservice.utils.JwtUtil;
 import com.example.rebookauthservice.utils.RedisUtil;
 import java.util.HashMap;

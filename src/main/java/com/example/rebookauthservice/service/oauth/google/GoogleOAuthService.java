@@ -1,6 +1,6 @@
 package com.example.rebookauthservice.service.oauth.google;
 
-import com.example.rebookauthservice.annotations.OAuthServiceType;
+import com.example.rebookauthservice.annotation.OAuthServiceType;
 import com.example.rebookauthservice.clients.UserClient;
 import com.example.rebookauthservice.enums.Provider;
 import com.example.rebookauthservice.exception.CMissingDataException;

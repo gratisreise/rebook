@@ -1,10 +1,10 @@
 package com.example.rebookauthservice.service;
 
 import com.example.rebookauthservice.clients.UserClient;
+import com.example.rebookauthservice.exception.AuthUserDataMissedException;
 import com.example.rebookauthservice.exception.CDuplicatedDataException;
 import com.example.rebookauthservice.exception.CMissingDataException;
 import com.example.rebookauthservice.model.dto.LoginRequest;
-import com.example.rebookauthservice.model.dto.OAuthRequest;
 import com.example.rebookauthservice.model.dto.RefreshResponse;
 import com.example.rebookauthservice.model.dto.SignUpRequest;
 import com.example.rebookauthservice.model.dto.TokenResponse;
@@ -13,8 +13,6 @@ import com.example.rebookauthservice.model.entity.AuthUser;
 import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.utils.JwtUtil;
 import com.example.rebookauthservice.utils.RedisUtil;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,7 +55,7 @@ public class AuthService {
         );
 
         String userId = authRepository.findByUsername(request.username())
-            .orElseThrow(CMissingDataException::new)
+            .orElseThrow(AuthUserDataMissedException::new)
             .getUserId();
 
         String accessToken = jwtUtil.createAccessToken(userId);

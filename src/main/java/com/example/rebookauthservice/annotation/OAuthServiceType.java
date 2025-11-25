@@ -1,4 +1,4 @@
-package com.example.rebookauthservice.annotations;
+package com.example.rebookauthservice.annotation;
 
 
 import com.example.rebookauthservice.enums.Provider;

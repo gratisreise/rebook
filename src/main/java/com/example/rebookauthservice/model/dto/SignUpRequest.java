@@ -1,6 +1,6 @@
 package com.example.rebookauthservice.model.dto;
 
-import com.example.rebookauthservice.annotations.Password;
+import com.example.rebookauthservice.annotation.Password;
 import com.example.rebookauthservice.enums.Provider;
 import com.example.rebookauthservice.enums.Role;
 import com.example.rebookauthservice.model.entity.AuthUser;
