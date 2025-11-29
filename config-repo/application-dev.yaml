@@ -45,4 +45,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*" # 개발환경전부 보기
+        include: "*"
