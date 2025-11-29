@@ -35,15 +35,15 @@ public class PassportService {
         return generatePassport(userId);
     }
 
+    //패스포트 생성
     private String generatePassport(String userId){
-        //1) 유저 검증
+
         AuthUser user = authRepository.findByUserId(userId)
             .orElseThrow(AuthUserDataMissedException::new);
 
         long now = Instant.now().getEpochSecond();
 
 
-        // 2) unsigned passport 생성 (proto 기반)
         PassportProto.Passport unsigned = PassportProto.Passport.newBuilder()
             .setPassportId(UUID.randomUUID().toString())
             .setUserId(userId)
@@ -51,7 +51,6 @@ public class PassportService {
             .setExpiresAt(now + EXPIRATION)
             .build();
 
-        // 3) passport 서명 및 base64변환
         byte[] rawData = unsigned.toByteArray();
         return hmacUtil.sign(rawData);
     }

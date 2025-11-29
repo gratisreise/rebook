@@ -10,6 +10,7 @@ import com.example.rebookauthservice.model.dto.RefreshRequest;
 import com.example.rebookauthservice.model.dto.RefreshResponse;
 import com.example.rebookauthservice.model.dto.SignUpRequest;
 import com.example.rebookauthservice.model.dto.TokenResponse;
+import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.service.AuthService;
 import com.example.rebookauthservice.service.oauth.OAuthService;
 import com.example.rebookauthservice.service.oauth.OAuthServiceFactory;
@@ -28,6 +29,14 @@ public class AuthController {
 
     private final AuthService authService;
     private final OAuthServiceFactory oAuthServiceFactory;
+    private final AuthRepository authRepository;
+
+
+    //test
+    @GetMapping
+    public String test(){
+        return authRepository.findById(2L).toString();
+    }
 
     //회원가입
     @PostMapping("/sign-up")
@@ -37,17 +46,16 @@ public class AuthController {
     }
 
     //로그인
-    @GetMapping("/login")
+    @PostMapping("/login")
     public SingleResult<TokenResponse> login(@Valid @RequestBody LoginRequest request){
         return ResponseService.getSingleResult(authService.login(request));
     }
 
-
     //소셜로그인
     @GetMapping("/oauth/login")
     public SingleResult<TokenResponse> socialLogin(@Valid @RequestBody OAuthRequest request){
-        OAuthService service = oAuthServiceFactory.getOAuthService(request.provider());
-        return ResponseService.getSingleResult(service.login(request));
+        OAuthService oauthService = oAuthServiceFactory.getOAuthService(request.provider());
+        return ResponseService.getSingleResult(oauthService.login(request));
     }
 
     //리프레쉬

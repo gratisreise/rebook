@@ -4,6 +4,7 @@ import com.example.rebookauthservice.enums.Provider;
 import com.example.rebookauthservice.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
@@ -24,6 +26,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class AuthUser {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +37,7 @@ public class AuthUser {
     @Column(unique = true, length = 40)
     private String username;
 
-    @Column(length = 30)
+    @Column(length = 70)
     private String password;
 
     @Column(nullable = false, length = 20)

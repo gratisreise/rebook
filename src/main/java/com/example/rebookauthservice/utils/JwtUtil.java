@@ -61,7 +61,7 @@ public class JwtUtil {
 
     public String getAccessUserId(String token){
         return Jwts.parser()
-            .verifyWith(refreshKey)
+            .verifyWith(accessKey)
             .build()
             .parseSignedClaims(token)
             .getPayload()

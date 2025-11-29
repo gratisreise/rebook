@@ -3,7 +3,6 @@ package com.example.rebookauthservice.service;
 import com.example.rebookauthservice.clients.UserClient;
 import com.example.rebookauthservice.exception.AuthUserDataMissedException;
 import com.example.rebookauthservice.exception.CDuplicatedDataException;
-import com.example.rebookauthservice.exception.CMissingDataException;
 import com.example.rebookauthservice.model.dto.LoginRequest;
 import com.example.rebookauthservice.model.dto.RefreshResponse;
 import com.example.rebookauthservice.model.dto.SignUpRequest;
@@ -14,12 +13,15 @@ import com.example.rebookauthservice.repository.AuthRepository;
 import com.example.rebookauthservice.utils.JwtUtil;
 import com.example.rebookauthservice.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -40,6 +42,8 @@ public class AuthService {
         //User 생성 요청
         UsersCreateRequest req = UsersCreateRequest.from(request);
         String userId = userClient.createUser(req);
+
+        log.info("userId: {}", userId);
 
         //AuthUser 생성 및 저장
         AuthUser user = request.toEntity(userId, encoder);

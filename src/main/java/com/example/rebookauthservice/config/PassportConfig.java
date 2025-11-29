@@ -13,7 +13,7 @@ public class PassportConfig {
         @Value("${passport.secret-key}") String secretKey,
         @Value("${passport.hmac-algorithm}") String hmacAlgorithm
     ){
-        return hmacUtil(secretKey, hmacAlgorithm);
+        return new HmacUtil(secretKey, hmacAlgorithm);
     }
 
     @Bean

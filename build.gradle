@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.auth-service'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
     toolchain {
@@ -56,7 +56,7 @@ dependencies {
 
 
     // ====== 클라우드/마이크로서비스 연동 ======
-//    implementation 'org.springframework.cloud:spring-cloud-starter-config' // Spring Cloud Config 클라이언트
+    implementation 'org.springframework.cloud:spring-cloud-starter-config' // Spring Cloud Config 클라이언트
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client' // Eureka 서비스 디스커버리 클라이언트
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign' // OpenFeign (HTTP 클라이언트)
 

@@ -2,7 +2,6 @@ package com.example.rebookauthservice.clients;
 
 import com.example.rebookauthservice.model.dto.OAuthUsersRequest;
 import com.example.rebookauthservice.model.dto.UsersCreateRequest;
-import com.example.rebookauthservice.model.dto.oauth.OAuthUserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

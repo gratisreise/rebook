@@ -74,7 +74,7 @@ public class NaverOAuthService extends AbstractOAuthService {
 
     @Override
     public OAuthUserInfo getUserInfo(String accessToken) {
-        NaverUserInfo userInfo = naverUserClient.getUserInfo("Bearer " + accessToken);
+        NaverUserInfo userInfo = naverUserClient.getUserInfo(setBearerAuth(accessToken));
 
         if (userInfo == null || userInfo.response() == null) {
             throw new CMissingDataException("사용자 정보가 비어있습니다.");
