@@ -12,6 +12,7 @@ import com.example.rebookuserservice.repository.FavoriteCategoryRepository;
 import com.example.rebookuserservice.repository.UserRepository;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,15 +99,23 @@ public class UsersService {
 
     @Transactional
     public String createUser(UsersCreateRequest request) {
-        Users user = request.toEntity(baseImageUrl);
+        String userId = generateUserId();
+        Users user = request.toEntity(baseImageUrl, userId);
+        log.info("user:{}", user);
         Users savedUsers = userRepository.save(user);
+        log.info("User: {}", savedUsers);
         return savedUsers.getId();
     }
 
     @Transactional
     public String createUser(OAuthUsersRequest request) {
-        Users user = request.toEntity();
+        String userId = generateUserId();
+        Users user = request.toEntity(userId);
         Users savedUsers = userRepository.save(user);
         return savedUsers.getId();
+    }
+
+    private String generateUserId(){
+        return UUID.randomUUID().toString().replaceAll(",","");
     }
 }

@@ -21,7 +21,7 @@ COPY src src
 RUN ./gradlew bootJar --no-daemon
 
 # 2. 실행 환경
-FROM openjdk:17-slim AS run
+FROM eclipse-temurin:17-jre AS run
 WORKDIR /app
 
 #jar 복사

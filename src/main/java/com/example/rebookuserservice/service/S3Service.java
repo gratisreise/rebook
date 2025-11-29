@@ -21,18 +21,21 @@ public class S3Service {
     private final S3Client s3Client;
 
     @Value("${aws.s3.bucket}")
-    private String bucketName;
+    private String BUCKET_NAME;
+
+    @Value("${aws.s3.region}")
+    private String REGION;
 
     //이미지 업로드
     public String upload(MultipartFile file) throws IOException {
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         String contentType = file.getContentType();
-        String region = "ap-northeast-2";
+
         log.info("Uploading file " + fileName);
-        log.info("Bucket Name: " + bucketName);
+        log.info("Bucket Name: " + BUCKET_NAME);
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-            .bucket(bucketName)
+            .bucket(BUCKET_NAME)
             .key(fileName)
             .contentType(contentType)
             .build();
@@ -47,7 +50,7 @@ public class S3Service {
             throw new CMissingDataException("s3 이미지 업로드에 실패했습니다.");
         }
 
-        String result = String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, fileName);
+        String result = String.format("https://%s.s3.%s.amazonaws.com/%s", BUCKET_NAME, REGION, fileName);
         if(result.isEmpty()) {
            throw new CMissingDataException("s3 이미지 url 생성 실패");
         }
@@ -60,7 +63,7 @@ public class S3Service {
         String fileKey = url.substring(url.lastIndexOf("/") + 1);
         log.info("fileKey: {}", fileKey);
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-            .bucket(bucketName)
+            .bucket(BUCKET_NAME)
             .key(fileKey)
             .build();
 

@@ -12,8 +12,9 @@ public class OAuthUsersRequest {
     private String profileImage;
 
 
-    public Users toEntity() {
+    public Users toEntity(String userId) {
         return Users.builder()
+            .id(userId)
             .nickname(nickname)
             .profileImage(profileImage)
             .build();

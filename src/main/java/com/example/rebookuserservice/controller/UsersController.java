@@ -36,8 +36,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class UsersController {
     private final UsersService usersService;
 
-
-
     @GetMapping
     @Operation(summary = "유저조회")
     public SingleResult<UsersResponse> getUser(@RequestHeader("X-User-Id")String userId) {

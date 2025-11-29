@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 @Tag(name="유저조회api", description = "타서비스의 조회를 위한 api")
+@Slf4j
 public class ClientController {
     private final UserReader userReader;
     private final FavoriteCategoryReader favoriteCategoryReader;
@@ -41,6 +43,8 @@ public class ClientController {
     @PostMapping("/sign-up")
     @Operation(summary = "회원생성")
     public String createUser(@RequestBody UsersCreateRequest request){
+        log.info("회원가입 들어옴");
+        log.info("request:{}", request);
         return usersService.createUser(request);
     }
 
@@ -49,6 +53,5 @@ public class ClientController {
     public String createUser(@RequestBody OAuthUsersRequest request){
         return usersService.createUser(request);
     }
-
 
 }
