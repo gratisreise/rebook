@@ -19,5 +19,4 @@ public class PassportController {
         return passportService.issuePassport(jwt);
     }
 
-
 }

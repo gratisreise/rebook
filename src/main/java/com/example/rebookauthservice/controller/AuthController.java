@@ -16,6 +16,7 @@ import com.example.rebookauthservice.service.oauth.OAuthService;
 import com.example.rebookauthservice.service.oauth.OAuthServiceFactory;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,17 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
     private final OAuthServiceFactory oAuthServiceFactory;
     private final AuthRepository authRepository;
 
-
     //test
     @GetMapping
     public String test(){
-        return authRepository.findById(2L).toString();
+        return "테스트성공";
     }
 
     //회원가입
