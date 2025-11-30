@@ -46,3 +46,9 @@ management:
     web:
       exposure:
         include: "*"
+
+# 6.  Passport 설정
+passport:
+  validity: 100000
+  secret-key: "{cipher}c1b91aea7dfb33fd8bb6ae143d4a9ceac73e250aa442db0bf144818b034d2c8ffdcaba19a657a20b84132bf4f078f9af5f87c95a5ad144ef5bb1014e6123a770"
+  hmac-algorithm: "{cipher}040133c3e67c6c28082fedc25b978523c0cfe9cdb4c89fd489a464b6bd2a0251"
