@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.user-service' // 프로젝트 그룹(패키지 네임)
-version = '0.0.1-SNAPSHOT' // 프로젝트 버전
+version = '0.0.1' // 프로젝트 버전
 
 java {
     toolchain {
@@ -57,17 +57,18 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign' // OpenFeign (HTTP 클라이언트)
 
 
-    // ===== 캐싱 ====
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
     // ===== s3 ====
     implementation platform('software.amazon.awssdk:bom:2.27.21') // 최신 버전은 Maven Central에서 확인
     implementation 'software.amazon.awssdk:s3'
 
-    // ===== jwt ====
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5' // JSON 변환을 위해 필요
+
+//    // ===== jwt ====
+//    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+//    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+//    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5' // JSON 변환을 위해 필요
+
+    //공통라이브러리
+    implementation "com.rebook:passport-common:1.0.0"
 
     // ====== 개발 편의성 ======
     compileOnly 'org.projectlombok:lombok' // Lombok (컴파일 시에만 필요)
@@ -93,6 +94,23 @@ tasks.named('test') {
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport' // 테스트 후 리포트 생성
 }
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/gratisreise/passport-common")
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+    mavenLocal()
+    flatDir {
+        dirs "libs"
+    }
+}
+
 
 jacocoTestReport {
     reports {

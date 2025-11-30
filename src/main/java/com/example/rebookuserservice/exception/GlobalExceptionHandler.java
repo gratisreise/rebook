@@ -1,9 +1,7 @@
-package com.example.rebookuserservice.advice;
+package com.example.rebookuserservice.exception;
 
 import com.example.rebookuserservice.common.CommonResult;
 import com.example.rebookuserservice.common.ResponseService;
-import com.example.rebookuserservice.exception.CDuplicatedDataException;
-import com.example.rebookuserservice.exception.CMissingDataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +20,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CDuplicatedDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult handleCDuplicatedDataException(CDuplicatedDataException e) {
+        return ResponseService.getFailResult(e);
+    }
+
+    @ExceptionHandler(UnAuthorizedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CommonResult handleUnAuthorizedException(UnAuthorizedException e){
         return ResponseService.getFailResult(e);
     }
 
