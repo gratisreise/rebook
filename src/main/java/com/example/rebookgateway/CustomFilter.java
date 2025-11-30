@@ -8,7 +8,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -22,15 +21,15 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CustomFilter implements GlobalFilter, Ordered {
 
-    private final JwtUtil jwtUtil;
-    private final WebClient authWebClient;
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final String PASSPORT_HEADER = "X-Passport";
+    private final JwtUtil jwtUtil;
+    private final WebClient.Builder lbWebClient;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String uri = exchange.getRequest().getURI().toString();
+        String uri = exchange.getRequest().getPath().toString();
         log.info("uri: {}", uri);
 
         // 인증 & 인가 요청
@@ -38,23 +37,23 @@ public class CustomFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
         // swagger api 문서 요청
-        if(uri.startsWith("/swagger-ui") || uri.startsWith("/v3/api-docs") || uri.startsWith("/swagger-resources")){
+        if (uri.startsWith("/swagger-ui") || uri.startsWith("/v3/api-docs") || uri.startsWith(
+            "/swagger-resources")) {
             return chain.filter(exchange);
         }
 
         // 웹소켓 요청
-        if(uri.startsWith("/api/ws-chat")){
+        if (uri.startsWith("/api/ws-chat")) {
             return webSocketConnect(exchange, chain);
         }
-
 
         //토큰추출
         String token = getToken(exchange);
 
-        if(token.isBlank()){ // 없으면 SSE연결이라고?? => 개선해야할 듯 연결조건자체를 변경해봐야할 듯
+        if (token.isBlank()) { // 없으면 SSE연결이라고?? => 개선해야할 듯 연결조건자체를 변경해봐야할 듯
             Map<String, String> params = exchange.getRequest().getQueryParams().toSingleValueMap();
             token = params.get("token");
-            if(token == null || token.isBlank() || !jwtUtil.validateToken(token)){
+            if (token == null || token.isBlank() || !jwtUtil.validateToken(token)) {
                 return onError(exchange);
             }
             log.info("sse토큰:{}", token);
@@ -72,13 +71,18 @@ public class CustomFilter implements GlobalFilter, Ordered {
 
     private Mono<Void> getPassport(ServerWebExchange exchange, GatewayFilterChain chain,
         String token) {
-        return authWebClient.get()
+        return lbWebClient
+            .build()
+            .post()
             .uri(uriBuilder -> uriBuilder
-                .path("/passport")
+                .scheme("lb")
+                .host("AUTH-SERVICE")
+                .path("/passports")
                 .queryParam("jwt", token)
-                .build())
+                .build()
+            )
             .retrieve()
-            .bodyToMono(String.class)            // ← body를 문자열로 받는 유일한 방법
+            .bodyToMono(String.class)
             .flatMap(passport -> {
                 ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
                     .header(PASSPORT_HEADER, passport)
@@ -112,7 +116,6 @@ public class CustomFilter implements GlobalFilter, Ordered {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
     }
-
 
     @Override
     public int getOrder() {

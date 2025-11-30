@@ -9,6 +9,18 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @Configuration
 public class SecurityConfig {
 
+
+    private static final String[] SERVICES = {
+        "/api/auth/**", // auth
+        "/api/users/**", // user
+        "/api/books/**", // book
+        "/api/tradings/**", // trading
+        "/api/chats/**", // chat
+        "/api/notifications/**", // noti
+        "/api/ws-chat/**" // ws
+    };
+
+
     private static final String[] WHITE_LIST = {
         "/actuator/**",
         "/eureka/**",
@@ -18,13 +30,6 @@ public class SecurityConfig {
         "/swagger-ui/**",
         "/swagger-resources/**",
         "/v3/api-docs/**",
-        "/api/auths/**",
-        "/api/users/**",
-        "/api/books/**",
-        "/api/tradings/**",
-        "/api/chats/**",
-        "/api/notifications/**",
-        "/api/ws-chat/**"
     };
 
     @Bean
@@ -36,6 +41,7 @@ public class SecurityConfig {
 //            )
             .authorizeExchange(exchange -> exchange
                 .pathMatchers(WHITE_LIST).permitAll() // 배열을 그대로 사용
+                .pathMatchers(SERVICES).permitAll()
                 .anyExchange().authenticated()
             )
             .build();
