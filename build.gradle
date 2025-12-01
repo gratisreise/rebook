@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.char-service' // 프로젝트 그룹(패키지 네임)
-version = '0.0.1-SNAPSHOT' // 프로젝트 버전
+version = '0.0.1' // 프로젝트 버전
 
 java {
     toolchain {
@@ -52,6 +52,8 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql' // PostgreSQL JDBC 드라이버
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+    //공통라이브러리
+    implementation "com.rebook:passport-common:1.0.0"
 
 // ====== 메시징 및 AMQP ======
     implementation 'org.springframework.boot:spring-boot-starter-amqp' // RabbitMQ 연동
@@ -95,5 +97,22 @@ jacocoTestReport {
         html.required = true // HTML 리포트 생성
         xml.required = false
         csv.required = false
+    }
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/gratisreise/passport-common")
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+    mavenLocal()
+    flatDir {
+        dirs "libs"
     }
 }

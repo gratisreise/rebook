@@ -5,10 +5,13 @@ import com.example.rebookchatservice.common.ResponseService;
 import com.example.rebookchatservice.common.SingleResult;
 import com.example.rebookchatservice.model.ChatRoomRequest;
 import com.example.rebookchatservice.model.ChatRoomResponse;
+import com.example.rebookchatservice.passport.PassportUser;
 import com.example.rebookchatservice.service.ChatRoomService;
+import com.rebook.passport.PassportProto.Passport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/chats")
 @RequiredArgsConstructor
 @Tag(name="채팅방API")
+@Slf4j
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+
+    @GetMapping("/test")
+    public String test(@PassportUser Passport passport){
+        return passport.toString();
+    }
 
     //채팅방 생성
     @PostMapping("/{yourId}")
@@ -43,6 +52,5 @@ public class ChatRoomController {
         @PageableDefault Pageable pageable) {
         return ResponseService.getSingleResult(chatRoomService.getMyChatRooms(myId, pageable));
     }
-
 
 }
