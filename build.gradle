@@ -43,6 +43,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation' // Bean Validation
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 
+    //공통라이브러리
+    implementation "com.rebook:passport-common:1.0.0"
+
 // ====== 데이터베이스 및 JPA ======
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA (DB 연동)
     runtimeOnly 'org.postgresql:postgresql' // PostgreSQL JDBC 드라이버
@@ -90,5 +93,21 @@ jacocoTestReport {
         html.required = true // HTML 리포트 생성
         xml.required = false
         csv.required = false
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/gratisreise/passport-common")
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+    mavenLocal()
+    flatDir {
+        dirs "libs"
     }
 }

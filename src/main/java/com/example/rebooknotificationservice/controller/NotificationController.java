@@ -5,7 +5,9 @@ import com.example.rebooknotificationservice.common.PageResponse;
 import com.example.rebooknotificationservice.common.ResponseService;
 import com.example.rebooknotificationservice.common.SingleResult;
 import com.example.rebooknotificationservice.model.NotificationResponse;
+import com.example.rebooknotificationservice.passport.PassportUser;
 import com.example.rebooknotificationservice.service.NotificationService;
+import com.rebook.passport.PassportProto.Passport;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotificationController {
 
     private final NotificationService notificationService;
+
+    @GetMapping("/test")
+    public String test(@PassportUser Passport passport){
+        return passport.toString();
+    }
+
 
     @GetMapping("/me")
     @Operation(summary = "내 알림 목록 조회")

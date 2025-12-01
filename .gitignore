@@ -39,3 +39,5 @@ CLAUDE.md
 postman-collection.json
 Rebook_NotificationService.json
 GEMINI.md
+*.txt
+.claude
