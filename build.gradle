@@ -62,6 +62,9 @@ dependencies {
     implementation platform('software.amazon.awssdk:bom:2.27.21') // 최신 버전은 Maven Central에서 확인
     implementation 'software.amazon.awssdk:s3'
 
+    //공통라이브러리
+    implementation "com.rebook:passport-common:1.0.0"
+
 // ====== 개발 편의성 ======
     compileOnly 'org.projectlombok:lombok' // Lombok (컴파일 시에만 필요)
     annotationProcessor 'org.projectlombok:lombok' // Lombok 애노테이션 프로세서
@@ -92,5 +95,21 @@ jacocoTestReport {
         html.required = true // HTML 리포트 생성
         xml.required = false
         csv.required = false
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/gratisreise/passport-common")
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+    mavenLocal()
+    flatDir {
+        dirs "libs"
     }
 }

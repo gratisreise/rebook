@@ -7,8 +7,10 @@ import com.example.rebooktradingservice.common.SingleResult;
 import com.example.rebooktradingservice.enums.State;
 import com.example.rebooktradingservice.model.TradingRequest;
 import com.example.rebooktradingservice.model.TradingResponse;
+import com.example.rebooktradingservice.passport.PassportUser;
 import com.example.rebooktradingservice.service.TradingReader;
 import com.example.rebooktradingservice.service.TradingService;
+import com.rebook.passport.PassportProto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -37,6 +39,11 @@ public class TradingController {
     private final TradingService tradingService;
     private final TradingReader tradingReader;
 
+
+    @GetMapping("/test")
+    public String test(@PassportUser PassportProto.Passport passport){
+        return passport.toString();
+    }
 
     @PostMapping
     @Operation(summary = "거래등록")

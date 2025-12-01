@@ -1,12 +1,11 @@
 package com.example.rebooktradingservice.model.message;
 
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class NotificationTradeMessage implements Serializable {
+public class NotificationTradeMessage {
     private String message;
     private String type;
     private String tradingId;
