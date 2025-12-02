@@ -1,0 +1,10 @@
+eureka:
+  server:
+    enable-self-preservation: true
+
+#모니터링 정보
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info

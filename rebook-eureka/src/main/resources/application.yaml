@@ -1,0 +1,21 @@
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://rebook-eureka:8761/eureka/
+
+#센트리 로깅
+sentry:
+  dsn: ${SENTRY_DSN}
+  send-default-pii: true
+
+spring:
+  application:
+    name: rebook-eureka
+
+  profiles:
+    active: prod
