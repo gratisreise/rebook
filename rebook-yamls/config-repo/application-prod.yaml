@@ -1,0 +1,54 @@
+# 포트설정(다중 서버)
+server:
+  port: 8080
+
+spring:
+
+  # RDS: postgresql
+  datasource:
+      url: jdbc:postgresql://34.158.202.64:5432/rebookdb
+      username: postgres
+      password: "{cipher}a0f8ea4d7d74caffe583c19daba3d7b2a63833dfda90f2df9853841732e3b8e1ebda6d50a0525afcc75cef698a6bb428"
+      driverClassName: org.postgresql.Driver
+
+  # jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate 
+    show-sql: false
+
+  # Redis 설정
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: "{cipher}df7e39f3b574c8f0257643d70074a44c8ce756923523d7ddac30e125f971d81fcf8d275c8c3f0516aec1a7ddcf6a55f2"
+
+  # RabbitMQ 설정
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: "{cipher}44cc7c7b2ad2dece6031b1968351707371d5dd9dc351539b67fdabc84990a5fe26a5f5e385b35ecc707455d3b4085bda"
+
+# Actuator 및 모니터링
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus # prometheus, health, info 엔드포인트 노출
+
+# api-cods 설정
+springdoc:
+  api-docs:
+    enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rebook-eureka:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:main

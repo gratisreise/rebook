@@ -1,0 +1,4 @@
+
+notification:
+  exchange: book.notification.exchange
+  routing-key: book.notification.key

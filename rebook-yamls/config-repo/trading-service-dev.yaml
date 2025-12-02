@@ -1,0 +1,7 @@
+# 포트설정(단일 서버)
+server:
+  port: 9002
+
+notification:
+  exchange: trade.notification.exchange
+  routing-key: trade.notification.key

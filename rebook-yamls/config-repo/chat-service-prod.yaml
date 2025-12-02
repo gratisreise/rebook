@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: "{cipher}f49a1efc820933c60ea78f08fcdaf9ba81f5e116be33327b581b8074380acb7a331af6b5c8cc92206b6fea130ea40f399c973205d4d433c8d12a05c6eee9141d2ea766d3f8eecf9442ea6ceb214a498553f740cd68b1e41a10da7f764edb5cac"
+      
+# rabbitmq queue 연결
+notification:
+  exchange: chat.notification.exchange
+  routing-key: chat.notification.key
