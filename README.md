@@ -37,14 +37,11 @@ WebSocket/STOMP 기반 실시간 메시징과 알림 발행을 담당하는 핵�
 ---
 
 ## 2. 목차
-
-- [1. 개요](#1-개요)
-- [2. 목차](#2-목차)
-- [3. 주요 기능](#3-주요-기능)
-- [4. 기술 스택](#4-기술-스택)
-- [5. 아키텍처](#5-아키텍처)
-- [6. API 문서](#6-api-문서)
-- [7. 프로젝트 구조](#7-프로젝트-구조)
+- [주요 기능](#3-주요-기능)
+- [기술 스택](#4-기술-스택)
+- [아키텍처](#5-아키텍처)
+- [API 문서](#6-api-문서)
+- [프로젝트 구조](#7-프로젝트-구조)
 
 ---
 
@@ -248,17 +245,9 @@ WebSocket/STOMP 기반 실시간 메시징과 알림 발행을 담당하는 핵�
 
 ## 6. API 문서
 
-### 6.1 Swagger UI 접근
+### 6.1 API 엔드포인트 상세
 
-애플리케이션 실행 후 아래 URL에서 대화형 API 문서를 확인할 수 있습니다:
-
-```
-https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-chat
-```
-
-### 6.2 API 엔드포인트 상세
-
-#### 6.2.1 채팅방 관리 API (`ChatRoomController`)
+#### 6.1.1 채팅방 관리 API (`ChatRoomController`)
 
 | Method | Endpoint | Summary |
 |--------|----------|---------|
@@ -267,21 +256,21 @@ https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=reb
 | **GET** | `/api/chats/rooms` | 사용자의 채팅방 목록 조회 |
 | **DELETE** | `/api/chats/room/{roomId}` | 채팅방 삭제 |
 
-#### 6.2.2 메시지 관리 API (`ChatMessageController`)
+#### 6.1.2 메시지 관리 API (`ChatMessageController`)
 
 | Method | Endpoint | Summary |
 |--------|----------|---------|
 | **GET** | `/api/chats/messages/{roomId}` | 메시지 히스토리 조회 (페이징) |
 | **POST** | `/api/chats/message` | 메시지 전송 (REST) |
 
-#### 6.2.3 읽음 상태 API (`ChatReadStatusController`)
+#### 6.1.3 읽음 상태 API (`ChatReadStatusController`)
 
 | Method | Endpoint | Summary |
 |--------|----------|---------|
 | **PUT** | `/api/chats/read/{roomId}` | 읽음 상태 업데이트 |
 | **GET** | `/api/chats/unread/count` | 읽지 않은 메시지 수 조회 |
 
-### 6.3 WebSocket/STOMP 엔드포인트
+### 6.2 WebSocket/STOMP 엔드포인트
 
 #### 연결
 ```
@@ -301,7 +290,7 @@ SockJS Endpoint: /ws-chat (with fallback)
 /app/api/chats/leave                  # 채팅방 퇴장
 ```
 
-### 6.4 메시지 포맷
+### 6.3 메시지 포맷
 
 #### 메시지 전송 (Client → Server)
 ```json
@@ -348,81 +337,29 @@ SockJS Endpoint: /ws-chat (with fallback)
 | **service/** | 비즈니스 로직 | 트랜잭션 관리, 권한 검증, 메시지 처리, 읽기/쓰기 분리 |
 | **utils/** | 유틸리티 | 알림 발행, 공통 헬퍼 함수 |
 
+### 구조
 
 ```
 rebook-chat-service/
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/rebookchatservice/
-│   │   │   ├── advice/                        # 전역 예외 처리
-│   │   │   │   └── GlobalExceptionHandler.java  (RestControllerAdvice)
-│   │   │   │
-│   │   │   ├── common/                        # 공통 응답 모델
-│   │   │   │   ├── CommonResult.java           (기본 성공 응답)
-│   │   │   │   ├── SingleResult.java           (단일 데이터 응답)
-│   │   │   │   ├── ListResult.java             (리스트 응답)
-│   │   │   │   ├── PageResponse.java           (페이지네이션 응답)
-│   │   │   │   ├── ResponseService.java        (응답 래핑 팩토리)
-│   │   │   │   └── ResultCode.java             (응답 코드 상수)
-│   │   │   │
-│   │   │   ├── config/                        # 설정 클래스
-│   │   │   │   ├── WebSocketConfig.java        (WebSocket 및 STOMP 설정)
-│   │   │   │   ├── RabbitConfig.java           (RabbitMQ 설정)
-│   │   │   │   └── SwaggerConfig.java          (Swagger/OpenAPI 설정)
-│   │   │   │
-│   │   │   ├── controller/                    # REST 컨트롤러 & WebSocket 핸들러
-│   │   │   │   ├── ChatMessageController.java  (메시지 전송/조회, STOMP 핸들러)
-│   │   │   │   ├── ChatRoomController.java     (채팅방 CRUD)
-│   │   │   │   ├── ChatReadStatusController.java (읽음 상태 관리)
-│   │   │   │   └── TestController.java         (테스트 컨트롤러)
-│   │   │   │
-│   │   │   ├── exception/                     # 커스텀 예외
-│   │   │   │   ├── CMissingDataException.java  (404 데이터 미존재)
-│   │   │   │   ├── CDuplicatedDataException.java (409 중복 데이터)
-│   │   │   │   └── CInvalidDataException.java  (400 유효하지 않은 입력)
-│   │   │   │
-│   │   │   ├── model/                         # DTO 및 엔티티
-│   │   │   │   ├── entity/                    # JPA 엔티티 & MongoDB 문서
-│   │   │   │   │   ├── ChatRoom.java          (채팅방 메인 엔티티)
-│   │   │   │   │   ├── ChatMessage.java       (메시지 MongoDB 문서)
-│   │   │   │   │   ├── ChatReadStatus.java    (읽음 상태 엔티티)
-│   │   │   │   │   └── compositekey/
-│   │   │   │   │       └── ChatReadStatusId.java (복합키 클래스)
-│   │   │   │   ├── message/                   # 메시징 DTO
-│   │   │   │   │   └── NotificationChatMessage.java (알림 메시지)
-│   │   │   │   ├── ChatMessageRequest.java    (메시지 요청 DTO)
-│   │   │   │   ├── ChatMessageResponse.java   (메시지 응답 DTO)
-│   │   │   │   ├── ChatRoomRequest.java       (채팅방 요청 DTO)
-│   │   │   │   └── ChatRoomResponse.java      (채팅방 응답 DTO)
-│   │   │   │
-│   │   │   ├── repository/                    # 데이터 접근 레이어
-│   │   │   │   ├── ChatMessageRepository.java  (MongoDB 메시지 저장소)
-│   │   │   │   ├── ChatRoomRepository.java     (PostgreSQL 채팅방 저장소)
-│   │   │   │   └── ChatReadStatusRepository.java (PostgreSQL 읽음 상태 저장소)
-│   │   │   │
-│   │   │   ├── service/                       # 비즈니스 로직
-│   │   │   │   ├── ChatMessageService.java     (메시지 생성/전송)
-│   │   │   │   ├── ChatRoomService.java        (채팅방 생성/수정/삭제)
-│   │   │   │   ├── ChatReadStatusService.java  (읽음 상태 관리)
-│   │   │   │   ├── ChatMessageReader.java      (메시지 조회 전용)
-│   │   │   │   ├── ChatRoomReader.java         (채팅방 조회 전용)
-│   │   │   │   └── ChatReadStatusReader.java   (읽음 상태 조회 전용)
-│   │   │   │
-│   │   │   ├── utils/                         # 유틸리티
-│   │   │   │   └── NotificationPublisher.java  (RabbitMQ 메시지 발행)
-│   │   │   │
-│   │   │   └── RebookChatServiceApplication.java (메인 애플리케이션)
-│   │   │
-│   │   └── resources/
-│   │       ├── application.yaml               (Spring Cloud Config 연동)
-│   │       ├── application-dev.yaml           (개발 환경 설정)
-│   │       └── application-prod.yaml          (운영 환경 설정)
-│   │
-│   └── test/
-│       └── java/com/example/rebookchatservice/
-│           └── (테스트 클래스들)
+├── src/main/java/com/example/rebookchatservice/
+│   ├── advice/                    # 전역 예외 처리
+│   ├── common/                    # 공통 응답 모델
+│   ├── config/                    # WebSocket, RabbitMQ, Swagger 설정
+│   ├── controller/                # REST & WebSocket 컨트롤러
+│   ├── exception/                 # 커스텀 예외
+│   ├── model/
+│   │   ├── entity/               # JPA 엔티티 & MongoDB 문서
+│   │   └── (요청/응답 DTO)
+│   ├── repository/                # 데이터 접근 레이어
+│   ├── service/                   # 비즈니스 로직 (읽기/쓰기 분리)
+│   └── utils/                     # 알림 발행 유틸리티
 │
-├── build.gradle                               # Gradle 빌드 설정
-├── Dockerfile                                 # Docker 이미지 빌드 설정
-└── README.md                                  # 프로젝트 문서 (본 파일)
+├── src/main/resources/
+│   ├── application.yaml           # 기본 설정
+│   ├── application-dev.yaml       # 개발 환경
+│   └── application-prod.yaml      # 운영 환경
+│
+├── build.gradle
+├── Dockerfile
+└── README.md
 ```
