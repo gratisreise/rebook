@@ -103,28 +103,9 @@ rebook/
 └── README.md                # 이 파일
 ```
 
-
-### API 문서
-
-각 서비스는 Swagger UI를 통해 API 문서를 제공합니다:
-
-**개별 서비스**:
-- [User Service](https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-user)
-- [Book Service](https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-book)
-- [Trading Service](https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-trading)
-- [Chat Service](https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-chat)
-- [Notification Service](https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-notification)
-
-**통합 서비스**:
-- [통합 API 문서](https://api.rebookcloak.click/swagger-ui/index.html)
-
-> **참고**: Swagger UI는 개발 환경에서만 활성화됩니다.
-
-
 ## 🔗 추가 리소스
 
 - [**설정 관리 가이드**](./rebook-yamls/README.md)
-- [**API 게이트웨이 가이드**](./rebook-gateway/README.md)
 
 ## 5. 모니터링
 
@@ -141,10 +122,6 @@ curl http://localhost:9000/actuator/health  # User Service
 curl http://localhost:9001/actuator/health  # Book Service
 ```
 
-**운영 환경**:
-- [프로메테우스](https://api.rebookcloak.click/metrics/targets)
-- [유레카](https://api.rebookcloak.click/eureka)
-
 ### 메트릭 수집 및 시각화
 
 **로컬 개발 환경**:
@@ -152,14 +129,9 @@ curl http://localhost:9001/actuator/health  # Book Service
 # grafnan Dash board 메트릭
 curl http://localhost:3000
 ```
-
-**운영 환경**:
-- [Grafana 모니터링 대시보드](https://api.rebookcloak.click/grafana/goto/PToXkaeHg?orgId=1)
-- ID:admin/PW:admin1234
-
 ## 6. 보안
 
 - JWT 기반 인증 (Gateway에서 검증)
 - 운영 환경 설정 암호화 (`{cipher}` 프리픽스)
 - CORS 설정 및 관리
-- Actuator 엔드포인트 접근 제한
+- 내부외부 인증, 검증 분리
