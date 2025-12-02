@@ -28,7 +28,6 @@ Keycloak 기반 OAuth2 인증, 프로필 관리, 선호도 시스템을 담당�
 
 본 서비스는 Rebook 플랫폼 내에서 다음과 같은 역할을 담당합니다:
 
-- **인증 및 권한 관리**: Keycloak 기반 OAuth2/OIDC 인증 및 내부 JWT 토큰 발급
 - **사용자 프로필 관리**: 프로필 정보 생성, 수정, 삭제 및 이미지 관리
 - **선호도 시스템**: 사용자별 선호 카테고리 관리 및 맞춤 추천
 - **독서 기록 관리**: 사용자 도서 상호작용 및 거래 이력 추적
@@ -38,13 +37,11 @@ Keycloak 기반 OAuth2 인증, 프로필 관리, 선호도 시스템을 담당�
 
 ## 2. 목차
 
-- [1. 개요](#1-개요)
-- [2. 목차](#2-목차)
-- [3. 주요 기능](#3-주요-기능)
-- [4. 기술 스택](#4-기술-스택)
-- [5. 아키텍처](#5-아키텍처)
-- [6. API 문서](#6-api-문서)
-- [7. 프로젝트 구조](#7-프로젝트-구조)
+- [주요 기능](#3-주요-기능)
+- [기술 스택](#4-기술-스택)
+- [아키텍처](#5-아키텍처)
+- [API 문서](#6-api-문서)
+- [프로젝트 구조](#7-프로젝트-구조)
 
 ---
 
@@ -57,18 +54,6 @@ Keycloak 기반 OAuth2 인증, 프로필 관리, 선호도 시스템을 담당�
 - ✅ Keycloak 토큰 검증 및 사용자 정보 추출
 - ✅ 소셜 로그인 지원 (Google, Kakao, Naver 등)
 - ✅ 자동 사용자 생성 (첫 로그인 시 기본 프로필 생성)
-
-#### 내부 JWT 시스템
-- ✅ 마이크로서비스 간 통신용 내부 JWT 토큰 생성
-- ✅ Access Token + Refresh Token 이중 토큰 관리
-- ✅ Redis 기반 Refresh Token 캐싱 (`refresh:` 접두사)
-- ✅ 토큰 갱신 API를 통한 자동 재발급
-
-#### 인증 흐름
-```
-사용자 → Keycloak 인증 → User Service 토큰 검증
-      → 내부 JWT 발급 → Redis 캐싱 → API 접근 권한 부여
-```
 
 ### 3.2 사용자 프로필 관리
 
@@ -95,13 +80,6 @@ Keycloak 기반 OAuth2 인증, 프로필 관리, 선호도 시스템을 담당�
 - ✅ 사용자 선호도 기반 카테고리 추천
 - ✅ 맞춤형 도서 추천 지원
 - ✅ 독서 이력 기반 추천 개인화
-
-### 3.4 독서 기록 관리
-
-- ✅ 사용자-도서 상호작용 기록 (`UserBook`)
-- ✅ 사용자-거래 이력 추적 (`UserTrading`)
-- ✅ 복합키 기반 다대다 관계 관리
-- ✅ 독서 통계 및 분석 데이터 제공
 
 
 ---
@@ -245,28 +223,13 @@ Keycloak 기반 OAuth2 인증, 프로필 관리, 선호도 시스템을 담당�
 - **외부 ID 저장**: `keycloakId`로 Keycloak 사용자와 매핑
 
 
-### 5.3 인증흐름
-#### 일반로그인
-![일반로그인](https://rebook-bucket.s3.ap-northeast-2.amazonaws.com/rebook/login_auth.png)
-
-#### 소셜로그인
-![소셜로그인](https://rebook-bucket.s3.ap-northeast-2.amazonaws.com/rebook/sociallogin_auth.png)
-
-
-
 ## 6. API 문서
 
-### 6.1 Swagger UI 접근
 
-애플리케이션 실행 후 아래 URL에서 대화형 API 문서를 확인할 수 있습니다:
 
-```
-https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=rebook-book
-```
+### 6.1 API 엔드포인트 상세
 
-### 6.2 API 엔드포인트 상세
-
-#### 6.2.1 인증 API (`AuthController`)
+#### 6.1.1 인증 API (`AuthController`)
 
 | Method | Endpoint | Summary |
 |--------|----------|---------|
@@ -308,99 +271,39 @@ https://api.rebookcloak.click/webjars/swagger-ui/index.html?urls.primaryName=reb
 
 | 디렉토리 | 역할 | 주요 기능 |
 |---------|------|----------|
-| **advice/** | 전역 예외 처리 | `@RestControllerAdvice`로 모든 컨트롤러 예외 통합 핸들링 |
 | **clients/** | 서비스 간 통신 | OpenFeign 클라이언트 정의 (Notification Service 연동) |
 | **common/** | 응답 표준화 | 통일된 API 응답 구조 제공 (`CommonResult`, `SingleResult`, `ListResult`) |
 | **config/** | 인프라 설정 | Redis, S3, Keycloak, Swagger 등 외부 서비스 연동 설정 |
 | **controller/** | REST API | 엔드포인트 정의 및 Swagger 문서화 (`@Tag`, `@Operation`) |
 | **enums/** | 상태 관리 | 사용자 권한 enum (ROLE_USER, ROLE_ADMIN) |
-| **exception/** | 커스텀 예외 | 도메인별 예외 클래스 (404, 409, 400) |
+| **exception/** | 커스텀 예외 | 도메인별 예외 클래스 (404, 409, 400) 및 전역 핸들러 |
 | **model/entity/** | 도메인 모델 | JPA 엔티티 및 복합키 정의 |
 | **model/feigns/** | 서비스 간 DTO | Feign 요청/응답 데이터 전송 객체 |
+| **passport/** | 인증 처리 | 사용자 인증 정보 처리 및 설정 |
 | **repository/** | 데이터 접근 | Spring Data JPA 리포지토리 인터페이스 |
 | **service/** | 비즈니스 로직 | 트랜잭션 관리, 인증, 외부 서비스 연동 |
-| **utils/** | 유틸리티 | JWT 생성/검증, Keycloak 토큰 파싱 |
 
-
+### 구조
 ```
 rebook-user-service/
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/rebookuserservice/
-│   │   │   ├── advice/                        # 전역 예외 처리
-│   │   │   │   └── GlobalExceptionHandler.java  (RestControllerAdvice)
-│   │   │   │
-│   │   │   ├── clients/                       # Feign 클라이언트
-│   │   │   │   └── NotificationClient.java     (Notification Service 연동)
-│   │   │   │
-│   │   │   ├── common/                        # 공통 응답 모델
-│   │   │   │   ├── CommonResult.java           (기본 성공 응답)
-│   │   │   │   ├── SingleResult.java           (단일 데이터 응답)
-│   │   │   │   ├── ListResult.java             (리스트 응답)
-│   │   │   │   └── ResponseService.java        (응답 래핑 팩토리)
-│   │   │   │
-│   │   │   ├── config/                        # 설정 클래스
-│   │   │   │   ├── RedisConfig.java            (Redis 연결 설정)
-│   │   │   │   ├── S3Config.java               (AWS S3 클라이언트 설정)
-│   │   │   │   ├── KeycloakConfig.java         (Keycloak 통합 설정)
-│   │   │   │   └── SwaggerConfig.java          (API 문서 설정)
-│   │   │   │
-│   │   │   ├── controller/                    # REST 컨트롤러
-│   │   │   │   ├── AuthController.java         (인증 API)
-│   │   │   │   ├── UsersController.java        (사용자 관리 API)
-│   │   │   │   ├── FavoriteCategoryController.java (선호 카테고리 API)
-│   │   │   │   └── ReaderController.java       (독서 관리 API)
-│   │   │   │
-│   │   │   ├── enums/                         # 열거형
-│   │   │   │   └── Role.java                   (사용자 권한: ROLE_USER, ROLE_ADMIN)
-│   │   │   │
-│   │   │   ├── exception/                     # 커스텀 예외
-│   │   │   │   ├── CMissingDataException.java  (404 데이터 미존재)
-│   │   │   │   ├── CDuplicatedDataException.java (409 중복 데이터)
-│   │   │   │   └── CInvalidDataException.java  (400 유효하지 않은 입력)
-│   │   │   │
-│   │   │   ├── model/                         # DTO 및 엔티티
-│   │   │   │   ├── entity/                    # JPA 엔티티
-│   │   │   │   │   ├── Users.java              (사용자 메인 엔티티)
-│   │   │   │   │   ├── FavoriteCategory.java   (선호 카테고리 조인 테이블)
-│   │   │   │   │   ├── UserBook.java           (사용자-도서 관계)
-│   │   │   │   │   ├── UserTrading.java        (사용자-거래 관계)
-│   │   │   │   │   └── compositekey/
-│   │   │   │   │       ├── FavoriteCategoryId.java (복합키)
-│   │   │   │   │       ├── UserBookId.java     (복합키)
-│   │   │   │   │       └── UserTradingId.java  (복합키)
-│   │   │   │   └── feigns/                    # Feign DTO
-│   │   │   │       └── NotificationUserDto.java (알림 서비스용 DTO)
-│   │   │   │
-│   │   │   ├── repository/                    # JPA 리포지토리
-│   │   │   │   ├── UsersRepository.java        (사용자 데이터 접근)
-│   │   │   │   ├── FavoriteCategoryRepository.java (선호 카테고리 접근)
-│   │   │   │   ├── UserBookRepository.java     (도서 상호작용 접근)
-│   │   │   │   └── UserTradingRepository.java  (거래 이력 접근)
-│   │   │   │
-│   │   │   ├── service/                       # 비즈니스 로직
-│   │   │   │   ├── AuthService.java            (인증 및 토큰 관리)
-│   │   │   │   ├── UsersService.java           (사용자 CRUD)
-│   │   │   │   ├── KeycloakService.java        (Keycloak 통합)
-│   │   │   │   ├── S3Service.java              (AWS S3 파일 업로드)
-│   │   │   │   └── RedisService.java           (Redis 캐싱)
-│   │   │   │
-│   │   │   ├── utils/                         # 유틸리티
-│   │   │   │   ├── JwtUtil.java                (내부 JWT 생성/검증)
-│   │   │   │   └── KeycloakJwtUtil.java        (Keycloak JWT 검증)
-│   │   │   │
-│   │   │   └── RebookUserServiceApplication.java (메인 애플리케이션)
-│   │   │
-│   │   └── resources/
-│   │       ├── application.yaml               (Spring Cloud Config 연동)
-│   │       ├── application-dev.yaml           (개발 환경 설정)
-│   │       └── application-prod.yaml          (운영 환경 설정)
-│   │
-│   └── test/
-│       └── java/com/example/rebookuserservice/
-│           └── (테스트 클래스들)
+├── src/main/java/com/example/rebookuserservice/
+│   ├── clients/           # Feign 클라이언트 (서비스 간 통신)
+│   ├── common/            # 공통 응답 모델
+│   ├── config/            # 인프라 설정 (Redis, S3, Keycloak, Swagger)
+│   ├── controller/        # REST API 엔드포인트
+│   ├── enums/             # 열거형 (Role)
+│   ├── exception/         # 커스텀 예외 및 전역 핸들러
+│   ├── model/
+│   │   ├── entity/        # JPA 엔티티
+│   │   └── feigns/        # Feign 요청/응답 DTO
+│   ├── passport/          # 인증 관련 설정
+│   ├── repository/        # JPA 리포지토리
+│   └── service/           # 비즈니스 로직
 │
-├── build.gradle                               # Gradle 빌드 설정
-├── Dockerfile                                 # Docker 이미지 빌드 설정
-└── README.md                                  # 프로젝트 문서 (본 파일)
-```
+├── src/main/resources/
+│   ├── application.yaml         # 기본 설정
+│   ├── application-dev.yaml     # 개발 환경
+│   └── application-prod.yaml    # 운영 환경
+│
+├── build.gradle           # 빌드 설정
+└── Dockerfile             # 컨테이너 이미지
