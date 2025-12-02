@@ -1,0 +1,81 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: rebook-user
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
+        - id: rebook-auth
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**, /passports/**
+        - id: rebook-book
+          uri: lb://BOOK-SERVICE
+          predicates:
+            - Path=/api/books/**
+        - id: rebook-trading
+          uri: lb://TRADING-SERVICE
+          predicates:
+            - Path=/api/tradings/**
+        - id: rebook-notification
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/notifications/**
+        - id: rebook-chat
+          uri: lb://CHAT-SERVICE
+          predicates:
+            - Path=/api/chats/**, /api/ws-chat/**
+        - id: rebook-chat-ws
+          uri: lb:ws://CHAT-SERVICE
+          predicates:
+            - Path=/api/ws-chat/**
+            - Header=Upgrade, websocket
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "http://host.docker.internal:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: '*'
+            allowCredentials: true
+        add-to-simple-url-handler-mapping: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rebook-eureka:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:origin
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: rebook-user
+        url: /api/users/v3/api-docs
+      - name: rebook-book
+        url: /api/books/v3/api-docs
+      - name: rebook-trading
+        url: /api/tradings/v3/api-docs
+      - name: rebook-chat
+        url: /api/chats/v3/api-docs
+      - name: rebook-notification
+        url: /api/notifications/v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
