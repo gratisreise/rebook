@@ -1,0 +1,31 @@
+server:
+  port: 8888
+
+encrypt:
+  key: ${SECRET_KEY}
+#센트리 로깅
+sentry:
+  dsn: ${SENTRY_DSN}
+  send-default-pii: true
+
+spring:
+  application:
+    name: rebook-config
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/gratisreise/rebook-yamls.git
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
+          default-label: main
+          search-paths: config-repo
+
+  profiles:
+    active: prod
+
+  #파일등록
+
+
+
