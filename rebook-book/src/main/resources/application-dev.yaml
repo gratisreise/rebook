@@ -1,0 +1,8 @@
+spring:
+  cors:
+    allow:
+      origins:
+        - http://localhost:5173
+        - http://localhost:3000
+  config:
+    import: "optional:configserver:http://rebook-config:8888"
