@@ -36,6 +36,7 @@ Rebook은 Spring Cloud 기반 마이크로서비스 아키텍처로 구축된 �
 | 서비스 | 포트 | 주요 기능 | 상세 문서 |
 |--------|------|-----------|-----------|
 | **User Service** | 9000 | • 사용자 인증 및 프로필 관리<br>• Keycloak 통합 인증<br>• AWS S3 프로필 이미지 관리<br>• 관심 카테고리 설정 | [📖 상세보기](./rebook-user/README.md) |
+| **Auth Service** | 9005 | • JWT 토큰 발급 및 갱신<br>• OAuth2 소셜 로그인 (Google, Naver, Kakao)<br>• Access/Refresh Token 관리<br>• 임시 인증 패스포트 발급 | [📖 상세보기](./rebook-auth/README.md) |
 | **Book Service** | 9001 | • 도서 검색 및 등록<br>• Naver Books API 연동<br>• Gemini AI 카테고리 자동 분류<br>• 도서 리뷰 및 평점<br>• 북마크 기능 | [📖 상세보기](./rebook-book/README.md) |
 | **Trading Service** | 9002 | • 중고책 거래 등록 및 관리<br>• 거래 상태 추적<br>• 판매자-구매자 매칭<br>• 거래 알림 발송 | [📖 상세보기](./rebook-trading/README.md) |
 | **Chat Service** | 9003 | • 실시간 1:1 채팅<br>• WebSocket 지원<br>• MongoDB 메시지 저장<br>• 읽음 상태 관리 | [📖 상세보기](./rebook-chat/README.md) |
@@ -93,13 +94,13 @@ rebook/
 ├── rebook-eureka/           # Service Discovery
 ├── rebook-config/           # Config Server
 ├── rebook-user/             # User Service
+├── rebook-auth/             # Auth Service
 ├── rebook-book/             # Book Service
 ├── rebook-trading/          # Trading Service
 ├── rebook-chat/             # Chat Service
 ├── rebook-notification/     # Notification Service
 ├── rebook-yamls/            # Config Repository
 ├── compose.yaml             # 도커 컴포즈 파일
-├── compose.yaml             # 프로메테우스 메트릭 정보
 └── README.md                # 이 파일
 ```
 
@@ -119,7 +120,11 @@ curl http://localhost:8761  # Eureka Dashboard
 # 개별 서비스 헬스 체크
 curl http://localhost:8080/actuator/health  # Gateway
 curl http://localhost:9000/actuator/health  # User Service
+curl http://localhost:9005/actuator/health  # Auth Service
 curl http://localhost:9001/actuator/health  # Book Service
+curl http://localhost:9002/actuator/health  # Trading Service
+curl http://localhost:9003/actuator/health  # Chat Service
+curl http://localhost:9004/actuator/health  # Notification Service
 ```
 
 ### 메트릭 수집 및 시각화
