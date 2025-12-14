@@ -18,9 +18,12 @@ Rebook은 Spring Cloud 기반 마이크로서비스 아키텍처로 구축된 �
 - [보안](#6-보안)
 
 ## 1. 시스템 아키텍처
-### 소프트웨어 아키텍쳐
+### 1.1 소프트웨어 아키텍쳐
 ![소프트웨어아키텍쳐](https://rebook-bucket.s3.ap-northeast-2.amazonaws.com/rebook/software_architecture.png)
 
+### 1.2 Outbox Pattern, DLQ
+
+![Outboxpattern](https://rebook-bucket.s3.ap-northeast-2.amazonaws.com/rebook/outbox.png)
 ## 2. 마이크로서비스 구성
 
 ### 인프라 서비스
