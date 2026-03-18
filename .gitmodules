@@ -1,3 +1,6 @@
 [submodule "rebook-server"]
 	path = rebook-server
 	url = https://github.com/gratisreise/rebook-server.git
+[submodule "rebook-browser"]
+	path = rebook-browser
+	url = https://github.com/gratisreise/rebook-browser.git
